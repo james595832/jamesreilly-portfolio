@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>James Reilly – Product Design</title>
+    <meta name="description" content="VP of Product Design with 20 years experience in fintech. Portfolio of design work and AI experiments.">
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
+    <link rel="icon" type="image/png" sizes="96x96" href="favicon/favicon-96x96.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="manifest" href="favicon/site.webmanifest">
+    
+    <!-- External Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <a href="#main" class="skip-link">Skip to main content</a>
+
+    <nav class="nav" role="navigation" aria-label="Main navigation">
+        <div class="nav__container">
+            <a href="#" class="nav__logo" aria-label="Home" data-section="work">James Reilly</a>
+            
+            <button class="btn-icon nav__toggle" aria-label="Toggle menu" aria-expanded="false" id="menuToggle">
+                <span aria-hidden="true">☰</span>
+            </button>
+            
+            <div class="nav__controls">
+                <button class="btn-icon" id="themeToggle" aria-label="Toggle dark mode">
+                    <span aria-hidden="true">◐</span>
+                </button>
+                <button class="btn-icon" id="adminToggle" aria-label="Toggle admin panel" title="Admin">
+                    <span aria-hidden="true" style="font-size: 0.9em;">⚙</span>
+                </button>
+            </div>
+            
+            <ul class="nav__menu" id="navMenu">
+                <li><a href="#work" class="nav__link nav__link--active" data-section="work">Work</a></li>
+                <li><a href="#experiments" class="nav__link" data-section="experiments">Experiments</a></li>
+                <li><a href="#about" class="nav__link" data-section="about">About</a></li>
+                <li><a href="#contact" class="nav__link" data-section="contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main" id="main">
+        <!-- WORK SECTION -->
+        <section class="section" id="work">
+            <header class="section__header">
+                <h1 class="section__title">Selected Work</h1>
+                <p class="section__description">
+                    20 years of product design across fintech, health, and fashion.
+                </p>
+            </header>
+
+            <div class="filters" role="group" aria-label="Project filters">
+                <div class="filter-group">
+                    <button class="filter-btn filter-btn--active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="ui">UI</button>
+                    <button class="filter-btn" data-filter="ux">UX</button>
+                    <button class="filter-btn" data-filter="ia">IA</button>
+                    <button class="filter-btn" data-filter="ai">AI</button>
+                </div>
+                <div class="filter-group">
+                    <button class="filter-btn" data-filter="finance">Finance</button>
+                    <button class="filter-btn" data-filter="health">Health</button>
+                    <button class="filter-btn" data-filter="fashion">Fashion</button>
+                </div>
+            </div>
+
+            <div class="projects" id="projectsGrid">
+                <!-- Projects will be inserted here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- EXPERIMENTS SECTION -->
+        <section class="section hidden" id="experiments">
+            <header class="section__header">
+                <h1 class="section__title">AI Experiments</h1>
+                <p class="section__description">
+                    Exploring design systems, products, prototypes, and tools at the intersection of AI and design.
+                </p>
+            </header>
+
+            <div class="filters" role="group" aria-label="Experiment filters">
+                <button class="filter-btn filter-btn--active" data-filter-exp="all">All</button>
+                <button class="filter-btn" data-filter-exp="design-systems">Design Systems</button>
+                <button class="filter-btn" data-filter-exp="products">Products</button>
+                <button class="filter-btn" data-filter-exp="prototypes">Prototypes</button>
+                <button class="filter-btn" data-filter-exp="tools">Tools</button>
+            </div>
+
+            <div class="experiments" id="experimentsGrid">
+                <!-- Experiments will be inserted here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- ABOUT SECTION -->
+        <section class="section hidden" id="about">
+            <div class="about__content">
+                <div class="about__text">
+                    <h1 class="about__name">James Reilly</h1>
+                    <h2 class="about__title">Glasgow, Scotland, UK</h2>
+                    <p class="about__bio">
+                        James Reilly is a VP of Product Design with 20 years of experience building products in fintech, health, and fashion. He believes in strong foundations: clear information architecture, thoughtful interaction design, and systems thinking that scales.
+                    </p>
+                    <p class="about__bio">
+                        His expertise encompasses the design of complex financial platforms, healthcare systems, and consumer applications. He has led design teams at multiple high-growth startups and established companies, shipping products used by millions of people.
+                    </p>
+                    <p class="about__bio">
+                        Currently exploring how AI tools can accelerate design process without compromising craft. This site itself is an experiment in modern design workflow—built with AI assistance while maintaining editorial quality and accessibility standards.
+                    </p>
+                </div>
+                <div class="about__image-container">
+                    <img src="img/JR.png" alt="James Reilly" class="about__image">
+                </div>
+            </div>
+
+            <!-- FAQ SECTION -->
+            <div class="faq">
+                <h2 class="faq__title">Background</h2>
+                <ul class="faq__list">
+                    <li class="faq__item">
+                        <button class="faq__question" aria-expanded="false">
+                            <span>Experience</span>
+                            <span class="faq__icon" aria-hidden="true">+</span>
+                        </button>
+                        <div class="faq__answer">
+                            <div class="faq__answer-content">
+                                <ul>
+                                    <li><strong>VP Product Design</strong> – JPMorgan Chase (2022–2024)<br>Led IEP Insights platform for institutional clients, architected enterprise design systems</li>
+                                    <li><strong>VP Product Design</strong> – Payroc (2020–2022)<br>Built design team from ground up, shipped 4 major payment products in 18 months</li>
+                                    <li><strong>Head of Design</strong> – ASOS (2018–2020)<br>Led design for marketplace platform serving 20M+ customers across EU markets</li>
+                                    <li><strong>Senior Product Designer</strong> – Publicis Sapient (2015–2018)<br>Consulting across fintech clients including NatWest, Virgin Money, and Nationwide</li>
+                                    <li><strong>Product Designer</strong> – Various Agencies (2011–2015)<br>Specialized in financial services, healthcare systems, and consumer applications</li>
+                                    <li><strong>Junior Designer</strong> – Design Studio (2005–2011)<br>Foundation years learning craft across print, digital, and brand design</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="faq__item">
+                        <button class="faq__question" aria-expanded="false">
+                            <span>Education</span>
+                            <span class="faq__icon" aria-hidden="true">+</span>
+                        </button>
+                        <div class="faq__answer">
+                            <div class="faq__answer-content">
+                                <ul>
+                                    <li><strong>BA (Hons) Graphic Design</strong> – Glasgow School of Art (2001–2005)<br>First Class Honours, specialized in typography and information design</li>
+                                    <li><strong>Continuing Education</strong><br>Nielsen Norman Group UX Certification, Design Leadership workshops, regular conference attendance (UXDX, Leading Design)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="faq__item">
+                        <button class="faq__question" aria-expanded="false">
+                            <span>Skills & Tools</span>
+                            <span class="faq__icon" aria-hidden="true">+</span>
+                        </button>
+                        <div class="faq__answer">
+                            <div class="faq__answer-content">
+                                <p><strong>Design:</strong> Figma (expert), Sketch, Adobe Creative Suite, Prototyping (Principle, ProtoPie), Design Systems, Component Libraries</p>
+                                <p><strong>Process:</strong> User Research, Information Architecture, Interaction Design, Usability Testing, A/B Testing, Analytics (Mixpanel, Amplitude)</p>
+                                <p><strong>Technical:</strong> HTML/CSS (proficient), Basic JavaScript, Git, Design Tokens, Accessibility (WCAG 2.1), Responsive Design</p>
+                                <p><strong>Leadership:</strong> Team Building, Hiring, Mentoring, Design Critiques, Stakeholder Management, Cross-functional Collaboration</p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- CAREER CAROUSEL -->
+            <div class="carousel">
+                <div class="carousel__header">
+                    <div>
+                        <h2 class="carousel__title">20 Years of Design</h2>
+                        <p class="carousel__hint">Use arrow keys or swipe to navigate</p>
+                    </div>
+                    <div class="carousel__controls">
+                        <button class="carousel__nav-btn" id="carouselPrevAbout" aria-label="Previous chapter">←</button>
+                        <button class="carousel__nav-btn" id="carouselNextAbout" aria-label="Next chapter">→</button>
+                        <button class="carousel__download" onclick="alert('CV download coming soon')">
+                            Download CV
+                        </button>
+                    </div>
+                </div>
+
+                <div class="carousel__viewport" id="carouselViewportAbout">
+                    <!-- Chapter 1 -->
+                    <article class="carousel__slide" data-chapter="0">
+                        <div>
+                            <div class="carousel__chapter-number">Chapter 01</div>
+                            <h3 class="carousel__chapter-title">Consulting Era</h3>
+                            <div class="carousel__timeframe">2011–2020 · 9 years</div>
+                            <ul class="carousel__achievements">
+                                <li class="carousel__achievement">Led design for fintech products across NatWest, Virgin Money, and Publicis Sapient</li>
+                                <li class="carousel__achievement">Built design systems for enterprise banking platforms serving millions</li>
+                                <li class="carousel__achievement">Specialized in complex financial workflows and regulatory compliance</li>
+                            </ul>
+                        </div>
+                        <div class="carousel__visual">Visual Placeholder</div>
+                    </article>
+
+                    <!-- Chapter 2 -->
+                    <article class="carousel__slide" data-chapter="1">
+                        <div>
+                            <div class="carousel__chapter-number">Chapter 02</div>
+                            <h3 class="carousel__chapter-title">Payroc Sprint</h3>
+                            <div class="carousel__timeframe">2020–2022 · 2 years</div>
+                            <ul class="carousel__achievements">
+                                <li class="carousel__achievement">Delivered 4 major payment products in 18 months during critical growth phase</li>
+                                <li class="carousel__achievement">Built design team from ground up, establishing processes and culture</li>
+                                <li class="carousel__achievement">Scaled design operations to support 3x product velocity increase</li>
+                            </ul>
+                        </div>
+                        <div class="carousel__visual">Visual Placeholder</div>
+                    </article>
+
+                    <!-- Chapter 3 -->
+                    <article class="carousel__slide" data-chapter="2">
+                        <div>
+                            <div class="carousel__chapter-number">Chapter 03</div>
+                            <h3 class="carousel__chapter-title">JPM Modernization</h3>
+                            <div class="carousel__timeframe">2022–2024 · 2 years</div>
+                            <ul class="carousel__achievements">
+                                <li class="carousel__achievement">VP Product Design leading IEP Insights platform for institutional clients</li>
+                                <li class="carousel__achievement">Architected enterprise-scale design systems for global deployment</li>
+                                <li class="carousel__achievement">Led cross-functional teams delivering mission-critical financial tools</li>
+                            </ul>
+                        </div>
+                        <div class="carousel__visual">Visual Placeholder</div>
+                    </article>
+
+                    <!-- Chapter 4 -->
+                    <article class="carousel__slide" data-chapter="3">
+                        <div>
+                            <div class="carousel__chapter-number">Chapter 04</div>
+                            <h3 class="carousel__chapter-title">AI-Native Shift</h3>
+                            <div class="carousel__timeframe">2024–Present</div>
+                            <ul class="carousel__achievements">
+                                <li class="carousel__achievement">Adapting workflows to leverage AI tools without compromising craft</li>
+                                <li class="carousel__achievement">Rapid prototyping: concept to working product in hours instead of weeks</li>
+                                <li class="carousel__achievement">Building AI-powered design systems and documentation generators</li>
+                            </ul>
+                        </div>
+                        <div class="carousel__visual">Visual Placeholder</div>
+                    </article>
+
+                    <!-- Chapter 5 -->
+                    <article class="carousel__slide" data-chapter="4">
+                        <div>
+                            <div class="carousel__chapter-number">Chapter 05</div>
+                            <h3 class="carousel__chapter-title">What's Next</h3>
+                            <div class="carousel__timeframe">Future</div>
+                            <ul class="carousel__achievements">
+                                <li class="carousel__achievement">Exploring leadership roles at the intersection of AI and product design</li>
+                                <li class="carousel__achievement">Building tools that amplify designer capabilities without replacing craft</li>
+                                <li class="carousel__achievement">Mentoring next generation of designers in AI-augmented workflows</li>
+                            </ul>
+                        </div>
+                        <div class="carousel__visual">Visual Placeholder</div>
+                    </article>
+                </div>
+
+                <div class="carousel__progress" id="carouselProgressAbout">
+                    <!-- Progress dots will be generated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT SECTION -->
+        <section class="section hidden" id="contact">
+            <header class="section__header">
+                <h1 class="section__title">Contact</h1>
+            </header>
+            <div class="contact__content">
+                <ul class="contact__links">
+                    <li>
+                        <a href="#" class="contact__link" data-contact="email">
+                            <span class="contact__icon">✉</span>
+                            <span data-email="james" data-domain="jamesreilly.design">Email</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/in/jamesreillywork/" class="contact__link" target="_blank" rel="noopener noreferrer">
+                            <span class="contact__icon">in</span>
+                            <span>LinkedIn</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="contact__link" data-contact="phone">
+                            <span class="contact__icon">☎</span>
+                            <span data-phone="07552062953" data-code="+44">Phone</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- CAREER CAROUSEL -->
+            <div class="carousel">
+                <div class="carousel__header">
+                    <div>
+                        <h2 class="carousel__title">20 Years of Design</h2>
+                        <p class="carousel__hint">Use arrow keys or swipe to navigate</p>
+                    </div>
+                    <div class="carousel__controls">
+                        <button class="carousel__nav-btn" id="carouselPrev" aria-label="Previous chapter">←</button>
+                        <button class="carousel__nav-btn" id="carouselNext" aria-label="Next chapter">→</button>
+                        <button class="carousel__download" onclick="alert('CV download coming soon')">
+                            Download CV
+                        </button>
+                    </div>
+                </div>
+
+                <div class="carousel__viewport" id="carouselViewport">
+                    <!-- Chapter 1 -->
+                    <article class="carousel__slide" data-chapter="0">
+                        <div>
+                            <div class="carousel__chapter-number">Chapter 01</div>
+                            <h3 class="carousel__chapter-title">Consulting Era</h3>
+                            <div class="carousel__timeframe">2011–2020 · 9 years</div>
+                            <ul class="carousel__achievements">
+                                <li class="carousel__achievement">Led design for fintech products across NatWest, Virgin Money, and Publicis Sapient</li>
+                                <li class="carousel__achievement">Built design systems for enterprise banking platforms serving millions</li>
+                                <li class="carousel__achievement">Specialized in complex financial workflows and regulatory compliance</li>
+                            </ul>
+                        </div>
+                        <div class="carousel__visual">Visual Placeholder</div>
+                    </article>
+
+                    <!-- Chapter 2 -->
+                    <article class="carousel__slide" data-chapter="1">
+                        <div>
+                            <div class="carousel__chapter-number">Chapter 02</div>
+                            <h3 class="carousel__chapter-title">Payroc Sprint</h3>
+                            <div class="carousel__timeframe">2020–2022 · 2 years</div>
+                            <ul class="carousel__achievements">
+                                <li class="carousel__achievement">Delivered 4 major payment products in 18 months during critical growth phase</li>
+                                <li class="carousel__achievement">Built design team from ground up, establishing processes and culture</li>
+                                <li class="carousel__achievement">Scaled design operations to support 3x product velocity increase</li>
+                            </ul>
+                        </div>
+                        <div class="carousel__visual">Visual Placeholder</div>
+                    </article>
+
+                    <!-- Chapter 3 -->
+                    <article class="carousel__slide" data-chapter="2">
+                        <div>
+                            <div class="carousel__chapter-number">Chapter 03</div>
+                            <h3 class="carousel__chapter-title">JPM Modernization</h3>
+                            <div class="carousel__timeframe">2022–2024 · 2 years</div>
+                            <ul class="carousel__achievements">
+                                <li class="carousel__achievement">VP Product Design leading IEP Insights platform for institutional clients</li>
+                                <li class="carousel__achievement">Architected enterprise-scale design systems for global deployment</li>
+                                <li class="carousel__achievement">Led cross-functional teams delivering mission-critical financial tools</li>
+                            </ul>
+                        </div>
+                        <div class="carousel__visual">Visual Placeholder</div>
+                    </article>
+
+                    <!-- Chapter 4 -->
+                    <article class="carousel__slide" data-chapter="3">
+                        <div>
+                            <div class="carousel__chapter-number">Chapter 04</div>
+                            <h3 class="carousel__chapter-title">AI-Native Shift</h3>
+                            <div class="carousel__timeframe">2024–Present</div>
+                            <ul class="carousel__achievements">
+                                <li class="carousel__achievement">Adapting workflows to leverage AI tools without compromising craft</li>
+                                <li class="carousel__achievement">Rapid prototyping: concept to working product in hours instead of weeks</li>
+                                <li class="carousel__achievement">Building AI-powered design systems and documentation generators</li>
+                            </ul>
+                        </div>
+                        <div class="carousel__visual">Visual Placeholder</div>
+                    </article>
+
+                    <!-- Chapter 5 -->
+                    <article class="carousel__slide" data-chapter="4">
+                        <div>
+                            <div class="carousel__chapter-number">Chapter 05</div>
+                            <h3 class="carousel__chapter-title">What's Next</h3>
+                            <div class="carousel__timeframe">Future</div>
+                            <ul class="carousel__achievements">
+                                <li class="carousel__achievement">Exploring leadership roles at the intersection of AI and product design</li>
+                                <li class="carousel__achievement">Building tools that amplify designer capabilities without replacing craft</li>
+                                <li class="carousel__achievement">Mentoring next generation of designers in AI-augmented workflows</li>
+                            </ul>
+                        </div>
+                        <div class="carousel__visual">Visual Placeholder</div>
+                    </article>
+                </div>
+
+                <div class="carousel__progress" id="carouselProgress">
+                    <!-- Progress dots will be generated by JavaScript -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- PROJECT PAGE -->
+    <section class="section project-page hidden" id="projectPage">
+        <div class="project-container">
+            <div class="project__back">
+                <button class="project__back-btn" id="projectClose">← Back to Work</button>
+            </div>
+            
+            <div class="project__header">
+                <div class="project__info">
+                    <h1 class="project__title" id="projectTitle"></h1>
+                    <p class="project__subtitle" id="projectSubtitle"></p>
+                    <div class="project__tags" id="projectTags"></div>
+                </div>
+                <button class="project__toggle" id="projectToggle">About the project +</button>
+            </div>
+
+            <div class="project__content" id="projectContent">
+                <div class="project__images" id="projectImages"></div>
+                <div class="project__text hidden" id="projectText"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer__container">
+            <div class="footer__grid">
+                <div class="footer__column">
+                    <h4>About</h4>
+                    <p class="footer__bio">
+                        James Reilly is a VP of Product Design specializing in fintech, health, and fashion. 
+                        With 20 years of experience building products that blend strategic thinking with cohesive design solutions.
+                    </p>
+                </div>
+                
+                <div class="footer__column">
+                    <h4>Get in Touch</h4>
+                    <a href="mailto:james@jamesreilly.design" class="footer__contact-link">
+                        <span>✉</span>
+                        <span>james@jamesreilly.design</span>
+                    </a>
+                    <a href="https://www.linkedin.com/in/jamesreillywork/" class="footer__contact-link" target="_blank" rel="noopener noreferrer">
+                        <span>in</span>
+                        <span>LinkedIn</span>
+                    </a>
+                    <a href="tel:+4407552062953" class="footer__contact-link">
+                        <span>☎</span>
+                        <span>+44 07552062953</span>
+                    </a>
+                </div>
+                
+                <div class="footer__column">
+                    <p class="footer__cta">
+                        Building something?<br>
+                        <em>Let's chat.</em>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="footer__logo-large" aria-hidden="true">
+                JAMES REILLY
+            </div>
+            
+            <div class="footer__bottom">
+                <div class="footer__location">
+                    <span>Glasgow, Scotland, UK</span>
+                    <span id="footerTime">00:00:00</span>
+                </div>
+                <div class="footer__copyright">
+                    © <span id="footerYear">2025</span> James Reilly · All Rights Reserved
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ADMIN PANEL -->
+    <aside class="admin-panel" id="adminPanel" role="complementary" aria-label="Admin panel">
+        <div class="admin-panel__header">
+            <h2>Admin Panel</h2>
+            <button class="btn-icon" id="closeAdmin" aria-label="Close admin panel">
+                <span aria-hidden="true">✕</span>
+            </button>
+        </div>
+        
+        <div id="adminAuth">
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" class="form-input" required>
+                </div>
+                <button type="submit" class="btn">Login</button>
+            </form>
+        </div>
+
+        <div id="adminContent" class="hidden">
+            <div class="form-group">
+                <button class="btn" id="addProjectBtn">Add New Project</button>
+                <button class="btn btn--secondary" id="addExperimentBtn">Add New Experiment</button>
+            </div>
+            
+            <div id="adminForms"></div>
+        </div>
+    </aside>
+
+    <!-- External Scripts -->
+    <script src="js/main.js"></script>
+</body>
+</html>
+
