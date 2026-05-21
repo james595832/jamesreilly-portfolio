@@ -725,7 +725,7 @@ const PROJECTS_DATA = {
         tags: ['AI', 'WebGL', 'WebAudio'],
         heroImage: 'img/finding-hope.png',
         images: [
-            'img/finding-hope.mov',
+            'img/finding-hope.mp4',
             'img/finding-hope-1.jpg',
             'img/finding-hope-2.jpg'
         ],
