@@ -12,6 +12,18 @@ const STATE = {
 // ===== SAMPLE DATA =====
 const SAMPLE_PROJECTS = [
     {
+        id: 'finding-hope',
+        slug: 'finding-hope',
+        title: 'Finding Hope',
+        description: 'A generative, AI-driven 3D data visualization of the world\'s daily emotional heartbeat.',
+        image: 'img/finding-hope.png',
+        tags: ['ai', 'ui', 'ux'],
+        industry: ['data-vis'],
+        featured: true,
+        year: '2026',
+        order: 0
+    },
+    {
         id: '1',
         slug: 'trading-platform',
         title: 'Trading Platform Redesign',
@@ -718,6 +730,31 @@ function initCarousel(viewportId, prevBtnId, nextBtnId, progressId, sectionId) {
 
 // ===== PROJECT SHOWCASE =====
 const PROJECTS_DATA = {
+    'finding-hope': {
+        slug: 'finding-hope',
+        title: 'Finding Hope',
+        subtitle: 'Generative AI Sentiment Globe',
+        tags: ['AI', 'WebGL', 'WebAudio'],
+        heroImage: 'img/finding-hope.png',
+        images: [
+            'img/finding-hope-1.jpg',
+            'img/finding-hope-2.jpg'
+        ],
+        client: 'Personal Project',
+        sector: 'Generative Art & Data Vis',
+        year: '2026',
+        team: ['James Reilly'],
+        content: `
+            <h2>The Concept</h2>
+            <p>In an era of relentless news cycles, Finding Hope acts as an interactive counterweight. It aggregates global news via RSS, uses Gemini AI to analyze the emotional undercurrent, and translates that into a 3D WebGL globe with a dynamically evolving generative audio soundscape.</p>
+            
+            <h2>The Technology</h2>
+            <p>Built with React, Three.js, and a bespoke WebAudio engine. The application runs entirely on edge serverless functions that fetch live news and parse sentiment, displaying the results over a stylized 3D earth. The cinematic, Blade Runner-style synth drone algorithmically reacts to the live sentiment data.</p>
+            
+            <h2>Design & Recognition</h2>
+            <p>Drawing on high-end print design, the UI avoids standard dashboard aesthetics in favor of a brutalist, strictly constrained "ink on cream paper" palette. The project was submitted to the FWA (Favourite Website Awards).</p>
+        `
+    },
     'trading-platform': {
         slug: 'trading-platform',
         title: 'Trading Platform Redesign',

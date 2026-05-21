@@ -1,0 +1,26 @@
+backend:
+  name: git-gateway
+  branch: main
+
+publish_mode: editorial_workflow
+media_folder: "img/projects"
+public_folder: "/img/projects"
+
+collections:
+  - name: "projects"
+    label: "Projects"
+    folder: "content/projects"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Slug", name: "slug", widget: "string"}
+      - {label: "Description", name: "description", widget: "text"}
+      - {label: "Featured", name: "featured", widget: "boolean", default: false}
+      - {label: "Thumbnail", name: "thumbnail", widget: "image"}
+      - {label: "Hero", name: "hero", widget: "image"}
+      - {label: "Tags", name: "tags", widget: "select", multiple: true, options: ["UI", "UX", "IA", "AI", "Finance", "Health", "Fashion"]}
+      - {label: "Client", name: "client", widget: "string", required: false}
+      - {label: "Year", name: "year", widget: "string"}
+      - {label: "Content", name: "body", widget: "markdown"}
+
