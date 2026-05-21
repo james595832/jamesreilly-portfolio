@@ -737,6 +737,7 @@ const PROJECTS_DATA = {
         tags: ['AI', 'WebGL', 'WebAudio'],
         heroImage: 'img/finding-hope.png',
         images: [
+            'img/finding-hope.mov',
             'img/finding-hope-1.jpg',
             'img/finding-hope-2.jpg'
         ],
@@ -900,11 +901,16 @@ function openProjectPage(projectSlug) {
     document.getElementById('projectTags').innerHTML = tagsHTML;
 
     // Populate all images
-    const imagesHTML = [project.heroImage, ...project.images].map(img => 
-        `<div>
-            <img src="${img}" alt="${project.title}" loading="lazy">
-        </div>`
-    ).join('');
+    const imagesHTML = [project.heroImage, ...project.images].map(media => {
+        if (media.endsWith('.mov') || media.endsWith('.mp4')) {
+            return `<div>
+                <video src="${media}" autoplay loop muted playsinline style="width: 100%; height: auto; display: block; border-radius: 4px; margin-bottom: 2rem;"></video>
+            </div>`;
+        }
+        return `<div>
+            <img src="${media}" alt="${project.title}" loading="lazy">
+        </div>`;
+    }).join('');
     document.getElementById('projectImages').innerHTML = imagesHTML;
 
     // Populate text content
