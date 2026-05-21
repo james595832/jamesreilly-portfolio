@@ -1252,7 +1252,7 @@ a {
 
 /* When expanded, split into two columns */
 .project-container.expanded .project__content {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 2fr 1fr;
     gap: var(--space-xl);
     padding: 0;
 }

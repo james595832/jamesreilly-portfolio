@@ -721,7 +721,7 @@ const PROJECTS_DATA = {
     'finding-hope': {
         slug: 'finding-hope',
         title: 'Finding Hope',
-        subtitle: 'Generative AI Sentiment Globe',
+        subtitle: "Finding Hope is a real-time editorial canvas mapping the world's emotional temperature. Live news RSS headlines are parsed via secure Gemini AI onto a 3D WebGL globe. Framed in a brutalist layout, the piece pairs tactile data viz with an evolving, responsive analogue synthesiser soundtrack.",
         tags: ['AI', 'WebGL', 'WebAudio'],
         heroImage: 'img/finding-hope.png',
         images: [
@@ -734,14 +734,10 @@ const PROJECTS_DATA = {
         year: '2026',
         team: ['James Reilly'],
         content: `
-            <h2>The Concept</h2>
-            <p>In an era of relentless news cycles, Finding Hope acts as an interactive counterweight. It aggregates global news via RSS, uses Gemini AI to analyze the emotional undercurrent, and translates that into a 3D WebGL globe with a dynamically evolving generative audio soundscape.</p>
-            
-            <h2>The Technology</h2>
-            <p>Built with React, Three.js, and a bespoke WebAudio engine. The application runs entirely on edge serverless functions that fetch live news and parse sentiment, displaying the results over a stylized 3D earth. The cinematic, Blade Runner-style synth drone algorithmically reacts to the live sentiment data.</p>
-            
-            <h2>Design & Recognition</h2>
-            <p>Drawing on high-end print design, the UI avoids standard dashboard aesthetics in favor of a brutalist, strictly constrained "ink on cream paper" palette. The project was submitted to the FWA (Favourite Website Awards).</p>
+            <h2>Mapping the World's Emotional Pulse in Real-Time</h2>
+            <p>Finding Hope is an interactive, real-time editorial data canvas that registers and visualises the emotional temperature of the world. The experience acts as a digital mirror to global events, translating current headlines into high-fidelity tactile feedback. Juxtaposing the raw reality of global news with procedural golden spikes representing each country's 'Hope Reserves,' the piece invites users to explore the delicate balance of contemporary civic sentiment.</p>
+            <p>Built on a strict, high-contrast brutalist grid, the visual layout rejects generic data visualisation templates in favour of a premium design canvas. It features dense masonry word clouds, ultra-thin 3D data needles, and country labels wrapped flush with the sphere’s terrain.</p>
+            <p>Technically, a Vercel server-less proxy scrapes global RSS feeds on-the-fly, securely calling Gemini to map sentiment without exposing API keys. This drives a spatial WebAudio context with responsive Blade Runner-style synth chords and tactile hover clicks.</p>
         `
     },
     'healthcare-dashboard': {
