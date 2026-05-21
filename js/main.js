@@ -894,11 +894,14 @@ function openProjectPage(projectSlug) {
     `;
     document.getElementById('projectText').innerHTML = project.content + metadataHTML;
 
-    // Set expanded state (always expanded like a gallery)
-    document.querySelector('.project-container').classList.add('expanded');
+    // Reset expanded state
+    document.querySelector('.project-container').classList.remove('expanded');
     const toggleBtn = document.getElementById('projectToggle');
-    if (toggleBtn) toggleBtn.style.display = 'none';
-    document.getElementById('projectText').classList.remove('hidden');
+    if (toggleBtn) {
+        toggleBtn.textContent = 'About the project +';
+        toggleBtn.style.display = '';
+    }
+    document.getElementById('projectText').classList.add('hidden');
 
     // Hide all sections
     document.querySelectorAll('.section').forEach(section => {
@@ -1091,6 +1094,12 @@ function initProjectShowcase() {
         const slug = hash.replace('#project/', '').split('/')[0];
         if (PROJECTS_DATA[slug]) {
             openProjectPage(slug);
+            // If hash includes /detail, expand the project
+            if (hash.includes('/detail')) {
+                setTimeout(() => {
+                    toggleProjectDetail();
+                }, 500);
+            }
         }
     }
 }
