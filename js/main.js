@@ -24,18 +24,6 @@ const SAMPLE_PROJECTS = [
         order: 0
     },
     {
-        id: '1',
-        slug: 'trading-platform',
-        title: 'Trading Platform Redesign',
-        description: 'Complete rebuild of enterprise trading interface for institutional clients.',
-        image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&h=533&fit=crop',
-        tags: ['ui', 'ux', 'ia'],
-        industry: ['finance'],
-        featured: true,
-        year: '2024',
-        order: 1
-    },
-    {
         id: '2',
         slug: 'healthcare-dashboard',
         title: 'Healthcare Dashboard',
@@ -756,32 +744,6 @@ const PROJECTS_DATA = {
             <p>Drawing on high-end print design, the UI avoids standard dashboard aesthetics in favor of a brutalist, strictly constrained "ink on cream paper" palette. The project was submitted to the FWA (Favourite Website Awards).</p>
         `
     },
-    'trading-platform': {
-        slug: 'trading-platform',
-        title: 'Trading Platform Redesign',
-        subtitle: 'Complete rebuild of enterprise trading interface for institutional clients',
-        tags: ['UI', 'UX', 'IA'],
-        heroImage: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1600&h=900&fit=crop',
-        images: [
-            'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=800&fit=crop',
-            'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=800&fit=crop',
-            'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=1200&h=800&fit=crop',
-        ],
-        client: 'Major Financial Institution',
-        sector: 'Financial Services',
-        year: '2024',
-        team: ['James Reilly', 'Design Team'],
-        content: `
-            <h2>The Challenge</h2>
-            <p>Legacy trading systems were hindering institutional traders with outdated interfaces and slow workflows. The platform needed a complete overhaul to meet modern expectations while maintaining regulatory compliance.</p>
-            
-            <h2>The Approach</h2>
-            <p>Through extensive user research with institutional traders, we identified key pain points in the workflow. The redesign focused on reducing cognitive load, improving data visualization, and streamlining the most common trading actions.</p>
-            
-            <h2>The Solution</h2>
-            <p>A modern, high-performance interface that reduced trade execution time by 40% while maintaining the depth of functionality required by professional traders. The new design system has been adopted across the entire product suite.</p>
-        `
-    },
     'healthcare-dashboard': {
         slug: 'healthcare-dashboard',
         title: 'Healthcare Dashboard',
@@ -904,7 +866,7 @@ function openProjectPage(projectSlug) {
     const imagesHTML = [project.heroImage, ...project.images].map(media => {
         if (media.endsWith('.mov') || media.endsWith('.mp4')) {
             return `<div>
-                <video src="${media}" autoplay loop muted playsinline style="width: 100%; height: auto; display: block; border-radius: 4px; margin-bottom: 2rem;"></video>
+                <video src="${media}" autoplay loop muted playsinline aria-label="${project.title}"></video>
             </div>`;
         }
         return `<div>

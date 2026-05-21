@@ -1303,7 +1303,8 @@ a {
     display: block;
 }
 
-.project__images img {
+.project__images img,
+.project__images video {
     width: 100%;
     height: auto;
     display: block;
@@ -1311,7 +1312,8 @@ a {
     object-fit: cover;
 }
 
-.project-container.expanded .project__images img {
+.project-container.expanded .project__images img,
+.project-container.expanded .project__images video {
     max-height: none;
     object-fit: contain;
 }
