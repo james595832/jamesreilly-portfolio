@@ -1,0 +1,68 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  caption?: string;
+  fullWidth?: boolean;
+  bleed?: boolean;
+  transparent?: boolean;
+  themeTrigger?: boolean;
+  mobile?: boolean;
+  /** Centered, smaller than the default content column — good for hero objects like a globe. */
+  compact?: boolean;
+}
+
+const {
+  src,
+  alt,
+  caption,
+  fullWidth = false,
+  bleed = false,
+  transparent = false,
+  themeTrigger = false,
+  mobile = false,
+  compact = false,
+} = Astro.props;
+
+const noBackground = bleed || transparent || mobile || compact;
+const centered = mobile || compact;
+---
+
+<figure
+  class:list={[
+    mobile || compact ? 'py-10 md:py-14' : 'py-8',
+    compact
+      ? 'mx-auto flex w-full max-w-lg flex-col items-center px-6 md:max-w-xl md:px-0'
+      : fullWidth
+        ? 'w-full'
+        : 'mx-auto max-w-4xl px-6 md:px-0',
+    mobile && 'flex flex-col items-center',
+  ]}
+  data-case-theme-trigger={themeTrigger ? '' : undefined}
+>
+  <div
+    class:list={[
+      centered ? 'flex w-full justify-center' : 'overflow-hidden',
+      noBackground ? '' : 'rounded-sm bg-surface',
+    ]}
+  >
+    <img
+      src={src}
+      alt={alt}
+      class:list={[
+        compact
+          ? 'block h-auto w-[min(100%,280px)] sm:w-[min(100%,340px)] md:w-[min(100%,400px)]'
+          : mobile
+            ? 'block h-auto w-[min(100%,560px)] md:w-[min(72vw,640px)] lg:w-[min(58vw,720px)]'
+            : 'h-auto w-full',
+        transparent || mobile || compact ? 'object-contain' : 'object-cover',
+      ]}
+      loading="lazy"
+    />
+  </div>
+  {caption && (
+    <figcaption class="mt-4 text-center text-sm leading-relaxed text-muted text-pretty">
+      {caption}
+    </figcaption>
+  )}
+</figure>

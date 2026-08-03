@@ -1,0 +1,148 @@
+---
+interface Props {
+  portraitSrc?: string;
+  portraitSrc2x?: string;
+}
+
+const {
+  portraitSrc = '/images/author-portrait.png',
+  portraitSrc2x = '/images/author-portrait@2x.png',
+} = Astro.props;
+
+const email = 'hireme@jamesreilly.design';
+---
+
+<aside class="blog-author-band" aria-label="About the author">
+  <div class="blog-author-band__inner">
+    <div class="blog-author-band__copy">
+      <h2 class="blog-author-band__title font-display">Hi I&apos;m James.</h2>
+      <p class="blog-author-band__bio">
+        I write all the content on this site. I am currently working as a product designer for
+        J&nbsp;P&nbsp;Morgan Chase.
+      </p>
+      <a class="blog-author-band__email" href={`mailto:${email}`}>
+        Please email me to get in touch
+      </a>
+    </div>
+
+    <div class="blog-author-band__portrait" aria-hidden="true">
+      <img
+        src={portraitSrc}
+        srcset={`${portraitSrc} 1x, ${portraitSrc2x} 2x`}
+        alt=""
+        width="480"
+        height="480"
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+  </div>
+</aside>
+
+<style>
+  .blog-author-band {
+    background: var(--color-surface, #1a1a1a);
+    color: #ffffff;
+    width: 100%;
+    padding: 2.75rem 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .blog-author-band {
+      padding: 3.25rem 2.5rem;
+    }
+  }
+
+  .blog-author-band__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2.25rem;
+    width: 100%;
+    max-width: 960px;
+    margin-inline: auto;
+  }
+
+  @media (min-width: 720px) {
+    .blog-author-band__inner {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 3rem;
+    }
+  }
+
+  .blog-author-band__copy {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .blog-author-band__title {
+    margin: 0;
+    font-size: clamp(1.75rem, 1.4rem + 1.2vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    color: #ffffff;
+  }
+
+  .blog-author-band__bio {
+    margin: 1rem 0 0;
+    max-width: 28rem;
+    font-size: 1rem;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.92);
+  }
+
+  .blog-author-band__email {
+    display: inline-block;
+    margin-top: 1.25rem;
+    color: #00d4ff;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.4;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .blog-author-band__email:hover,
+  .blog-author-band__email:focus-visible {
+    opacity: 0.75;
+  }
+
+  .blog-author-band__portrait {
+    flex: 0 0 auto;
+    width: clamp(11rem, 26vw, 15rem);
+    height: clamp(11rem, 26vw, 15rem);
+    border-radius: 9999px;
+    overflow: hidden;
+    background: #00d4ff;
+  }
+
+  .blog-author-band__portrait img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    transform: translateZ(0);
+  }
+
+  /*
+   * Keep this band on the site surface colour even when a light case-study
+   * theme remaps body ink — author CTA stays charcoal + white + accent.
+   */
+  .case-study-scroll-panel[data-theme-light='true'] .blog-author-band,
+  .case-study-scroll-panel[data-theme-light='true'] .blog-author-band__title,
+  .case-study-scroll-panel[data-theme-light='true'] .blog-author-band__bio {
+    color: #ffffff !important;
+  }
+
+  .case-study-scroll-panel[data-theme-light='true'] .blog-author-band__email {
+    color: #00d4ff !important;
+  }
+
+  .case-study-scroll-panel[data-theme-light='true'] .blog-author-band__portrait {
+    background: #00d4ff !important;
+  }
+</style>

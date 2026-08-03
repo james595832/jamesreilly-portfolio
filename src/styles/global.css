@@ -1,0 +1,295 @@
+@import "tailwindcss";
+@import "./case-study-carousel.css";
+
+@font-face {
+  font-family: "Neue Montreal";
+  src: url("/fonts/NeueMontreal-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Neue Montreal";
+  src: url("/fonts/NeueMontreal-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --color-bg: #000000;
+  --color-surface: #1a1a1a;
+  --color-text: #ffffff;
+  --color-accent: #00d4ff;
+  --color-muted: #888888;
+  --color-card: #2a2a2a;
+
+  --font-display: "Neue Montreal", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Neue Montreal", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "IBM Plex Serif", ui-serif, Georgia, serif;
+
+  --site-max-width: 120rem; /* 1920px */
+  --content-max-width: 87.5rem; /* 1400px */
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    @apply bg-bg text-text font-body antialiased;
+    font-synthesis: none;
+    font-kerning: normal;
+    font-feature-settings: "kern" 1;
+    -moz-font-feature-settings: "kern" 1;
+    text-wrap: pretty;
+  }
+
+  p,
+  li,
+  figcaption,
+  .prose-case,
+  .case-study-landing-header p {
+    text-wrap: pretty;
+    orphans: 3;
+    widows: 3;
+  }
+
+  h1,
+  h2,
+  h3,
+  .case-card-title,
+  .case-card-summary {
+    text-wrap: balance;
+  }
+
+  svg {
+    shape-rendering: auto;
+  }
+
+  ::selection {
+    @apply bg-accent/30 text-text;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-accent;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .motion-safe-bounce {
+    @apply motion-safe:animate-bounce;
+  }
+
+  .render-crisp {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  .site-shell {
+    width: 100%;
+    max-width: var(--site-max-width);
+    margin-inline: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-safe-bounce {
+    animation: none;
+  }
+}
+
+/* Case study scroll theme (e.g. NatWest brand purple) */
+.case-study-scroll-panel[data-theme-scroll="true"][data-theme-ink="light"] .case-study-landing-header h1,
+.case-study-scroll-panel[data-theme-scroll="true"][data-theme-ink="light"] .prose-case,
+.case-study-scroll-panel[data-theme-scroll="true"][data-theme-ink="light"] .prose-case :is(h2, p, strong),
+.case-study-scroll-panel[data-theme-scroll="true"][data-theme-ink="light"] .case-study-body h2,
+.case-study-scroll-panel[data-theme-scroll="true"][data-theme-ink="light"] .case-study-body > div > p,
+.case-study-scroll-panel[data-theme-scroll="true"][data-theme-ink="light"] .case-study-landing-header .text-lg,
+.case-study-scroll-panel[data-theme-scroll="true"][data-theme-ink="light"] .case-study-landing-header p {
+  color: color-mix(
+    in srgb,
+    rgba(255, 255, 255, 0.85) calc((1 - var(--case-theme-p, 0)) * 100%),
+    #ffffff calc(var(--case-theme-p, 0) * 100%)
+  );
+}
+
+.case-study-scroll-panel[data-theme-scroll="true"][data-theme-ink="light"] .text-muted,
+.case-study-scroll-panel[data-theme-scroll="true"][data-theme-ink="light"] figcaption,
+.case-study-scroll-panel[data-theme-scroll="true"][data-theme-ink="light"] .grid figcaption {
+  color: color-mix(
+    in srgb,
+    #888888 calc((1 - var(--case-theme-p, 0)) * 100%),
+    rgba(255, 255, 255, 0.72) calc(var(--case-theme-p, 0) * 100%)
+  );
+}
+
+.case-study-scroll-panel[data-theme-scroll="true"][data-theme-ink="light"] .case-study-landing-header [aria-hidden="true"] {
+  background-color: color-mix(
+    in srgb,
+    rgba(255, 255, 255, 0.1) calc((1 - var(--case-theme-p, 0)) * 100%),
+    rgba(255, 255, 255, 0.18) calc(var(--case-theme-p, 0) * 100%)
+  );
+}
+
+.case-study-scroll-panel[data-theme-scroll="true"][data-theme-ink="light"] footer.border-t {
+  border-top-color: color-mix(
+    in srgb,
+    rgba(255, 255, 255, 0.1) calc((1 - var(--case-theme-p, 0)) * 100%),
+    rgba(255, 255, 255, 0.18) calc(var(--case-theme-p, 0) * 100%)
+  );
+}
+
+.case-study-sheet[data-theme-scroll="true"][data-theme-ink="light"] {
+  border-color: color-mix(
+    in srgb,
+    rgba(255, 255, 255, 0.08) calc((1 - var(--case-theme-p, 0)) * 100%),
+    rgba(255, 255, 255, 0.14) calc(var(--case-theme-p, 0) * 100%)
+  );
+}
+
+.case-study-sheet[data-theme-scroll="true"][data-theme-ink="light"] .text-accent {
+  color: color-mix(
+    in srgb,
+    #00d4ff calc((1 - var(--case-theme-p, 0)) * 100%),
+    #ffffff calc(var(--case-theme-p, 0) * 100%)
+  );
+}
+
+.case-study-sheet[data-theme-scroll="true"][data-theme-ink="light"] .hover\:bg-accent\/10:hover {
+  background-color: color-mix(
+    in srgb,
+    transparent calc((1 - var(--case-theme-p, 0)) * 100%),
+    rgba(255, 255, 255, 0.1) calc(var(--case-theme-p, 0) * 100%)
+  );
+}
+
+/* Light theme surfaces (e.g. OHNI #F5F5F5): ink driven by --case-ink-color set in JS */
+.case-study-scroll-panel[data-theme-light="true"] {
+  color: var(--case-ink-color, #000000);
+}
+
+.case-study-scroll-panel[data-theme-light="true"] .case-study-copy,
+.case-study-scroll-panel[data-theme-light="true"] .case-study-copy :is(p, li, strong, em, a),
+.case-study-scroll-panel[data-theme-light="true"] .case-study-body p,
+.case-study-scroll-panel[data-theme-light="true"] .case-study-body .prose-case,
+.case-study-scroll-panel[data-theme-light="true"] .case-study-body .prose-case :is(p, li, strong),
+.case-study-scroll-panel[data-theme-light="true"] .case-study-landing-header .case-study-summary,
+.case-study-scroll-panel[data-theme-light="true"] .case-study-landing-header :is(h1, .case-study-summary, .case-study-meta),
+.case-study-scroll-panel[data-theme-light="true"] .case-study-body :is(h1, h2, h3, h4, p, li, strong, span, a, cite, label, figcaption, header, .font-serif, .font-display),
+.case-study-scroll-panel[data-theme-light="true"] .case-study-body .prose-case,
+.case-study-scroll-panel[data-theme-light="true"] .case-study-body .prose-case :is(h2, p, strong),
+.case-study-scroll-panel[data-theme-light="true"] .case-study-footer-label,
+.case-study-scroll-panel[data-theme-light="true"] [class*="text-text"],
+.case-study-scroll-panel[data-theme-light="true"] [class*="text-white"],
+.case-study-scroll-panel[data-theme-light="true"] .text-accent {
+  color: var(--case-copy-ink, var(--case-ink-color, #000000)) !important;
+}
+
+.case-study-scroll-panel[data-theme-light="true"] .case-study-meta,
+.case-study-scroll-panel[data-theme-light="true"] .text-muted,
+.case-study-scroll-panel[data-theme-light="true"] [class*="text-muted"],
+.case-study-scroll-panel[data-theme-light="true"] figcaption,
+.case-study-scroll-panel[data-theme-light="true"] .grid figcaption {
+  color: var(--case-copy-muted, var(--case-ink-muted, #444444)) !important;
+}
+
+.case-study-scroll-panel[data-theme-light="true"] .case-study-landing-header [aria-hidden="true"] {
+  background-color: color-mix(
+    in srgb,
+    rgba(255, 255, 255, 0.1) calc((1 - var(--case-theme-p, 0)) * 100%),
+    rgba(0, 0, 0, 0.14) calc(var(--case-theme-p, 0) * 100%)
+  ) !important;
+}
+
+.case-study-scroll-panel[data-theme-light="true"] footer.border-t {
+  border-top-color: color-mix(
+    in srgb,
+    rgba(255, 255, 255, 0.1) calc((1 - var(--case-theme-p, 0)) * 100%),
+    rgba(0, 0, 0, 0.14) calc(var(--case-theme-p, 0) * 100%)
+  ) !important;
+}
+
+.case-study-sheet[data-theme-light="true"] {
+  border-color: color-mix(
+    in srgb,
+    rgba(255, 255, 255, 0.08) calc((1 - var(--case-theme-p, 0)) * 100%),
+    rgba(0, 0, 0, 0.12) calc(var(--case-theme-p, 0) * 100%)
+  ) !important;
+}
+
+.case-study-sheet[data-theme-light="true"] .text-accent {
+  color: var(--case-ink-color, #000000) !important;
+}
+
+.case-study-sheet[data-theme-light="true"] .hover\:bg-accent\/10:hover {
+  background-color: color-mix(
+    in srgb,
+    transparent calc((1 - var(--case-theme-p, 0)) * 100%),
+    rgba(0, 0, 0, 0.06) calc(var(--case-theme-p, 0) * 100%)
+  ) !important;
+}
+
+.case-study-scroll-panel[data-theme-light="true"] [class*="border-text"] {
+  border-color: color-mix(
+    in srgb,
+    rgba(255, 255, 255, 0.15) calc((1 - var(--case-theme-p, 0)) * 100%),
+    rgba(0, 0, 0, 0.18) calc(var(--case-theme-p, 0) * 100%)
+  ) !important;
+}
+
+/* Close button: track sheet ink so it stays visible on every theme transition */
+.case-study-close-btn {
+  color: var(--case-ink-color, var(--color-accent));
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.case-study-close-btn:hover,
+.case-study-close-btn:focus-visible {
+  background-color: color-mix(
+    in srgb,
+    var(--case-ink-color, var(--color-accent)) 14%,
+    transparent
+  );
+}
+
+.case-study-sheet[data-theme-scroll="true"] .case-study-close-btn {
+  color: var(--case-ink-color, var(--color-accent));
+}
+
+.case-study-sheet[data-theme-scroll="true"] .case-study-close-btn:hover,
+.case-study-sheet[data-theme-scroll="true"] .case-study-close-btn:focus-visible {
+  background-color: color-mix(
+    in srgb,
+    var(--case-ink-color, var(--color-accent)) 14%,
+    transparent
+  );
+}

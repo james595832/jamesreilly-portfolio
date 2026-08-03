@@ -1,0 +1,106 @@
+---
+import type { CaseStudyMeta } from '../types/caseStudy';
+import { getCardTileColor, isLightCardColor } from '../lib/cardColor';
+
+interface Props {
+  items: CaseStudyMeta[];
+}
+
+const { items } = Astro.props;
+---
+
+<div data-case-feed class="playground-feed flex flex-col gap-10 md:gap-14">
+  {
+    items.map((item) => {
+      const tileColor = getCardTileColor(item);
+      const hasImage = Boolean(item.cardImage || item.heroImage);
+      const imageSrc = item.cardImage || item.heroImage;
+      const light = isLightCardColor(tileColor);
+
+      return (
+        <article class="playground-tile">
+          <a
+            href={`/playground/${item.slug}`}
+            data-case-slug={item.slug}
+            class="case-card-trigger playground-tile__link group block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+            aria-label={`Open: ${item.client}`}
+          >
+            <div
+              class:list={[
+                'playground-tile__surface relative overflow-hidden',
+                light ? 'playground-tile__surface--light' : 'playground-tile__surface--dark',
+              ]}
+              style={{ backgroundColor: tileColor }}
+            >
+              {
+                hasImage && imageSrc ? (
+                  <img
+                    src={imageSrc}
+                    alt=""
+                    class="playground-tile__img absolute inset-0 h-full w-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                ) : null
+              }
+              <div class="playground-tile__scrim absolute inset-0" aria-hidden="true" />
+              <div class="playground-tile__body relative z-10 flex h-full min-h-[min(64vh,520px)] flex-col justify-end p-6 md:p-8 lg:p-10">
+                <p class="font-display text-xs font-medium uppercase tracking-[0.16em] opacity-70">
+                  {item.year}
+                  {item.tags?.[0] ? ` · ${item.tags[0]}` : ''}
+                </p>
+                <h2 class="font-display mt-3 text-[clamp(2rem,5vw,3.5rem)] font-bold uppercase leading-[0.92] tracking-[0.02em]">
+                  {item.client}
+                </h2>
+                <p
+                  class="mt-4 max-w-md text-base leading-relaxed opacity-85 md:text-lg"
+                  style="font-family: var(--font-serif)"
+                >
+                  {item.summary}
+                </p>
+              </div>
+            </div>
+          </a>
+        </article>
+      );
+    })
+  }
+</div>
+
+<style>
+  .playground-tile__surface {
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .playground-tile__surface--dark {
+    color: #fff;
+  }
+
+  .playground-tile__surface--light {
+    color: #0a0a0a;
+  }
+
+  .playground-tile__scrim {
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.72) 0%,
+      rgba(0, 0, 0, 0.28) 42%,
+      rgba(0, 0, 0, 0.08) 100%
+    );
+    pointer-events: none;
+  }
+
+  .playground-tile__surface--light .playground-tile__scrim {
+    background: linear-gradient(
+      to top,
+      rgba(255, 255, 255, 0.82) 0%,
+      rgba(255, 255, 255, 0.35) 45%,
+      rgba(255, 255, 255, 0.05) 100%
+    );
+  }
+
+  .playground-tile__img {
+    mix-blend-mode: luminosity;
+    opacity: 0.88;
+  }
+</style>

@@ -1,0 +1,118 @@
+---
+interface ThoughtLink {
+  label: string;
+  href: string;
+}
+
+interface Props {
+  thoughts?: ThoughtLink[];
+}
+
+const { thoughts = [] } = Astro.props;
+
+const caseStudyLinks = [
+  { label: 'J.P. Morgan', slug: 'jp-morgan' },
+  { label: 'Natwest Bank', slug: 'natwest-bank' },
+  { label: 'Virgin Money', slug: 'virgin-money' },
+  { label: 'Payroc Payments', slug: 'payroc-payments' },
+  { label: 'Expedia', slug: 'expedia' },
+  { label: 'OHNI', slug: 'ohni' },
+];
+---
+
+<footer
+  id="contact"
+  class="w-full bg-surface"
+  aria-labelledby="contact-heading"
+>
+  <div class="mx-auto w-full max-w-[1920px] px-6 py-16 md:px-10 lg:px-16">
+  <div class="grid w-full grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-10">
+    <div>
+      <h2 id="contact-heading" class="font-display mb-6 text-lg font-bold tracking-tight">
+        Contact
+      </h2>
+      <ul class="space-y-3 text-sm text-text/80">
+        <li>
+          <a href="tel:+447552062953" class="transition-colors hover:text-accent">
+            +44 07552062953
+          </a>
+        </li>
+        <li>
+          <a
+            href="mailto:hireme@jamesreilly.design"
+            class="text-accent transition-opacity hover:opacity-70"
+          >
+            hireme@jamesreilly.design
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="font-display mb-6 text-lg font-bold tracking-tight">Case Studies</h2>
+      <ul class="space-y-3 text-sm text-text/80">
+        {
+          caseStudyLinks.map(({ label, slug }) => (
+            <li>
+              <a href={`/work/${slug}`} class="transition-colors hover:text-accent">
+                {label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="font-display mb-6 text-lg font-bold tracking-tight">Social</h2>
+      <ul class="space-y-3 text-sm text-text/80">
+        <li>
+          <a
+            href="https://www.linkedin.com/in/jamesreillywork/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="transition-colors hover:text-accent"
+          >
+            LinkedIn
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://www.instagram.com/the_james81/?hl=en"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="transition-colors hover:text-accent"
+          >
+            Instagram
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="font-display mb-6 text-lg font-bold tracking-tight">More from the playground</h2>
+      {
+        thoughts.length > 0 ? (
+          <ul class="space-y-3 text-sm text-text/80">
+            {thoughts.map(({ label, href }) => (
+              <li>
+                <a href={href} class="transition-colors hover:text-accent">
+                  {label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p class="text-sm text-muted">
+            <a href="/about" class="transition-colors hover:text-accent">Browse the playground</a>
+          </p>
+        )
+      }
+    </div>
+  </div>
+
+  <p class="mt-16 text-right text-xs text-muted">
+    &copy; {new Date().getFullYear()} James Reilly. All rights reserved.
+  </p>
+  </div>
+</footer>

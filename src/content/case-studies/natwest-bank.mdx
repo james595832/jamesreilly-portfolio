@@ -1,0 +1,144 @@
+---
+title: "Redesigning Online Banking"
+client: "NatWest"
+role: "Product Design Consultant"
+year: "2023"
+summary: "A card-based online banking experience shaped by discovery, in-branch research, and what customers actually want when they open the app"
+color: "#481560"
+themeBackground: "#481560"
+cardImage: "/images/case-studies/natwest/overview.png"
+tags: ["Banking", "Consulting", "Design System"]
+order: 2
+---
+
+import TextBlock from '../../components/blocks/TextBlock.astro';
+import ImageBlock from '../../components/blocks/ImageBlock.astro';
+import GalleryBlock from '../../components/blocks/GalleryBlock.astro';
+
+<TextBlock>
+  I came back to NatWest as a freelancer on the strength of a previous engagement. The brief was to build a new online banking experience. What that actually meant took a trip to London and a series of discovery sessions to figure out properly.
+
+  We sat with people across the business and asked the obvious question first. What does a customer actually want when they open their banking app? They want to know where they stand. How much have I got, what went out recently and can I pay someone quickly. Everything else is noise. That insight shaped everything.
+</TextBlock>
+
+<ImageBlock
+  src="/images/case-studies/natwest/existing-dashboard.png"
+  alt="The legacy NatWest online banking account summary with sidebar navigation, promotional banners, and a dense account table"
+  caption="The existing experience I was brought in to upgrade. Promotions, cross-sells, and product links competed with the thing customers actually came for."
+  fullWidth
+  bleed
+/>
+
+<TextBlock title="Where we started">
+  The existing interface pushed promotions at customers the moment they opened the app. My Rewards banners, savings goal prompts, product upsells in the sidebar. Research confirmed what we suspected. Nobody decides on a whim to take out a loan because a banner caught their eye. It frustrated people and buried the thing they came for.
+
+  We stripped it back. One card per account. Current, savings, credit card, ISA, whatever you have sits there clearly with its balance and the last few transactions visible without a single extra tap. Cards made sense over a flat list because of orientation. You might have three or four accounts at NatWest. A list gives you everything jumbled together. Cards give you a clear picture of each one at a glance.
+</TextBlock>
+
+<ImageBlock
+  src="/images/case-studies/natwest/overview.png"
+  alt="NatWest online banking overview showing the redesigned card-based account layout on desktop"
+  caption="The redesigned overview. A cleaner structure built around what customers actually need when they log in."
+  fullWidth
+  bleed
+  transparent
+  themeTrigger
+/>
+
+<TextBlock title="Using downtime well">
+  The project had turbulence. Leadership changed more than once and the technology shifted with it. Working as a consultant meant I could step back from the politics and keep building. During quieter periods we used the time well.
+
+  Alongside customer facing features I was building and maintaining the design system. Sense checking patterns. Is our colour consistent? Does filtering a transaction list use the same logic as filtering anything else? Are spacing and components speaking the same language? We spent more time with customers in stores, tightened the product, and drove consistency before the next push.
+</TextBlock>
+
+<GalleryBlock
+  bleed
+  images={[
+    {
+      src: '/images/case-studies/natwest/design-audit-1.jpg',
+      alt: 'Design audit documenting inconsistent UI patterns across the NatWest online banking interface',
+      caption: 'Auditing inconsistencies across the existing interface.',
+    },
+    {
+      src: '/images/case-studies/natwest/design-audit-2.jpg',
+      alt: 'Design audit showing component and spacing standardisation work across NatWest banking screens',
+      caption: 'Standardising components, spacing, and interaction patterns.',
+    },
+  ]}
+/>
+
+<TextBlock title="The dashboard">
+  The dashboard puts accounts front and centre. Each card shows its balance and recent activity at a glance. Your rewards account sits alongside your current and savings accounts without getting in the way. Quick payments are always one tap away, not buried three screens deep.
+
+  At the time this was new territory for banking apps. A lot of what you see in the market now borrows from this approach.
+</TextBlock>
+
+<ImageBlock
+  src="/images/case-studies/natwest/dashboard.jpg"
+  alt="NatWest dashboard showing account cards with balances, a rewards account, recent transactions, and a quick payment panel"
+  caption="Accounts displayed cleanly, with rewards visible and quick payments always within reach."
+  fullWidth
+  bleed
+/>
+
+<TextBlock title="Transactions">
+  People scan their statement looking for one of two things. Something specific they remember or something they don't recognise. The design had to support both without getting in the way.
+
+  Selecting an account opens a transaction view with the high level detail upfront. A full list of transactions loads on scroll to keep the page fast. You can make a payment directly from here without navigating away.
+
+  We ran prototypes out to real customers on iPads in branches. Researchers on the team would sit with people and watch how they used it. We could make changes, retest and validate quickly. It also gave us something concrete when pushing back on product managers. We had been to customers. We had evidence.
+</TextBlock>
+
+<ImageBlock
+  src="/images/case-studies/natwest/transactions-closed.jpg"
+  alt="NatWest transaction view showing account summary, balance, and a scrollable list of recent transactions"
+  caption="Selecting an account reveals high level detail, a full transaction list that loads on scroll, and the ability to make a payment."
+  fullWidth
+  bleed
+/>
+
+<ImageBlock
+  src="/images/case-studies/natwest/transactions-filters-open.jpg"
+  alt="NatWest transaction view with the filter panel open showing date, amount, and category filtering options"
+  caption="Transaction filters I worked on, making it easy for users to find what they are looking for."
+  fullWidth
+  bleed
+/>
+
+<TextBlock title="Payments and payees">
+  Making a payment is one of the most common things people do yet it was more complicated than it needed to be. We gave it its own card on the dashboard so it was always one tap away.
+
+  Direct debits and standing orders needed the same clarity. Payees, standing orders, and direct debits are easy to scan at a glance. Expand any row and you get more detail on the transaction, including where it was made.
+
+  Behind the simple experience of adding a payee sat real work done with the fraud and compliance teams. When you add someone new the system checks that the account details match the name you have been given. For large payments I worked with the fraud team on a small but meaningful idea. Before sending a significant sum you get the option to send £1 first to confirm the account is correct before the rest follows.
+</TextBlock>
+
+<ImageBlock
+  src="/images/case-studies/natwest/direct-debits-standing-orders.jpg"
+  alt="NatWest direct debits and standing orders view showing payees with expandable rows for transaction detail"
+  caption="Payees, standing orders, and direct debits at a glance. Expand any row for more detail on where a payment was made."
+  fullWidth
+  bleed
+/>
+
+<TextBlock title="Scaling to other platforms">
+  The design system and patterns we established scaled beyond desktop. On Apple Watch, customers could get a code to withdraw cash even if they forgot their card, check their balance, and browse recent transactions. Same thinking, adapted to a completely different context.
+
+  Getting anything shipped on a project like this is an achievement. A lot did ship and the thinking behind it has had a longer life than the features themselves.
+</TextBlock>
+
+<GalleryBlock
+  bleed
+  images={[
+    {
+      src: '/images/case-studies/natwest/comp-1.png',
+      alt: 'NatWest Apple Watch app showing balance and recent transactions on a wrist',
+      caption: 'Balance and transactions on Apple Watch.',
+    },
+    {
+      src: '/images/case-studies/natwest/comp-2.png',
+      alt: 'NatWest Apple Watch app showing a get cash code feature for cardless ATM withdrawal',
+      caption: 'Get cash without your card, even from your wrist.',
+    },
+  ]}
+/>

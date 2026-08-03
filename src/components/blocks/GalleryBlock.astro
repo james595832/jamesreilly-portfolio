@@ -1,0 +1,19 @@
+---
+interface Props {
+  images: { src: string; alt: string; caption?: string }[];
+  bleed?: boolean;
+}
+
+const { images, bleed = false } = Astro.props;
+---
+
+<div class="mx-auto grid max-w-5xl grid-cols-1 gap-6 px-6 py-8 md:grid-cols-2 md:px-0">
+  {
+    images.map((image) => (
+      <figure class:list={['overflow-hidden', bleed ? '' : 'rounded-sm bg-surface']}>
+        <img src={image.src} alt={image.alt} class="h-auto w-full object-cover" loading="lazy" />
+        {image.caption && <figcaption class="p-4 text-sm text-muted">{image.caption}</figcaption>}
+      </figure>
+    ))
+  }
+</div>

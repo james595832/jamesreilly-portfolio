@@ -1,0 +1,33 @@
+---
+import { getCollection, render } from 'astro:content';
+import { caseStudyComponents } from './blocks/index.ts';
+
+interface Props {
+  collection?: 'case-studies' | 'playground';
+}
+
+const { collection = 'case-studies' } = Astro.props;
+
+const entries = await getCollection(collection);
+const rendered = await Promise.all(
+  entries.map(async (entry) => {
+    const { Content } = await render(entry);
+    return { slug: entry.id.replace(/\.mdx$/, ''), Content, data: entry.data };
+  }),
+);
+---
+
+<div id="case-study-panels" class="hidden" aria-hidden="true">
+  {
+    rendered.map(({ slug, Content, data }) => (
+      <article
+        id={`case-study-panel-${slug}`}
+        data-slug={slug}
+        class="case-study-panel"
+        aria-label={`${collection === 'playground' ? 'Playground' : 'Case study'}: ${data.title}`}
+      >
+        <Content components={caseStudyComponents} />
+      </article>
+    ))
+  }
+</div>

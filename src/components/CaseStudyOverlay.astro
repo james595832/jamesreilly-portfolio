@@ -1,0 +1,163 @@
+---
+import CaseStudyCarousel from './CaseStudyCarousel.astro';
+import CaseStudyLandingHeader from './CaseStudyLandingHeader.astro';
+import BlogAuthorBand from './BlogAuthorBand.astro';
+import type { CaseStudyMeta } from '../types/caseStudy';
+
+interface Props {
+  caseStudies: CaseStudyMeta[];
+  initialSlug?: string;
+  /** History path prefix when opening an entry, e.g. `/work` or `/playground`. */
+  pathPrefix?: string;
+  /** Path to restore on close when the overlay owns the URL. */
+  closePath?: string;
+  moreLabel?: string;
+}
+
+const {
+  caseStudies,
+  initialSlug,
+  pathPrefix = '/work',
+  closePath = '/',
+  moreLabel = 'More case studies',
+} = Astro.props;
+
+const showAuthorBand = pathPrefix === '/playground';
+
+const SHEET_TOP_GAP = 48;
+const SHEET_RADIUS = 24;
+const SHEET_INSET = 20;
+const BACKDROP_OPACITY_SHEET = 0.72;
+---
+
+<div
+  id="case-study-overlay"
+  class="fixed inset-0 z-[60]"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Case study"
+  hidden={!initialSlug}
+  data-case-studies={JSON.stringify(caseStudies)}
+  data-initial-slug={initialSlug ?? ''}
+  data-path-prefix={pathPrefix}
+  data-close-path={closePath}
+  data-show-author-band={showAuthorBand ? 'true' : 'false'}
+>
+  <button
+    type="button"
+    data-overlay-backdrop
+    class="absolute inset-0 bg-bg will-change-[opacity]"
+    style={`opacity: ${BACKDROP_OPACITY_SHEET}`}
+    aria-label="Close case study"
+  ></button>
+
+  <div
+    data-overlay-sheet
+    class="case-study-sheet fixed z-[72] flex flex-col overflow-hidden border border-text/8 bg-surface shadow-[0_-12px_60px_rgba(0,0,0,0.6)] will-change-[transform]"
+    style={{
+      top: `${SHEET_TOP_GAP}px`,
+      left: `${SHEET_INSET}px`,
+      right: `${SHEET_INSET}px`,
+      height: `calc(100dvh - ${SHEET_TOP_GAP}px)`,
+      borderTopLeftRadius: `${SHEET_RADIUS}px`,
+      borderTopRightRadius: `${SHEET_RADIUS}px`,
+    }}
+  >
+    <div data-overlay-motion class="flex min-h-0 flex-1 flex-col will-change-[transform,opacity]">
+      <div class="flex shrink-0 items-center px-5 pt-5 pb-2 md:px-8 md:pt-6">
+        <button
+          type="button"
+          data-overlay-close
+          class="case-study-close-btn flex h-10 w-10 items-center justify-center rounded-full transition-colors"
+          aria-label="Close case study"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M18 6L6 18M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div
+        data-overlay-scroll
+        class="case-study-scroll-panel relative min-h-0 flex-1 overflow-y-auto overscroll-contain"
+      >
+        <div data-overlay-header-slot></div>
+
+        <div
+          data-overlay-content
+          class="case-study-body mx-auto w-full max-w-[1400px] px-6 pb-10 md:px-10 lg:px-16 [&_.case-study-panel]:max-w-none [&_.case-study-panel>header]:hidden [&_.case-study-panel_section]:mx-auto [&_.case-study-panel_.workflow-diagram]:max-w-5xl"
+        ></div>
+
+        <div
+          data-overlay-author
+          class="w-full"
+          hidden={!showAuthorBand}
+          aria-hidden={showAuthorBand ? 'false' : 'true'}
+        >
+          <BlogAuthorBand />
+        </div>
+
+        {
+          !showAuthorBand && (
+            <footer class="case-study-footer overflow-visible border-t border-text/10 px-0 py-8 md:py-10">
+              <div class="mx-auto w-full max-w-[1920px] px-6 md:px-10 lg:px-16">
+                <p class="case-study-footer-label mb-5 font-display text-xs font-medium uppercase tracking-[0.14em]">
+                  {moreLabel}
+                </p>
+              </div>
+              <div data-overlay-carousel>
+                <CaseStudyCarousel
+                  caseStudies={caseStudies}
+                  inScroll
+                  deferInit
+                  hrefPrefix={pathPrefix}
+                />
+              </div>
+            </footer>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<div hidden aria-hidden="true">
+  {
+    caseStudies.map((study) => (
+      <div data-header-for={study.slug}>
+        <CaseStudyLandingHeader study={study} />
+      </div>
+    ))
+  }
+</div>
+
+<script>
+  import { initCaseStudyOverlay } from '../scripts/case-study-overlay.ts';
+
+  function readOverlayConfig() {
+    const overlay = document.getElementById('case-study-overlay');
+    if (!overlay) return null;
+
+    let caseStudies = [];
+    try {
+      caseStudies = JSON.parse(overlay.dataset.caseStudies ?? '[]');
+    } catch {
+      caseStudies = [];
+    }
+
+    const initialSlug = overlay.dataset.initialSlug || undefined;
+    const pathPrefix = overlay.dataset.pathPrefix || '/work';
+    const closePath = overlay.dataset.closePath || '/';
+    const showAuthorBand = overlay.dataset.showAuthorBand === 'true';
+    return { caseStudies, initialSlug, pathPrefix, closePath, showAuthorBand };
+  }
+
+  function boot() {
+    const config = readOverlayConfig();
+    if (!config) return;
+    initCaseStudyOverlay(config);
+  }
+
+  boot();
+  document.addEventListener('astro:page-load', boot);
+</script>

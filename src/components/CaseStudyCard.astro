@@ -1,0 +1,64 @@
+---
+import type { CaseStudyMeta } from '../types/caseStudy';
+import { getCardTileColor, isLightCardColor } from '../lib/cardColor';
+
+interface Props {
+  study: CaseStudyMeta;
+  hrefPrefix?: string;
+}
+
+const { study, hrefPrefix = '/work' } = Astro.props;
+const tileColor = getCardTileColor(study);
+const hasCoverImage = Boolean(study.heroImage);
+const hasStackedImage = Boolean(study.cardImage);
+const isPhoneCrop = hasStackedImage && study.cardImageCrop;
+const isLightStacked = hasStackedImage && isLightCardColor(tileColor);
+const useBrandColor =
+  !hasCoverImage && !hasStackedImage && tileColor.toLowerCase() !== '#00d4ff';
+const stackedStyle = hasStackedImage ? { backgroundColor: tileColor } : undefined;
+const brandStyle = useBrandColor ? { backgroundColor: tileColor } : undefined;
+const coverStyle = hasCoverImage ? { backgroundImage: `url(${study.heroImage})` } : undefined;
+const surfaceStyle = stackedStyle ?? brandStyle ?? coverStyle;
+---
+
+<article class="case-card">
+  <a
+    href={`${hrefPrefix}/${study.slug}`}
+    data-case-slug={study.slug}
+    class="case-card-trigger"
+    aria-label={`View case study: ${study.client}`}
+  >
+    <div
+      class:list={[
+        'case-card-surface',
+        hasCoverImage && 'case-card-surface--image',
+        hasStackedImage && 'case-card-surface--stacked',
+        isPhoneCrop && 'case-card-surface--phone-crop',
+        isLightStacked && 'case-card-surface--stacked-light',
+        useBrandColor && 'case-card-surface--brand',
+      ]}
+      style={surfaceStyle}
+    >
+      <div class="case-card-body">
+        <h3 class="case-card-title">{study.client}</h3>
+        <p class="case-card-summary">{study.summary}</p>
+        <p class="case-card-meta">{study.year}</p>
+      </div>
+
+      {
+        hasStackedImage && (
+          <div class:list={['case-card-media', isPhoneCrop && 'case-card-media--crop', study.cardImageMaxWidth && 'case-card-media--compact']}>
+            <img
+              src={study.cardImage}
+              alt=""
+              class="case-card-media__img"
+              style={study.cardImageMaxWidth ? `width:auto;max-width:${study.cardImageMaxWidth}px` : undefined}
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+        )
+      }
+    </div>
+  </a>
+</article>

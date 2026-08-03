@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import WorkSection from '../components/WorkSection.astro';
+import About from '../components/About.astro';
+import Footer from '../components/Footer.astro';
+import CaseStudyPanels from '../components/CaseStudyPanels.astro';
+import CaseStudyOverlay from '../components/CaseStudyOverlay.astro';
+import { getCaseStudyMeta } from '../lib/caseStudies';
+import { getPlaygroundMeta } from '../lib/playground';
+
+const caseStudies = await getCaseStudyMeta();
+const thoughts = (await getPlaygroundMeta()).map((item) => ({
+  label: item.client,
+  href: `/playground/${item.slug}`,
+}));
+---
+
+<BaseLayout>
+  <Nav />
+  <main id="main">
+    <Hero />
+    <WorkSection caseStudies={caseStudies} />
+    <About />
+    <Footer thoughts={thoughts} />
+  </main>
+  <CaseStudyPanels />
+  <CaseStudyOverlay caseStudies={caseStudies} />
+</BaseLayout>

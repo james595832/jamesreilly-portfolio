@@ -1,0 +1,80 @@
+---
+import CaseStudyCard from './CaseStudyCard.astro';
+import type { CaseStudyMeta } from '../types/caseStudy';
+
+interface Props {
+  caseStudies: CaseStudyMeta[];
+  inScroll?: boolean;
+  deferInit?: boolean;
+  hrefPrefix?: string;
+}
+
+const { caseStudies, inScroll = false, deferInit = false, hrefPrefix = '/work' } = Astro.props;
+const sorted = [...caseStudies].sort((a, b) => a.order - b.order);
+---
+
+<div class:list={['case-study-carousel-bleed', inScroll && 'case-study-carousel-bleed--in-scroll']}>
+  <div
+    class="case-study-carousel cards-scroller"
+    data-embla-root
+    data-embla-in-scroll={inScroll ? '' : undefined}
+    role="region"
+    aria-roledescription="carousel"
+    aria-label="Case study carousel"
+  >
+    <div class="cards-scroller-viewport" data-embla-viewport tabindex="0">
+      <ul class="cards-scroller-platter" role="list">
+        {
+          sorted.map((study) => (
+            <li class="cards-scroller-item" role="listitem" data-carousel-slug={study.slug}>
+              <CaseStudyCard study={study} hrefPrefix={hrefPrefix} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <button
+      type="button"
+      class="cards-scroller-nav cards-scroller-nav--prev"
+      data-embla-prev
+      aria-label="Scroll case studies back"
+    >
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M15 6l-6 6 6 6"></path>
+      </svg>
+    </button>
+
+    <button
+      type="button"
+      class="cards-scroller-nav cards-scroller-nav--next"
+      data-embla-next
+      aria-label="Scroll case studies forward"
+    >
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M9 6l6 6-6 6"></path>
+      </svg>
+    </button>
+  </div>
+</div>
+
+{!deferInit && (
+  <script>
+    import { initEmblaCarousels, reinitEmblaCarousels } from '../scripts/embla-init';
+
+    function boot() {
+      initEmblaCarousels();
+    }
+
+    function refresh() {
+      reinitEmblaCarousels();
+    }
+
+    boot();
+    requestAnimationFrame(refresh);
+    document.addEventListener('astro:page-load', () => {
+      boot();
+      requestAnimationFrame(refresh);
+    });
+  </script>
+)}

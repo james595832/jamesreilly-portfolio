@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CaseStudyPanels from '../../components/CaseStudyPanels.astro';
+import CaseStudyOverlay from '../../components/CaseStudyOverlay.astro';
+import { getPlaygroundMeta, getPlaygroundBySlug } from '../../lib/playground';
+
+export async function getStaticPaths() {
+  const items = await getPlaygroundMeta();
+  return items.map((item) => ({
+    params: { slug: item.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const entry = slug ? await getPlaygroundBySlug(slug) : undefined;
+
+if (!entry) {
+  return Astro.redirect('/about');
+}
+
+const items = await getPlaygroundMeta();
+---
+
+<BaseLayout title={`${entry.data.title}, James Reilly`} description={entry.data.summary}>
+  <CaseStudyPanels collection="playground" />
+  <CaseStudyOverlay
+    caseStudies={items}
+    initialSlug={slug}
+    pathPrefix="/playground"
+    closePath="/about"
+  />
+</BaseLayout>

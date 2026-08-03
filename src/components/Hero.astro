@@ -1,0 +1,437 @@
+<section
+  id="hero"
+  class="relative mx-auto flex min-h-dvh w-full max-w-[1920px] flex-col items-center justify-center overflow-hidden px-6"
+  aria-label="Welcome"
+>
+  <div class="hero-stage relative flex w-full max-w-[1400px] flex-col items-center justify-center">
+    <div class="hero-title-wrap relative mx-auto w-fit max-w-full">
+      <p class="hero-accent hero-accent--top font-serif text-accent">I'm James</p>
+
+      <h1
+        class="hero-title font-display text-[clamp(3.5rem,14vw,11rem)] font-bold uppercase leading-[0.85] tracking-[0.02em] text-text"
+        aria-label="Welcome"
+      >
+        <span class="hero-letters" aria-hidden="true">
+          <span class="hero-letter">W</span>
+          <span class="hero-letter" data-hero-e-top>E</span>
+          <span class="hero-letter">L</span>
+          <span class="hero-letter">C</span>
+          <span class="hero-letter">O</span>
+          <span class="hero-letter" data-hero-m>M</span>
+          <span class="hero-letter hero-letter--last" data-hero-e-bottom>E</span>
+        </span>
+      </h1>
+
+      <p class="hero-accent hero-accent--bottom font-serif text-accent">AI Product Designe<span data-hero-role-end>r</span></p>
+    </div>
+  </div>
+
+  <div class="hero-scroll absolute inset-x-0 bottom-8 mx-auto flex w-fit flex-col items-center gap-2 md:bottom-10">
+      <span class="text-sm tracking-wide text-muted">Scroll down</span>
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        class="motion-safe-bounce text-muted"
+        aria-hidden="true"
+      >
+        <path d="M7 10l5 5 5-5"></path>
+        <path d="M7 14l5 5 5-5"></path>
+      </svg>
+  </div>
+</section>
+
+<script>
+  import gsap from 'gsap';
+
+  const ACCENT_FONT = '"IBM Plex Serif", ui-serif, Georgia, serif';
+
+  function getInkRect(el: HTMLElement): DOMRect {
+    const text = el.firstChild;
+    if (text?.nodeType === Node.TEXT_NODE && text.textContent) {
+      const range = document.createRange();
+      range.setStart(text, 0);
+      range.setEnd(text, text.textContent.length);
+      return range.getBoundingClientRect();
+    }
+    return el.getBoundingClientRect();
+  }
+
+  function getCanvasFont(el: HTMLElement): string {
+    const style = getComputedStyle(el);
+    return `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+  }
+
+  /**
+   * Distance from glyph origin → rightmost ink, via canvas raster.
+   * `alphaFloor` tunes which AA fringe counts as the edge: use a high floor for
+   * heavy display stems (E) and a low floor for hairline serif terminals (r).
+   */
+  function measureInkRightFromOrigin(
+    char: string,
+    font: string,
+    alphaFloor = 96,
+  ): number | null {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    if (!ctx || typeof TextMetrics === 'undefined') return null;
+
+    ctx.font = font;
+    const metrics = ctx.measureText(char);
+    const left = metrics.actualBoundingBoxLeft || 0;
+    const right = metrics.actualBoundingBoxRight || metrics.width;
+    const ascent = metrics.actualBoundingBoxAscent || parseFloat(font) || 16;
+    const descent = metrics.actualBoundingBoxDescent || ascent * 0.3;
+    const pad = 8;
+    const w = Math.ceil(Math.abs(left) + Math.abs(right) + pad * 2) || 32;
+    const h = Math.ceil(ascent + descent + pad * 2) || 32;
+
+    canvas.width = w;
+    canvas.height = h;
+    ctx.font = font;
+    ctx.fillStyle = '#fff';
+    ctx.textBaseline = 'alphabetic';
+    const originX = pad + Math.max(left, 0);
+    const baseline = pad + ascent;
+    ctx.fillText(char, originX, baseline);
+
+    const { data } = ctx.getImageData(0, 0, w, h);
+    let maxX = -1;
+    for (let i = 3; i < data.length; i += 4) {
+      if (data[i]! < alphaFloor) continue;
+      const x = ((i - 3) / 4) % w;
+      if (x > maxX) maxX = x;
+    }
+
+    if (maxX < 0) {
+      return typeof metrics.actualBoundingBoxRight === 'number'
+        ? metrics.actualBoundingBoxRight
+        : metrics.width;
+    }
+
+    return maxX + 1 - originX;
+  }
+
+  /**
+   * Optical right edge of a single-glyph element (final E, or trailing "r" span).
+   * Layout boxes include advance sidebearing; we measure ink from the glyph origin.
+   * Bold stems use a stricter alpha floor than serif terminals so the perceived
+   * vertical of the E matches the ear of the "r".
+   */
+  function getLetterOpticalRight(el: HTMLElement, kind: 'stem' | 'terminal' = 'stem'): number {
+    const char = (el.textContent || '').trim().slice(-1);
+    if (!char) return el.getBoundingClientRect().right;
+
+    const box = el.getBoundingClientRect();
+    const alphaFloor = kind === 'stem' ? 180 : 32;
+    const inkRight = measureInkRightFromOrigin(char, getCanvasFont(el), alphaFloor);
+    if (inkRight != null) return box.left + inkRight;
+
+    return getInkRect(el).right;
+  }
+
+  /**
+   * Vertical air between WELCOME and the accent lines.
+   * Sized off the display face (not the caption) so the lockup stays
+   * compressed like a Pentagram / editorial slab — accents nest in, not float.
+   */
+  function accentGap(displayLetter: HTMLElement): number {
+    const displaySize = parseFloat(getComputedStyle(displayLetter).fontSize);
+    return Math.max(2, displaySize * 0.018);
+  }
+
+  function accentSlideFromTop(el: HTMLElement): number {
+    return -(parseFloat(getComputedStyle(el).fontSize) * 1.35);
+  }
+
+  /**
+   * Distance to place the role fully off the right edge of the viewport,
+   * measured from its final resting position (x: 0).
+   */
+  function roleSlideFromRight(role: HTMLElement): number {
+    const roleRect = role.getBoundingClientRect();
+    return Math.max(window.innerWidth - roleRect.left + 48, role.offsetWidth + 48);
+  }
+
+  let heroTimeline: gsap.core.Timeline | null = null;
+  let heroIntroComplete = false;
+
+  function positionHeroTypography() {
+    const wrap = document.querySelector<HTMLElement>('.hero-title-wrap');
+    const wLetter = document.querySelector<HTMLElement>('.hero-letter:first-child');
+    const eTop = document.querySelector<HTMLElement>('[data-hero-e-top]');
+    const eBottom = document.querySelector<HTMLElement>('[data-hero-e-bottom]');
+    const top = document.querySelector<HTMLElement>('.hero-accent--top');
+    const bottom = document.querySelector<HTMLElement>('.hero-accent--bottom');
+
+    if (!wrap || !top || !bottom || !wLetter || !eTop || !eBottom) return;
+
+    const wrapRect = wrap.getBoundingClientRect();
+    const wInk = getInkRect(wLetter);
+    const eTopInk = getInkRect(eTop);
+    const eBottomInk = getInkRect(eBottom);
+
+    // "I'm James" — sits above W→first E, left-aligned to W.
+    const topWidth = eTopInk.right - wInk.left;
+    const topLeft = wInk.left - wrapRect.left;
+    const topGap = accentGap(eTop);
+
+    top.style.left = `${topLeft}px`;
+    top.style.width = `${topWidth}px`;
+    // Rough place, then snap so accent *ink* (not the em box) sits tight to WELCOME.
+    top.style.top = `${eTopInk.top - wrapRect.top - top.offsetHeight - topGap}px`;
+    {
+      const topInk = getInkRect(top);
+      const inkAdjust = eTopInk.top - topGap - topInk.bottom;
+      top.style.top = `${parseFloat(top.style.top) + inkAdjust}px`;
+    }
+
+    // "AI Product Designer" — natural width; trailing "r" flush with optical right of final E.
+    const roleEnd = bottom.querySelector<HTMLElement>('[data-hero-role-end]');
+    const bottomGap = accentGap(eBottom);
+    const rowBottom = eBottomInk.bottom;
+    const eOpticalRight = getLetterOpticalRight(eBottom, 'stem');
+
+    bottom.style.width = 'max-content';
+    bottom.style.top = `${rowBottom - wrapRect.top + bottomGap}px`;
+    {
+      const bottomInk = getInkRect(bottom);
+      const inkAdjust = rowBottom + bottomGap - bottomInk.top;
+      bottom.style.top = `${parseFloat(bottom.style.top) + inkAdjust}px`;
+    }
+
+    // Pass 1: place by full text width so the right edge roughly meets the E.
+    const approxWidth = bottom.getBoundingClientRect().width;
+    bottom.style.left = `${eOpticalRight - wrapRect.left - approxWidth}px`;
+
+    // Pass 2: refine so the serif terminal of "r" meets the perceived stem of "E".
+    const rOpticalRight = roleEnd
+      ? getLetterOpticalRight(roleEnd, 'terminal')
+      : bottom.getBoundingClientRect().right;
+    const deltaX = eOpticalRight - rOpticalRight;
+    // Serif ears paint a soft AA fringe past the metric edge; bold stems read
+    // optically inset. Pull the role left by a font-relative amount so the
+    // flush edge holds across viewport sizes.
+    const aaInset = Math.max(1.5, parseFloat(getComputedStyle(bottom).fontSize) * 0.1);
+    const currentLeft = parseFloat(bottom.style.left) || 0;
+    bottom.style.left = `${currentLeft + deltaX - aaInset}px`;
+  }
+
+  function schedulePositionHeroTypography() {
+    if (!heroIntroComplete) return;
+    requestAnimationFrame(positionHeroTypography);
+  }
+
+  function prepareImJamesSlide() {
+    const imJames = document.querySelector<HTMLElement>('.hero-accent--top');
+    const role = document.querySelector<HTMLElement>('.hero-accent--bottom');
+    if (!imJames || !role) return;
+
+    positionHeroTypography();
+
+    gsap.set(imJames, {
+      opacity: 0,
+      x: 0,
+      y: accentSlideFromTop(imJames),
+      force3D: true,
+    });
+    gsap.set(role, {
+      opacity: 0,
+      visibility: 'hidden',
+      x: 0,
+      y: 0,
+      clearProps: 'transform',
+    });
+  }
+
+  function prepareRoleSlide() {
+    const role = document.querySelector<HTMLElement>('.hero-accent--bottom');
+    if (!role) return;
+
+    positionHeroTypography();
+    const startX = roleSlideFromRight(role);
+
+    gsap.set(role, {
+      visibility: 'visible',
+      opacity: 0,
+      x: startX,
+      y: 0,
+      force3D: true,
+      transformOrigin: '100% 50%',
+    });
+  }
+
+  async function ensureHeroFonts() {
+    if (!document.fonts) return;
+    const loads = Promise.all([
+      document.fonts.load(`400 1.125rem ${ACCENT_FONT}`),
+      document.fonts.load(`400 1.84375rem ${ACCENT_FONT}`),
+      document.fonts.load(`400 0.875rem ${ACCENT_FONT}`),
+      document.fonts.load(`400 1.40625rem ${ACCENT_FONT}`),
+      document.fonts.load('700 1rem "Neue Montreal", ui-sans-serif, sans-serif'),
+    ]);
+    await Promise.race([loads, new Promise<void>((r) => setTimeout(r, 1500))]);
+  }
+
+  function runHeroAnimation() {
+    const letters = document.querySelectorAll<HTMLElement>('.hero-letter');
+    const imJames = document.querySelector<HTMLElement>('.hero-accent--top');
+    const role = document.querySelector<HTMLElement>('.hero-accent--bottom');
+    const scroll = document.querySelector<HTMLElement>('.hero-scroll');
+
+    if (!letters.length || !imJames || !role || !scroll) return;
+
+    heroTimeline?.kill();
+    heroIntroComplete = false;
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (reducedMotion) {
+      gsap.set(letters, { y: 0, opacity: 1, clearProps: 'transform' });
+      positionHeroTypography();
+      gsap.set([imJames, role, scroll], { x: 0, y: 0, opacity: 1, clearProps: 'transform' });
+      heroIntroComplete = true;
+      return;
+    }
+
+    gsap.set(letters, { opacity: 0, y: -120, force3D: true });
+    gsap.set(scroll, { opacity: 0, y: 16 });
+    gsap.set([imJames, role], { opacity: 0, x: 0, y: 0 });
+
+    heroTimeline = gsap
+      .timeline({ defaults: { ease: 'power3.out' } })
+      .to(letters, {
+        y: 0,
+        opacity: 1,
+        duration: 0.7,
+        stagger: 0.08,
+        clearProps: 'transform',
+      })
+      .add(prepareImJamesSlide, '+=0.08')
+      .to(
+        imJames,
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.6,
+          ease: 'power3.out',
+          force3D: true,
+        },
+        '+=0',
+      )
+      .add(prepareRoleSlide, '+=0.18')
+      .to(
+        role,
+        {
+          x: 0,
+          opacity: 1,
+          duration: 0.85,
+          ease: 'power3.out',
+          force3D: true,
+        },
+        '+=0',
+      )
+      .to(scroll, { y: 0, opacity: 1, duration: 0.45, ease: 'power2.out' }, '-=0.2')
+      .call(() => {
+        heroIntroComplete = true;
+        gsap.set([imJames, role], { x: 0, y: 0, clearProps: 'transform' });
+        gsap.set(role, { visibility: 'visible' });
+        positionHeroTypography();
+      });
+  }
+
+  async function initHero() {
+    await ensureHeroFonts();
+    runHeroAnimation();
+  }
+
+  initHero();
+  document.addEventListener('astro:page-load', () => {
+    ensureHeroFonts().then(runHeroAnimation);
+  });
+  window.addEventListener('resize', schedulePositionHeroTypography, { passive: true });
+
+  const heroWrap = document.querySelector('.hero-title-wrap');
+  if (heroWrap && 'ResizeObserver' in window) {
+    new ResizeObserver(() => {
+      if (heroIntroComplete) positionHeroTypography();
+    }).observe(heroWrap);
+  }
+</script>
+
+<style>
+  .hero-title-wrap {
+    position: relative;
+    /*
+     * Accent sizes scale with viewport (rem + vw), capped at tuned desktop values:
+     * top 29.5px (1.84375rem), bottom 22.5px (1.40625rem)
+     */
+    --hero-accent-top-size: clamp(1.125rem, 0.42rem + 2.1vw, 1.84375rem);
+    --hero-accent-bottom-size: clamp(0.875rem, 0.32rem + 1.6vw, 1.40625rem);
+  }
+
+  .hero-letters {
+    display: inline-flex;
+    gap: 0.035em;
+  }
+
+  .hero-letter {
+    display: inline-block;
+    letter-spacing: 0.02em;
+    opacity: 0;
+  }
+
+  .hero-letter--last {
+    letter-spacing: 0;
+  }
+
+  .hero-accent {
+    position: absolute;
+    left: 0;
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-style: normal;
+    text-transform: none;
+    opacity: 0;
+    white-space: nowrap;
+    margin: 0;
+    padding: 0;
+    letter-spacing: 0;
+    line-height: 1;
+    font-kerning: normal;
+    font-feature-settings: "kern" 1;
+    font-variant-ligatures: none;
+    overflow: visible;
+    box-sizing: border-box;
+    will-change: transform, opacity;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .hero-accent--top {
+    font-size: var(--hero-accent-top-size);
+    text-align: left;
+  }
+
+  .hero-accent--bottom {
+    font-size: var(--hero-accent-bottom-size);
+    width: max-content;
+    text-align: left;
+  }
+
+  .hero-scroll {
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-letter,
+    .hero-accent,
+    .hero-scroll {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+</style>

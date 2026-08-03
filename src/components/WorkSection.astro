@@ -1,0 +1,23 @@
+---
+import CaseStudyCarousel from './CaseStudyCarousel.astro';
+import type { CaseStudyMeta } from '../types/caseStudy';
+
+interface Props {
+  caseStudies: CaseStudyMeta[];
+}
+
+const { caseStudies } = Astro.props;
+---
+
+<section id="work" class="mx-auto w-full max-w-[1920px] px-6 py-24 md:px-10 lg:px-16" aria-labelledby="work-heading">
+  <div class="w-full">
+    <h2
+      id="work-heading"
+      class="font-display mb-12 text-3xl font-bold tracking-tight md:text-4xl"
+    >
+      Case studies
+    </h2>
+  </div>
+
+  <CaseStudyCarousel caseStudies={caseStudies} />
+</section>

@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CaseStudyPanels from '../../components/CaseStudyPanels.astro';
+import CaseStudyOverlay from '../../components/CaseStudyOverlay.astro';
+import { getCaseStudyMeta, getCaseStudyBySlug } from '../../lib/caseStudies';
+
+export async function getStaticPaths() {
+  const caseStudies = await getCaseStudyMeta();
+  return caseStudies.map((study) => ({
+    params: { slug: study.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const study = slug ? await getCaseStudyBySlug(slug) : undefined;
+
+if (!study) {
+  return Astro.redirect('/');
+}
+
+const caseStudies = await getCaseStudyMeta();
+---
+
+<BaseLayout title={`${study.data.title}, James Reilly`} description={study.data.summary}>
+  <CaseStudyPanels />
+  <CaseStudyOverlay caseStudies={caseStudies} initialSlug={slug} />
+</BaseLayout>

@@ -1,0 +1,244 @@
+---
+const stages = [
+  {
+    id: 'brief',
+    label: 'Brief & requirements',
+    role: 'human',
+    model: null,
+    summary: 'Human gate. Value, scope, and users locked before any generation starts.',
+    detail:
+      'I start with the problem, not the prompt. Requirements, constraints, and success criteria are written down first so the model cannot invent scope. This is the primary human gate.',
+  },
+  {
+    id: 'patterns',
+    label: 'Pattern match',
+    role: 'human',
+    model: null,
+    summary: 'Human judgment. Map the ask to existing design system patterns before AI touches code.',
+    detail:
+      'I decide which EXDS components and flows already solve the problem. AI is not allowed to invent layout systems or rebuild what already exists in the library.',
+  },
+  {
+    id: 'ideate',
+    label: 'Ideation',
+    role: 'ai',
+    model: 'Sonnet',
+    summary: 'AI amplifies options. Sonnet for heavier reasoning and exploration.',
+    detail:
+      'Claude Code explores variants against Figma and token context. Sonnet is used here because ideation needs stronger reasoning. Output is options, not a finished product.',
+  },
+  {
+    id: 'prototype',
+    label: 'Rapid prototype',
+    role: 'ai',
+    model: 'Sonnet',
+    summary: 'AI builds production-shaped UI from locked patterns and Figma as source of truth.',
+    detail:
+      'Static Figma remains the source of truth. Claude Code assembles compliant UI from design system modules. Reuse is enforced. Rebuild from scratch is blocked.',
+  },
+  {
+    id: 'validate',
+    label: '90% gate',
+    role: 'ai',
+    model: 'Haiku',
+    summary: 'Automated audit. Haiku for cheap, fast validation loops.',
+    detail:
+      'A scoring script checks design system utilization. Below 90 percent compliance, the build halts. Haiku handles these validation loops because they are frequent and cost-sensitive.',
+  },
+  {
+    id: 'review',
+    label: 'Team review',
+    role: 'human',
+    model: null,
+    summary: 'Human gate. Art-direct exceptions the audit flags.',
+    detail:
+      'When compliance drops, it is usually a genuine edge case. I review flagged code, protect craft, and manually override only where a custom interaction is required.',
+  },
+  {
+    id: 'iterate',
+    label: 'Iteration loop',
+    role: 'ai',
+    model: 'Haiku',
+    summary: 'Tight AI loops on corrections. Cost discipline over defaulting to the largest model.',
+    detail:
+      'Feedback is fed back into Claude Code for targeted fixes. Haiku stays on the loop unless the change needs deeper reasoning, then Sonnet is selected deliberately.',
+  },
+  {
+    id: 'test',
+    label: 'User testing',
+    role: 'human',
+    model: null,
+    summary: 'Human gate. Validated design, not unchecked AI output.',
+    detail:
+      'Nothing ships on model confidence alone. Flows are checked with users and stakeholders before engineering takes ownership.',
+  },
+  {
+    id: 'handover',
+    label: 'Agentic handover',
+    role: 'ai',
+    model: 'MCP',
+    summary: 'JIRA MCP + GitHub MCP from the terminal. No copy-paste handoff.',
+    detail:
+      'Pull requests and tickets are opened from the same local workflow. Engineering receives production-shaped UI with inspect overlays and in-context comments, already inside their tools.',
+  },
+];
+---
+
+<section
+  class="claude-process mx-auto max-w-3xl px-6 py-10 md:px-0 md:py-12"
+  aria-labelledby="claude-process-heading"
+  data-claude-process
+>
+  <div class="mb-8">
+    <h2 id="claude-process-heading" class="font-display text-xl font-bold tracking-tight md:text-2xl">
+      Disciplined Claude Code process
+    </h2>
+    <p class="mt-3 text-base leading-relaxed text-muted md:text-lg">
+      Click any stage. Human gates stay human. AI is used where it amplifies speed, not where it replaces judgment.
+    </p>
+  </div>
+
+  <div class="claude-process__legend mb-6 flex flex-wrap gap-4 text-xs tracking-wide text-muted">
+    <span class="inline-flex items-center gap-2">
+      <span class="claude-process__swatch claude-process__swatch--human" aria-hidden="true"></span>
+      Human gate
+    </span>
+    <span class="inline-flex items-center gap-2">
+      <span class="claude-process__swatch claude-process__swatch--ai" aria-hidden="true"></span>
+      AI stage
+    </span>
+    <span class="inline-flex items-center gap-2">
+      <span class="claude-process__pill">Sonnet</span>
+      Heavy lift
+    </span>
+    <span class="inline-flex items-center gap-2">
+      <span class="claude-process__pill">Haiku</span>
+      Validation loop
+    </span>
+  </div>
+
+  <div class="claude-process__board overflow-hidden rounded-sm border border-current/15 bg-black/[0.03]">
+    <ol class="claude-process__stages m-0 list-none p-0" role="list">
+      {
+        stages.map((stage, index) => (
+          <li class="claude-process__stage border-b border-current/10 last:border-b-0" data-stage-id={stage.id}>
+            <button
+              type="button"
+              class="claude-process__trigger flex w-full items-start gap-3 px-4 py-3.5 text-left transition-colors hover:bg-black/[0.04] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent md:gap-4 md:px-5 md:py-4"
+              data-stage-trigger={stage.id}
+              aria-expanded="false"
+              aria-controls={`claude-stage-detail-${stage.id}`}
+            >
+              <span
+                class:list={[
+                  'claude-process__index mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px] font-bold',
+                  stage.role === 'human' ? 'claude-process__index--human' : 'claude-process__index--ai',
+                ]}
+                aria-hidden="true"
+              >
+                {index + 1}
+              </span>
+
+              <span class="min-w-0 flex-1">
+                <span class="flex flex-wrap items-center gap-2">
+                  <span class="font-display text-sm font-bold tracking-tight md:text-base">{stage.label}</span>
+                  {stage.model && <span class="claude-process__pill">{stage.model}</span>}
+                  <span
+                    class:list={[
+                      'text-[10px] font-medium uppercase tracking-[0.12em]',
+                      stage.role === 'human' ? 'text-muted' : 'text-accent',
+                    ]}
+                  >
+                    {stage.role === 'human' ? 'Human' : 'AI'}
+                  </span>
+                </span>
+                <span class="mt-1 block text-sm leading-relaxed text-muted">{stage.summary}</span>
+              </span>
+            </button>
+
+            <div
+              id={`claude-stage-detail-${stage.id}`}
+              class="claude-process__detail hidden border-t border-current/10 px-4 pb-4 pt-0 md:px-5"
+              data-stage-detail={stage.id}
+              hidden
+            >
+              <p class="ml-9 max-w-2xl pt-3 text-sm leading-relaxed md:ml-10 md:text-base">
+                {stage.detail}
+              </p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<script>
+  import { initClaudeProcessDiagrams } from '../../scripts/claude-process-init';
+
+  function boot() {
+    initClaudeProcessDiagrams();
+  }
+
+  boot();
+  document.addEventListener('astro:page-load', boot);
+</script>
+
+<style>
+  .claude-process__swatch {
+    display: inline-block;
+    width: 0.65rem;
+    height: 0.65rem;
+    border-radius: 9999px;
+  }
+
+  .claude-process__swatch--human {
+    background: color-mix(in srgb, currentColor 35%, transparent);
+    border: 1px solid color-mix(in srgb, currentColor 55%, transparent);
+  }
+
+  .claude-process__swatch--ai {
+    background: color-mix(in srgb, var(--color-accent, #00d4ff) 70%, transparent);
+  }
+
+  .claude-process__pill {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+    border-radius: 9999px;
+    padding: 0.1rem 0.45rem;
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: inherit;
+  }
+
+  .claude-process__index--human {
+    background: color-mix(in srgb, currentColor 12%, transparent);
+    color: inherit;
+  }
+
+  .claude-process__index--ai {
+    background: color-mix(in srgb, var(--color-accent, #00d4ff) 22%, transparent);
+    color: var(--color-accent, #00d4ff);
+  }
+
+  .claude-process__stage.is-open .claude-process__trigger {
+    background: color-mix(in srgb, currentColor 5%, transparent);
+  }
+
+  .claude-process__detail:not([hidden]) {
+    display: block;
+  }
+
+  .case-study-scroll-panel[data-theme-light='true'] .claude-process__index--ai {
+    color: #000000;
+    background: color-mix(in srgb, #000000 10%, transparent);
+  }
+
+  .case-study-scroll-panel[data-theme-light='true'] .claude-process__legend .text-accent,
+  .case-study-scroll-panel[data-theme-light='true'] .claude-process__trigger .text-accent {
+    color: #000000 !important;
+  }
+</style>

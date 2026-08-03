@@ -1,0 +1,133 @@
+---
+title: "Designing Executive Intelligence for Project Glasswing"
+client: "J.P. Morgan"
+role: "AI Product Designer"
+year: "2026"
+summary: "Weekend dashboard for Mythos vulnerability intel — then a living executive product shaped by weekly leadership feedback"
+color: "#E9E6DA"
+cardImage: "/images/case-studies/jpmorgan/glasswing.png"
+themeBackground: "#F5EFE6"
+themeSurface: "#1a1a1a"
+nda: true
+tags: ["AI", "Dashboard", "Security", "Executive"]
+order: 1
+---
+
+import TextBlock from '../../components/blocks/TextBlock.astro';
+import ImageBlock from '../../components/blocks/ImageBlock.astro';
+
+<TextBlock title="Monday morning">
+  The COO walks into a meeting. Mythos is live. The bank has access to frontier AI that finds vulnerabilities at scale. It's already running. It's already finding things.
+
+  But here's the problem: nobody can see what it found. There's no dashboard. No metrics. No way to report it to leadership. People are pulling data into messy Excel sheets and trying to make sense of it.
+
+  The COO looks at the team and says: "I need to see this information for Monday."
+
+  That was Friday evening.
+
+  I got called in to design it.
+</TextBlock>
+
+<ImageBlock
+  src="/images/case-studies/jpmorgan/glasswing.png"
+  alt="Project Glasswing shown on a desktop monitor"
+  caption="Project Glasswing — executive visibility for Mythos vulnerability intelligence."
+  fullWidth
+  bleed
+  transparent
+  themeTrigger
+/>
+
+<TextBlock title="The real constraint">
+  This wasn't about making a nice dashboard. It was about building visibility for something the bank suddenly had access to but couldn't measure or understand.
+
+  Mythos finds vulnerabilities. A lot of them. Fast. But "50 vulnerabilities found in system X" doesn't tell a CIO anything actionable. It raises questions instead of answering them. What do you do with that number? Who owns it? How bad is it? How long to fix? Is it blocking something else?
+
+  The first version had to ship in a weekend. So I kept it simple. Card-based layout. Pull in what the data team could give me. Count it. Show severity. Create something that leadership could actually look at Monday morning.
+
+  But simple doesn't mean empty. Every number on that dashboard had to answer a question somebody would ask.
+</TextBlock>
+
+<TextBlock title="What actually happened">
+  I designed the initial dashboard in a day. Simple cards. Counts. Severity breakdown. Time series. The kind of thing where a CIO glances at it and can answer: are we ahead of this or behind it?
+
+  The data engineering team built what I designed. We shipped it that weekend.
+
+  Monday morning the COO presented it to the CIO, who'd actually been asking for years for exactly this kind of interface. From there it got wider. Senior stakeholders wanted access. They wanted different views.
+
+  That's when the real work started.
+</TextBlock>
+
+<TextBlock title="The feedback loop">
+  I started weekly meetings with leadership. Not stakeholder interviews in a conference room. Real weekly calls with the COO, the CIO, senior security leadership. Their calendars are insane, so weekly was the only way to get consistent feedback.
+
+  Every call went the same way: "You know what would be really great to see here?" Then we'd talk through it.
+
+  Is this metric at the top because it's important or because it's easy to calculate? Should this be a static number or a frequency? Can we combine these into a graph? What decisions does this number actually enable?
+
+  Each conversation shifted what I was building. Not radical rewrites. Targeted iterations. What information should sit where? What's the hierarchy of attention?
+
+  I'd design it in Figma that week. Create a block UI (basically a wireframe where I label every component from the design system). Share it with the data team to make sure we could actually calculate it. Then use Claude Code to build the prototype.
+</TextBlock>
+
+<TextBlock title="The breakthrough: AI Chat">
+  A few weeks in, a question came up in a meeting: "When I see a vulnerability, I want more context. What's wrong with it? Who owns that system? How long has it been a problem? What's downstream of it?"
+
+  The answer was obvious. You can't cram all that into a card. But you can give users a way to ask.
+
+  I designed an AI chat drawer that opens on any vulnerability row. Users can ask permission-aware questions. The AI answers based on what they're allowed to see. It's not showing secrets; it's filtering by role.
+
+  If a junior engineer asks "what vulnerabilities does the trading system have?" the AI doesn't refuse. It says: "You can't view that, but here's what you can see about your assigned systems." Then it shows them what they actually have access to.
+
+  More important than answering questions: I added pre-made action buttons. Users can email the owner directly. The AI drafts the message. I even added positive ones, like "great news, John's team fixed 40 problems" so people can send congratulations.
+
+  That feature got loved immediately. Users didn't need to escalate to get answers. They didn't need to wait for someone to explain what a vulnerability meant. They got context and took action in the same tool.
+</TextBlock>
+
+<TextBlock title="How Claude Code made the speed real">
+  Here's where the timeline actually compresses.
+
+  When leadership says "wouldn't it be great if we could do X?" on a Thursday call, I can ship it by Tuesday.
+
+  I design the drawer in Figma with the copy and the interaction. I create a block UI showing which components go where. I give Claude Code the design plus the block layout and tell it: use this component from our design system, build it to look like this, and handle this interaction.
+
+  It gives me a prototype. Usually pretty close. Then I iterate. Three or four rounds typically. The iterations aren't about design. They're about the details. What should these quick buttons say exactly? What's the right copy for loading states? What should this animation feel like?
+
+  Because I'm using Claude Code, I can have those conversations at speed. I can iterate on copy or interaction without waiting for engineering. By the time leadership sees it, it's actually polished.
+
+  That's the only reason "Thursday request becomes Tuesday shipped" is real.
+</TextBlock>
+
+<TextBlock title="The guardrails">
+  Everything on this dashboard is classified. Everything is sensitive. So when I designed the AI chat, I had to bake in principle of least privilege from the start.
+
+  Not every user can see every vulnerability. Not every user should be able to search for vulnerabilities in every system. The AI doesn't have the authority to show secrets. It has the authority to show what you're allowed to see.
+
+  It's careful by design, not careful by accident.
+</TextBlock>
+
+<TextBlock title="What's actually live">
+  The dashboard shipped. It's still in use. It's been in use for months. Every single week we're iterating on it based on feedback from the people using it to make actual decisions.
+
+  The engineering teams are about to start using it differently (they'll have their own view, focused on fixing rather than reporting). That's a whole different design problem.
+
+  The ideas on the roadmap: automatically fixing vulnerabilities and telling us what was fixed. Scheduled reports. AI-powered monitoring that patches things on its own. Those are all waiting.
+
+  But the core system works. Leadership can see what Mythos found. They can understand the scope. They can make decisions in hours instead of days. They can act instead of just report.
+</TextBlock>
+
+<TextBlock title="Why this matters">
+  This project taught me something that I still apply every single day.
+
+  High-stakes work isn't about being clever. It's about discipline. Every person using your design is making a real decision that affects real infrastructure. You can't be sloppy. You can't guess.
+
+  That's why I approach Claude Code the way I do. It's powerful. It's fast. But fast doesn't mean good when it matters.
+
+  You need human gates. You need to understand what the data actually means before you visualize it. You need real user testing, not synthetic scenarios. You need to iterate based on how people actually use it, not how you think they will.
+
+  The <a href="/playground/creating-an-ai-workflow" class="case-inline-link">Claude Code workflow</a> I use now borrows everything I learned from Glasswing. Design in Figma. Create clear structure. Let AI build the prototype. Iterate on what matters. Validate with real users. Then hand off.
+
+  Each step filters something different. By the end, the work is solid.
+
+  That's not how most people use AI tools. But it's how you use it when it matters.
+</TextBlock>

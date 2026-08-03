@@ -1,0 +1,49 @@
+---
+import type { CaseStudyMeta } from '../types/caseStudy';
+
+interface Props {
+  study: CaseStudyMeta;
+}
+
+const { study } = Astro.props;
+---
+
+<section class="case-study-landing-header mx-auto w-full max-w-[1400px] px-6 pt-4 md:px-10 md:pt-6 lg:px-16">
+  <div class="mx-auto flex max-w-3xl flex-col items-center text-center">
+    {
+      study.nda && (
+        <p class="case-study-nda mb-6 font-display text-[11px] font-medium uppercase tracking-[0.18em] text-muted md:mb-8">
+          Under NDA
+        </p>
+      )
+    }
+    <h1 class="font-display text-text text-[clamp(2.75rem,8vw,5.5rem)] font-bold uppercase leading-[0.9] tracking-[0.02em] text-balance">
+      {study.client}
+    </h1>
+
+    <p
+      class="case-study-summary mt-8 max-w-xl text-pretty text-base leading-[1.7] md:mt-10 md:text-lg md:leading-[1.75]"
+      style="font-family: var(--font-serif)"
+    >
+      {study.summary}
+    </p>
+
+    <p class="case-study-meta mt-5 text-sm tracking-wide">
+      {study.year} · {study.role}
+    </p>
+  </div>
+
+  <div class="mx-auto mt-12 h-px w-full max-w-3xl bg-text/10 md:mt-16" aria-hidden="true"></div>
+</section>
+
+<style is:global>
+  .case-study-landing-header--expanded {
+    padding-top: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .case-study-landing-header--expanded {
+      padding-top: 2.5rem;
+    }
+  }
+</style>

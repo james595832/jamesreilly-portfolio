@@ -1,0 +1,31 @@
+---
+interface Props {
+  src?: string;
+  embedUrl?: string;
+  caption?: string;
+}
+
+const { src, embedUrl, caption } = Astro.props;
+---
+
+<figure class="mx-auto max-w-4xl px-6 py-8 md:px-0">
+  <div class="overflow-hidden rounded-sm bg-surface aspect-video">
+    {
+      embedUrl ? (
+        <iframe
+          src={embedUrl}
+          title={caption ?? 'Project video'}
+          class="h-full w-full"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          loading="lazy"
+        />
+      ) : src ? (
+        <video src={src} controls class="h-full w-full object-cover" preload="metadata">
+          <track kind="captions" />
+        </video>
+      ) : null
+    }
+  </div>
+  {caption && <figcaption class="mt-4 text-center text-sm text-muted">{caption}</figcaption>}
+</figure>

@@ -1,0 +1,80 @@
+---
+title: "Finding Hope"
+client: "Finding Hope"
+role: "Digital art"
+year: "2026"
+summary: "A digital art concept mapping the world's emotional temperature. Through Type and Web GL."
+color: "#D8D4CA"
+cardColor: "#D8D4CA"
+cardImage: "/images/playground/thumbnail_globe.png"
+themeBackground: "#D8D4CA"
+themeSurface: "#1a1a1a"
+tags: ["WebGL", "Data viz", "Digital art"]
+order: 2
+---
+
+import TextBlock from '../../components/blocks/TextBlock.astro';
+import ImageBlock from '../../components/blocks/ImageBlock.astro';
+
+<TextBlock>
+  Finding Hope is a real-time editorial canvas mapping the world's emotional temperature. Live news RSS headlines are parsed via secure Gemini AI onto a 3D WebGL globe. Framed in a brutalist layout, the piece pairs tactile data viz with an evolving, responsive analogue synthesiser soundtrack.
+
+  Live at <a href="https://findinghope.art" class="case-inline-link" target="_blank" rel="noopener noreferrer">findinghope.art</a>.
+</TextBlock>
+
+<ImageBlock
+  src="/images/playground/globe.png"
+  alt="Finding Hope WebGL globe with sentiment labels wrapped to the terrain"
+  caption="Live headlines mapped onto a 3D globe — country labels sit flush with the sphere."
+  compact
+  transparent
+  themeTrigger
+/>
+
+<TextBlock>
+  Finding Hope is an interactive, real-time editorial data canvas that registers and visualises the emotional temperature of the world.
+
+  The experience acts as a digital mirror to global events, translating current headlines into high-fidelity tactile feedback. Juxtaposing the raw reality of global news with procedural golden spikes representing each country's 'Hope Reserves,' the piece invites users to explore the delicate balance of contemporary civic sentiment. Built on a strict, high-contrast brutalist grid, the visual layout rejects generic data visualisation templates in favour of a premium design canvas.
+</TextBlock>
+
+<ImageBlock
+  src="/images/playground/finding_hope.png"
+  alt="Finding Hope interface showing the globe beside a Germany detail panel with word cloud and mood"
+  caption="Selecting a country opens an editorial panel: current mood, a headline, and a masonry word cloud of what’s in the news."
+  fullWidth
+  bleed
+  transparent
+/>
+
+<TextBlock>
+  It features dense masonry word clouds, ultra-thin 3D data needles, and country labels wrapped flush with the sphere’s terrain. Technically, a Vercel server-less proxy scrapes global RSS feeds on-the-fly, securely calling Gemini to map sentiment without exposing API keys. This drives a spatial WebAudio context with responsive Blade Runner-style synth chords and tactile hover clicks.
+
+  Click a word in the cloud and it expands into a full-bleed poster — the term, the country sentiment behind it, and a mood score — so each headline fragment becomes its own editorial artifact.
+</TextBlock>
+
+<div class="finding-hope-posters mx-auto grid w-full max-w-[1400px] grid-cols-1 gap-6 px-6 py-8 md:grid-cols-2 md:gap-8 md:px-10 lg:px-16">
+  <figure class="min-w-0">
+    <img
+      src="/images/playground/finding-hope-poster-afd.png"
+      alt="Finding Hope poster for AFD — tense mood score for Germany"
+      class="h-auto w-full"
+      loading="lazy"
+      decoding="async"
+    />
+    <figcaption class="mt-4 text-center text-sm leading-relaxed text-muted text-pretty">
+      Word poster for “AFD” — country mood and score pulled from the live sentiment map.
+    </figcaption>
+  </figure>
+  <figure class="min-w-0">
+    <img
+      src="/images/playground/finding-hope-poster-recession.png"
+      alt="Finding Hope poster for RECESSION — tense mood score for Germany"
+      class="h-auto w-full"
+      loading="lazy"
+      decoding="async"
+    />
+    <figcaption class="mt-4 text-center text-sm leading-relaxed text-muted text-pretty">
+      Word poster for “RECESSION” — the same interaction, different term from the masonry cloud.
+    </figcaption>
+  </figure>
+</div>

@@ -1,0 +1,195 @@
+---
+const exdsModules = ['Button', 'Input', 'Card', 'Modal', 'Nav', 'Table', 'Form', 'Toast'];
+
+const nodes = [
+  { id: 'screenshots', label: 'Figma Screenshots', sublabel: '/design-input', x: 14, y: 8, variant: 'primary' },
+  { id: 'requirements', label: 'Requirements', sublabel: 'Value · Scope · Users', x: 40, y: 8, variant: 'primary' },
+  { id: 'input-folder', label: 'Input Folder', sublabel: 'Drop & trigger build', x: 27, y: 20, w: 18, variant: 'secondary' },
+  { id: 'hub', label: 'Claude Code', sublabel: 'Agent orchestrator', x: 24, y: 36, w: 24, h: 14, variant: 'hub' },
+  { id: 'req-agent', label: 'Requirements Agent', sublabel: 'No scope creep', x: 72, y: 18, variant: 'secondary' },
+  { id: 'a11y-agent', label: 'Accessibility Agent', sublabel: 'Semantic HTML', x: 72, y: 34, variant: 'secondary' },
+  { id: 'qa-agent', label: 'QA Agent', sublabel: 'Final validation', x: 72, y: 50, variant: 'secondary' },
+  { id: 'audit', label: 'Component Audit', sublabel: 'EXDS class scan', x: 27, y: 58, w: 18, variant: 'secondary' },
+  { id: 'git-pr', label: 'Git PR', sublabel: 'Engineering handoff', x: 27, y: 72, w: 18, variant: 'primary' },
+  { id: 'output', label: 'Production UI', sublabel: '90%+ accuracy', x: 27, y: 84, w: 18, variant: 'ghost' },
+];
+
+const connections = [
+  ['screenshots', 'input-folder'],
+  ['requirements', 'input-folder'],
+  ['input-folder', 'hub'],
+  ['hub', 'req-agent'],
+  ['hub', 'a11y-agent'],
+  ['hub', 'qa-agent'],
+  ['req-agent', 'qa-agent'],
+  ['a11y-agent', 'qa-agent'],
+  ['qa-agent', 'audit'],
+  ['audit', 'git-pr'],
+  ['git-pr', 'output'],
+  ['hub', 'exds'],
+  ['exds', 'audit'],
+];
+---
+
+<section
+  class="workflow-diagram mx-auto max-w-5xl px-6 py-12 md:px-0"
+  aria-labelledby="workflow-diagram-heading"
+  data-workflow-diagram
+>
+  <div class="mb-8 max-w-2xl">
+    <h2 id="workflow-diagram-heading" class="font-display text-2xl font-bold tracking-tight md:text-3xl">
+      Connect design to production.
+    </h2>
+    <p class="mt-3 text-base leading-relaxed text-muted md:text-lg">
+      Orchestrate agents across a folder-based pipeline, enforce EXDS node module usage, and
+      validate output before engineering handoff.
+    </p>
+  </div>
+
+  <div class="relative overflow-hidden rounded-sm border border-accent/20 bg-bg">
+    <div
+      class="pointer-events-none absolute inset-0 opacity-30"
+      style="background-image: radial-gradient(circle, #00d4ff44 1px, transparent 1px); background-size: 18px 18px;"
+      aria-hidden="true"
+    />
+
+    <div class="relative aspect-[16/11] w-full min-h-[440px] md:min-h-[540px]">
+      <svg
+        viewBox="0 0 100 100"
+        class="pointer-events-none absolute inset-0 h-full w-full"
+        aria-hidden="true"
+        preserveAspectRatio="xMidYMid meet"
+      >
+        <defs>
+          <linearGradient id="workflow-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#00d4ff" stop-opacity="0.4"></stop>
+            <stop offset="100%" stop-color="#00d4ff" stop-opacity="0.05"></stop>
+          </linearGradient>
+        </defs>
+
+        {
+          connections.map(([from, to], i) => (
+            <line
+              data-workflow-line
+              data-from={from}
+              data-to={to}
+              x1="0"
+              y1="0"
+              x2="0"
+              y2="0"
+              stroke="#00d4ff44"
+              stroke-width="0.22"
+              stroke-dasharray="1.5 1.5"
+              class="workflow-line"
+            />
+          ))
+        }
+      </svg>
+
+      <div
+        class="workflow-node workflow-node--exds absolute transition-opacity duration-300"
+        data-workflow-node="exds"
+        style="left: 6%; top: 38%; width: 16%;"
+      >
+        <div class="rounded border border-accent/35 bg-surface/95 p-2.5 backdrop-blur-sm md:p-3">
+          <p class="font-display text-[9px] font-bold uppercase tracking-wider text-accent md:text-[10px]">
+            EXDS Node Modules
+          </p>
+          <div class="mt-1.5 grid grid-cols-2 gap-1">
+            {
+              exdsModules.map((mod) => (
+                <div class="rounded border border-accent/20 bg-bg/90 px-1.5 py-1 text-center text-[8px] text-text/85 md:text-[9px]">
+                  {mod}
+                </div>
+              ))
+            }
+          </div>
+          <p class="mt-1.5 text-[7px] leading-snug text-muted md:text-[8px]">
+            Design System Agent validates class names
+          </p>
+        </div>
+      </div>
+
+      {
+        nodes.map((node) => {
+          const w = node.w ?? 14;
+          const h = node.h ?? 7;
+          const isHub = node.variant === 'hub';
+          const isGhost = node.variant === 'ghost';
+
+          return (
+            <button
+              type="button"
+              class="workflow-node absolute z-10 transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              data-workflow-node={node.id}
+              style={`left: ${node.x}%; top: ${node.y}%; width: ${w}%;`}
+              aria-label={`${node.label}${node.sublabel ? `: ${node.sublabel}` : ''}`}
+            >
+              <div
+                class:list={[
+                  'flex min-h-[2.25rem] flex-col items-center justify-center rounded border px-1.5 py-1.5 text-center md:min-h-[2.75rem] md:px-2',
+                  isHub && 'border-accent bg-gradient-to-br from-accent/30 to-accent/5 shadow-[0_0_32px_rgba(0,212,255,0.2)]',
+                  isGhost && 'border-dashed border-accent/30 bg-transparent',
+                  !isHub && !isGhost && node.variant === 'primary' && 'border-accent/45 bg-surface/95 backdrop-blur-sm',
+                  !isHub && !isGhost && node.variant === 'secondary' && 'border-accent/30 bg-surface/85 backdrop-blur-sm',
+                ]}
+              >
+                <span
+                  class:list={[
+                    'font-display leading-tight',
+                    isHub ? 'text-[11px] font-bold text-accent md:text-sm' : 'text-[8px] font-medium text-text md:text-[10px]',
+                  ]}
+                >
+                  {node.label}
+                </span>
+                {
+                  node.sublabel && (
+                    <span class="mt-0.5 text-[7px] leading-tight text-muted md:text-[8px]">{node.sublabel}</span>
+                  )
+                }
+              </div>
+            </button>
+          );
+        })
+      }
+
+      <div class="absolute bottom-3 right-3 rounded border border-accent/35 bg-surface/95 px-2.5 py-1.5 backdrop-blur-sm md:bottom-4 md:right-4 md:px-3 md:py-2">
+        <p class="font-display text-[9px] font-bold text-accent md:text-[11px]">30% → 90%+</p>
+        <p class="text-[8px] text-muted md:text-[9px]">Accuracy with agents</p>
+      </div>
+    </div>
+  </div>
+
+  <p class="mt-4 text-center text-xs text-muted">
+    Hover or focus nodes to trace the pipeline. Process-only. No project details disclosed.
+  </p>
+</section>
+
+<script>
+  import { initWorkflowDiagrams } from '../../scripts/workflow-diagram-init';
+
+  function boot() {
+    initWorkflowDiagrams();
+  }
+
+  boot();
+  document.addEventListener('astro:page-load', boot);
+</script>
+
+<style>
+  @keyframes workflow-dash {
+    to {
+      stroke-dashoffset: -24;
+    }
+  }
+
+  .workflow-line {
+    animation: workflow-dash 4s linear infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .workflow-line {
+      animation: none;
+    }
+  }
+</style>

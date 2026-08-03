@@ -1,0 +1,37 @@
+---
+interface Props {
+  title: string;
+  company: string;
+  role: string;
+  year: string;
+  tags?: string[];
+  color?: string;
+}
+
+const { title, company, role, year, tags = [], color = '#00D4FF' } = Astro.props;
+---
+
+<header class="relative mb-16 overflow-hidden rounded-sm bg-surface px-6 py-20 md:px-12 md:py-28">
+  <div
+    class="pointer-events-none absolute inset-0 opacity-20"
+    style={`background: radial-gradient(circle at 30% 50%, ${color}, transparent 70%)`}
+  />
+  <div class="relative mx-auto max-w-4xl">
+    <p class="font-serif text-accent" style="font-family: var(--font-serif)">{company}</p>
+    <h1 class="font-display mt-4 text-4xl font-bold tracking-tight md:text-6xl">{title}</h1>
+    <div class="mt-8 flex flex-wrap gap-4 text-sm text-muted">
+      <span>{role}</span>
+      <span aria-hidden="true">·</span>
+      <span>{year}</span>
+    </div>
+    {
+      tags.length > 0 && (
+        <ul class="mt-6 flex flex-wrap gap-2">
+          {tags.map((tag) => (
+            <li class="rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs tracking-wide text-accent">{tag}</li>
+          ))}
+        </ul>
+      )
+    }
+  </div>
+</header>
