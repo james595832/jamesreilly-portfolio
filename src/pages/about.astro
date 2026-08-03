@@ -25,15 +25,14 @@ const thoughts = items.map((item) => ({
       aria-label="About and playground"
     >
       <aside class="about-rail about-rail--intro">
-        <p class="font-display text-sm font-medium tracking-wide text-text">James Reilly</p>
+        <p class="font-display text-sm font-bold tracking-wide text-text">James Reilly</p>
         <h1
-          class="font-display mt-8 text-[clamp(2.25rem,4vw,3.25rem)] font-bold uppercase leading-[0.9] tracking-[0.02em] text-text"
+          class="font-display mt-8 text-[clamp(2.25rem,4vw,3.25rem)] font-bold uppercase leading-[0.9] tracking-[-0.02em] text-text"
         >
           AI Product<br />Designer
         </h1>
         <p
-          class="mt-8 max-w-sm text-base leading-relaxed text-text/80"
-          style="font-family: var(--font-serif)"
+          class="case-study-lede mt-8 max-w-sm text-base leading-relaxed text-text/80"
         >
           A place for experiments, notes, and the work that does not fit a client case study.
           Scroll the feed, open anything that looks interesting.
@@ -52,7 +51,7 @@ const thoughts = items.map((item) => ({
 
       <div class="about-feed min-w-0">
         <div class="mb-8 flex items-end justify-between gap-4 lg:mb-10">
-          <h2 class="font-display text-xs font-medium uppercase tracking-[0.16em] text-muted">
+          <h2 class="font-display text-xs font-bold uppercase tracking-[0.16em] text-muted">
             Playground
           </h2>
           <p class="text-xs tracking-wide text-muted">{items.length} entries</p>
@@ -61,7 +60,7 @@ const thoughts = items.map((item) => ({
           items.length > 0 ? (
             <PlaygroundFeed items={items} />
           ) : (
-            <p class="text-muted" style="font-family: var(--font-serif)">
+            <p class="text-muted font-serif">
               Nothing here yet — add an MDX file under <code>src/content/playground/</code>.
             </p>
           )
@@ -69,7 +68,7 @@ const thoughts = items.map((item) => ({
       </div>
 
       <aside class="about-rail about-rail--index">
-        <p class="font-display text-xs font-medium uppercase tracking-[0.16em] text-muted">Index</p>
+        <p class="font-display text-xs font-bold uppercase tracking-[0.16em] text-muted">Index</p>
         <ul class="mt-6 space-y-3">
           {
             items.map((item) => (
@@ -79,7 +78,7 @@ const thoughts = items.map((item) => ({
                   data-case-slug={item.slug}
                   class="case-card-trigger group flex flex-col gap-0.5 text-left transition-colors hover:text-accent"
                 >
-                  <span class="font-display text-sm font-medium tracking-wide text-text group-hover:text-accent">
+                  <span class="font-display text-sm font-bold tracking-wide text-text group-hover:text-accent">
                     {item.client}
                   </span>
                   <span class="text-xs tracking-wide text-muted">{item.year}</span>

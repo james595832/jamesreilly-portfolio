@@ -45,17 +45,14 @@ const { items } = Astro.props;
               }
               <div class="playground-tile__scrim absolute inset-0" aria-hidden="true" />
               <div class="playground-tile__body relative z-10 flex h-full min-h-[min(64vh,520px)] flex-col justify-end p-6 md:p-8 lg:p-10">
-                <p class="font-display text-xs font-medium uppercase tracking-[0.16em] opacity-70">
+                <p class="font-display text-xs font-bold uppercase tracking-[0.16em] opacity-70">
                   {item.year}
                   {item.tags?.[0] ? ` · ${item.tags[0]}` : ''}
                 </p>
-                <h2 class="font-display mt-3 text-[clamp(2rem,5vw,3.5rem)] font-bold uppercase leading-[0.92] tracking-[0.02em]">
+                <h2 class="font-display mt-3 text-[clamp(2rem,5vw,3.5rem)] font-bold uppercase leading-[0.92] tracking-[-0.03em]">
                   {item.client}
                 </h2>
-                <p
-                  class="mt-4 max-w-md text-base leading-relaxed opacity-85 md:text-lg"
-                  style="font-family: var(--font-serif)"
-                >
+                <p class="case-study-lede mt-4 max-w-md text-base leading-relaxed opacity-85 md:text-lg">
                   {item.summary}
                 </p>
               </div>
