@@ -12,23 +12,20 @@ const { study } = Astro.props;
   <div class="mx-auto flex max-w-3xl flex-col items-center text-center">
     {
       study.nda && (
-        <p class="case-study-nda mb-6 font-display text-[11px] font-medium uppercase tracking-[0.18em] text-muted md:mb-8">
+        <p class="case-study-nda mb-6 font-display text-[11px] font-bold uppercase tracking-[0.18em] text-muted md:mb-8">
           Under NDA
         </p>
       )
     }
-    <h1 class="font-display text-text text-[clamp(2.75rem,8vw,5.5rem)] font-bold uppercase leading-[0.9] tracking-[0.02em] text-balance">
+    <h1 class="text-text text-[clamp(2.75rem,8vw,5.5rem)] uppercase text-balance">
       {study.client}
     </h1>
 
-    <p
-      class="case-study-summary mt-8 max-w-xl text-pretty text-base leading-[1.7] md:mt-10 md:text-lg md:leading-[1.75]"
-      style="font-family: var(--font-serif)"
-    >
+    <p class="case-study-summary mt-8 max-w-xl text-pretty text-base leading-[1.7] md:mt-10 md:text-lg md:leading-[1.75]">
       {study.summary}
     </p>
 
-    <p class="case-study-meta mt-5 text-sm tracking-wide">
+    <p class="case-study-meta mt-5 text-sm tracking-wide text-muted">
       {study.year} · {study.role}
     </p>
   </div>

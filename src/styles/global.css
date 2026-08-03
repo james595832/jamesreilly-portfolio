@@ -4,7 +4,7 @@
 @font-face {
   font-family: "Neue Montreal";
   src: url("/fonts/NeueMontreal-Regular.otf") format("opentype");
-  font-weight: 400;
+  font-weight: 400 500;
   font-style: normal;
   font-display: swap;
 }
@@ -12,7 +12,7 @@
 @font-face {
   font-family: "Neue Montreal";
   src: url("/fonts/NeueMontreal-Bold.otf") format("opentype");
-  font-weight: 700;
+  font-weight: 600 700;
   font-style: normal;
   font-display: swap;
 }
@@ -96,6 +96,48 @@
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border-width: 0;
+  }
+
+  /*
+   * Case study type rules
+   * Display (Neue Montreal Bold): landing titles + section headings
+   * Serif (IBM Plex): summaries / pull quotes only
+   * Body (Neue Montreal Regular): narrative copy
+   */
+  .case-study-landing-header h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 0.92;
+  }
+
+  .case-study-section-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.375rem, 1.15rem + 0.85vw, 1.75rem);
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+
+  .case-study-summary,
+  .case-study-lede {
+    font-family: var(--font-serif);
+    font-weight: 400;
+  }
+
+  .case-study-meta {
+    font-family: var(--font-body);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+
+  .case-study-copy,
+  .case-study-copy p,
+  .prose-case,
+  .prose-case p {
+    font-family: var(--font-body);
+    font-weight: 400;
   }
 }
 
