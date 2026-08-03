@@ -21,13 +21,19 @@ import ImageBlock from '../../components/blocks/ImageBlock.astro';
   Aced-IT is a design interview prep product I built end to end — from brand and interface to the AI practice loop. Candidates upload a CV, rehearse aloud, and get structured feedback instead of vague encouragement.
 </TextBlock>
 
+{/* Tall trigger stand-in until the hero image lands — keeps open state black + white like other studies. */}
+<figure
+  class="case-theme-trigger-spacer"
+  data-case-theme-trigger
+  aria-hidden="true"
+></figure>
+
 <ImageBlock
   src="/images/case-studies/aced-it/logo.png"
   alt="Aced-IT wordmark"
   caption="Aced-IT — design interview prep."
   compact
   transparent
-  themeTrigger
 />
 
 <TextBlock title="The problem">

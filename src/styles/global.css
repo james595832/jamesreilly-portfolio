@@ -161,6 +161,16 @@
     max-width: var(--site-max-width);
     margin-inline: auto;
   }
+
+  /* Holds scroll space for a forthcoming hero; drives theme transition like other studies. */
+  .case-theme-trigger-spacer {
+    display: block;
+    width: 100%;
+    min-height: min(72vh, 720px);
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

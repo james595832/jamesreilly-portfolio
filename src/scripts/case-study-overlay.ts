@@ -126,7 +126,35 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
       return;
     }
 
-    const ink = isLightThemeColor(themeColor) ? 'dark' : 'light';
+    const destinationIsLight = isLightThemeColor(themeColor);
+
+    /*
+     * Opening state for light destinations (cream/white): stay on the dark
+     * surface with white copy — same as every other case study — until the
+     * theme-trigger image actually scrolls into the transition band.
+     */
+    if (destinationIsLight && clamped <= 0.001) {
+      clearCopyInk();
+      scrollEl.style.setProperty('--case-theme-p', '0');
+      scrollEl.style.setProperty('--case-theme-color', themeColor);
+      scrollEl.style.setProperty('--case-ink-color', 'rgba(255, 255, 255, 0.92)');
+      scrollEl.style.setProperty('--case-ink-muted', '#888888');
+      scrollEl.setAttribute('data-theme-scroll', 'true');
+      scrollEl.setAttribute('data-theme-ink', 'light');
+      scrollEl.setAttribute('data-theme-light', 'false');
+      sheet.style.setProperty('--case-theme-p', '0');
+      sheet.style.setProperty('--case-theme-color', themeColor);
+      sheet.style.setProperty('--case-ink-color', 'rgba(255, 255, 255, 0.92)');
+      sheet.style.setProperty('--case-ink-muted', '#888888');
+      sheet.setAttribute('data-theme-scroll', 'true');
+      sheet.setAttribute('data-theme-ink', 'light');
+      sheet.setAttribute('data-theme-light', 'false');
+      sheet.style.backgroundColor = themeSurface;
+      closeBtn.style.color = 'rgba(255, 255, 255, 0.92)';
+      return;
+    }
+
+    const ink = destinationIsLight ? 'dark' : 'light';
     const inkProgress = ink === 'dark' ? Math.min(1, clamped * 2.2) : clamped;
 
     const inkColor =
