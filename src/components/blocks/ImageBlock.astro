@@ -49,6 +49,15 @@ const centered = mobile || compact;
     <img
       src={src}
       alt={alt}
+      width={compact ? 400 : undefined}
+      height={compact ? 400 : undefined}
+      sizes={
+        compact
+          ? '(max-width: 640px) 280px, 400px'
+          : fullWidth
+            ? '100vw'
+            : '(max-width: 768px) 100vw, 896px'
+      }
       class:list={[
         compact
           ? 'block h-auto w-[min(100%,280px)] sm:w-[min(100%,340px)] md:w-[min(100%,400px)]'
@@ -58,6 +67,7 @@ const centered = mobile || compact;
         transparent || mobile || compact ? 'object-contain' : 'object-cover',
       ]}
       loading="lazy"
+      decoding="async"
     />
   </div>
   {caption && (

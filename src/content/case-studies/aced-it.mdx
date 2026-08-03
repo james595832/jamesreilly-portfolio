@@ -3,7 +3,7 @@ title: "Aced-IT"
 client: "Aced-IT"
 role: "Founder"
 year: "2026"
-summary: "Design interview prep — CV upload, voice practice, and AI feedback"
+summary: "Interview preparation built exclusively for the design community"
 color: "#FFFFFF"
 cardColor: "#FFFFFF"
 cardImage: "/images/case-studies/aced-it/card-logo.png"
@@ -17,37 +17,61 @@ order: 0
 import TextBlock from '../../components/blocks/TextBlock.astro';
 import ImageBlock from '../../components/blocks/ImageBlock.astro';
 
-<TextBlock>
-  Aced-IT is a design interview prep product I built end to end — from brand and interface to the AI practice loop. Candidates upload a CV, rehearse aloud, and get structured feedback instead of vague encouragement.
+<TextBlock title="Overview">
+  Aced-It is a dedicated interview-preparation platform built exclusively for the design community. In a tech landscape where most interview tools cater heavily to engineering workflows, designers are frequently left behind. Aced-It bridges this gap by offering tailored, interactive preparation that addresses the unique realities of design hiring—from behavioral walk-throughs to the dreaded whiteboard challenge.
+
+  Live at <a href="https://acedit.app" class="case-inline-link" target="_blank" rel="noopener noreferrer">acedit.app</a>.
 </TextBlock>
 
-{/* Tall trigger stand-in until the hero image lands — keeps open state black + white like other studies. */}
-<figure
-  class="case-theme-trigger-spacer"
-  data-case-theme-trigger
-  aria-hidden="true"
-></figure>
+<ImageBlock
+  src="/images/case-studies/aced-it/mock-1.png"
+  alt="Aced-It marketing site on a laptop — Ace your design interview"
+  caption="Aced-It — practice real questions out loud, sketch on a timed whiteboard, get a score that shows what to fix."
+  fullWidth
+  bleed
+  transparent
+  themeTrigger
+/>
+
+<TextBlock title="The Problem & Motivation">
+  In the wake of post-pandemic mass layoffs, the design job market has become exceptionally competitive. Job seekers face fragmented application processes, opaque expectations, and little to no tailored practice resources.
+
+  Drawing from years of senior-level hiring and interview experience, the core objective of Aced-It is to give designers a centralized space to gather their materials, sharpen their presentation skills, master interview workflows, and walk into high-stakes interviews fully prepared.
+</TextBlock>
 
 <ImageBlock
-  src="/images/case-studies/aced-it/logo.png"
-  alt="Aced-IT wordmark"
-  caption="Aced-IT — design interview prep."
-  compact
+  src="/images/case-studies/aced-it/features.png"
+  alt="Aced-It how it works — four feature tiles for CV questions, voice practice, scoring, and whiteboard challenges"
+  caption="How it works — practice like it’s the real thing."
+  fullWidth
+  bleed
   transparent
 />
 
-<TextBlock title="The problem">
-  Design interviews punish people who can do the work but freeze in the room. Most prep tools are generic question banks or text chatbots. They miss the hard part: speaking clearly under pressure, tying answers to your own experience, and recovering when you drift.
+<TextBlock title="Key Features & Solution">
+  Aced-It is engineered to simulate real-world design evaluation phases:
+
+  **Tailored Practice:** Users can upload their CV and target job descriptions to generate customized interview practice loops.
+
+  **Voice-Powered Simulation:** Candidates practice by actually speaking aloud, receiving automated grading and constructive feedback to rapidly iterate and improve.
+
+  **Whiteboard Challenge Prep:** To conquer the hardest part of the design loop, the platform features 5 distinct whiteboard challenges. Users can ask clarifying questions to set context—and these diagnostic questions are evaluated alongside their final output.
 </TextBlock>
 
-<TextBlock title="The product">
-  Aced-IT pairs CV context with voice practice. Upload a CV, pick a focus, then rehearse out loud. The system listens, scores the answer against the role and the story on the page, and returns concrete notes — structure, clarity, evidence — so the next take is better.
+<TextBlock title="Validation & Testing">
+  The product concept was rigorously vetted and iterated through early-stage concept testing with designer peers, combined with structured user-testing sessions to refine the interactive flows and grading utility.
 </TextBlock>
 
-<TextBlock title="Design approach">
-  The UI is deliberately quiet: white surfaces, charcoal actions, restrained accent. Interview stress is already high. The product should feel editorial and calm, not like another dashboard screaming for attention.
-</TextBlock>
+<TextBlock title="Technical Architecture & Stack">
+  To move rapidly from concept to a production-ready application, Aced-It was built using a modern, efficient stack:
 
-<TextBlock title="What's next">
-  This case study is a living stub while the product ships. Screens, flows, and outcomes will land here as the studio experience hardens.
+  **Design & Prototyping:** Figma
+
+  **Development Environment:** Cursor
+
+  **Version Control & Deployment:** GitHub & Cloudflare
+
+  **Database & Backend:** Supabase
+
+  **Payments & Subscriptions:** Stripe
 </TextBlock>
