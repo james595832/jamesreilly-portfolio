@@ -37,7 +37,7 @@ const { items } = Astro.props;
                   <img
                     src={imageSrc}
                     alt=""
-                    class="playground-tile__img absolute inset-0 h-full w-full object-cover"
+                    class="playground-tile__img absolute inset-0 h-full w-full object-cover object-center"
                     loading="lazy"
                     decoding="async"
                   />
@@ -45,14 +45,14 @@ const { items } = Astro.props;
               }
               <div class="playground-tile__scrim absolute inset-0" aria-hidden="true" />
               <div class="playground-tile__body relative z-10 flex h-full min-h-[min(64vh,520px)] flex-col justify-end p-6 md:p-8 lg:p-10">
-                <p class="font-display text-xs font-bold uppercase tracking-[0.16em] opacity-70">
+                <p class="font-display text-xs font-bold uppercase tracking-[0.16em] opacity-80">
                   {item.year}
                   {item.tags?.[0] ? ` · ${item.tags[0]}` : ''}
                 </p>
                 <h2 class="font-display mt-3 text-[clamp(2rem,5vw,3.5rem)] font-bold uppercase leading-[0.92] tracking-[-0.03em]">
                   {item.client}
                 </h2>
-                <p class="case-study-lede mt-4 max-w-md text-base leading-relaxed opacity-85 md:text-lg">
+                <p class="case-study-lede mt-4 max-w-md text-base leading-relaxed opacity-90 md:text-lg">
                   {item.summary}
                 </p>
               </div>
@@ -77,12 +77,14 @@ const { items } = Astro.props;
     color: #0a0a0a;
   }
 
+  /* Keep full colour; scrim only softens the lower third for type. */
   .playground-tile__scrim {
     background: linear-gradient(
       to top,
-      rgba(0, 0, 0, 0.72) 0%,
-      rgba(0, 0, 0, 0.28) 42%,
-      rgba(0, 0, 0, 0.08) 100%
+      rgba(0, 0, 0, 0.78) 0%,
+      rgba(0, 0, 0, 0.35) 38%,
+      rgba(0, 0, 0, 0.08) 68%,
+      transparent 100%
     );
     pointer-events: none;
   }
@@ -90,14 +92,26 @@ const { items } = Astro.props;
   .playground-tile__surface--light .playground-tile__scrim {
     background: linear-gradient(
       to top,
-      rgba(255, 255, 255, 0.82) 0%,
-      rgba(255, 255, 255, 0.35) 45%,
-      rgba(255, 255, 255, 0.05) 100%
+      rgba(255, 255, 255, 0.92) 0%,
+      rgba(255, 255, 255, 0.55) 40%,
+      rgba(255, 255, 255, 0.12) 72%,
+      transparent 100%
     );
   }
 
   .playground-tile__img {
-    mix-blend-mode: luminosity;
-    opacity: 0.88;
+    transform: scale(1.02);
+    transition: transform 0.55s ease;
+  }
+
+  .playground-tile__link:hover .playground-tile__img,
+  .playground-tile__link:focus-visible .playground-tile__img {
+    transform: scale(1.05);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .playground-tile__img {
+      transition: none;
+    }
   }
 </style>
