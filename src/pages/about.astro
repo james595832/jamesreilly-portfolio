@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import PlaygroundFeed from '../components/PlaygroundFeed.astro';
+import GlitchPortrait from '../components/GlitchPortrait.astro';
 import CaseStudyPanels from '../components/CaseStudyPanels.astro';
 import CaseStudyOverlay from '../components/CaseStudyOverlay.astro';
 import { getPlaygroundMeta } from '../lib/playground';
@@ -12,47 +13,102 @@ const thoughts = items.map((item) => ({
   label: item.client,
   href: `/playground/${item.slug}`,
 }));
+
+const email = 'hello@jamesreilly.design';
 ---
 
 <BaseLayout
-  title="About — James Reilly"
-  description="About James Reilly and a playground of AI experiments, notes, and work-in-progress."
+  title="About & Ideas — James Reilly"
+  description="About James Reilly, and a feed of ideas, AI experiments, and work-in-progress."
 >
   <Nav />
   <main id="main" class="about-page">
     <section
-      class="about-layout mx-auto w-full max-w-[1920px] px-6 pt-28 pb-20 md:px-10 lg:px-16 lg:pt-32"
-      aria-label="About and playground"
+      id="about"
+      class="about-intro mx-auto w-full max-w-[1920px] px-6 pt-28 pb-16 md:px-10 lg:px-16 lg:pt-32"
+      aria-labelledby="about-page-heading"
+    >
+      <p class="font-display text-xs font-bold uppercase tracking-[0.16em] text-muted">About</p>
+      <h1
+        id="about-page-heading"
+        class="font-display mt-6 text-[clamp(2.5rem,6vw,4.5rem)] font-bold uppercase leading-[0.9] tracking-[-0.03em] text-text"
+      >
+        James Reilly
+      </h1>
+      <p class="case-study-lede mt-4 max-w-2xl text-lg text-text/80 md:text-xl">
+        AI Product Designer
+      </p>
+
+      <div class="mt-12 grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,0.9fr)] lg:gap-16 lg:items-start">
+        <div class="space-y-6 text-base leading-relaxed text-text/85 md:text-lg md:leading-[1.75]">
+          <p>
+            I am an AI product designer with 26 years of experience, working in print, digital, and
+            now AI. I merge all three skill sets to cope with the rapid pace 2026 has brought upon
+            us. You are not hiring a specialist who only knows Figma interfaces or only knows model
+            prompting — you get someone who has shipped craft across decades of tools and still
+            treats the problem as the brief.
+          </p>
+          <p>
+            You get to work with one of the best designers in the business. You want to know my
+            process and all that bollocks? Well, here it is: always start with the problem. Why
+            are you delivering this work? What value does it bring to the business and the user?
+            Ask questions, as we always have done. Speak to users, build relationships with the
+            people building it, and you will go far with your product. It is not magic or
+            complicated. Communication is the key skill for successful product delivery.
+          </p>
+          <p>
+            I have done it all — from running my own companies, to building startups for others
+            0 to 1. I have freelanced for 15 years, working in studios and banks, producing work I
+            am proud of and collaborating with many wonderful people. I now work as an IC at
+            J.P. Morgan, embedded as an internal consultant on product design for the senior
+            leadership team, working between design, AI, and research.
+          </p>
+          <p>
+            Today, I sit in the Claude Code forum at the bank as the only designer who has a
+            license for it, running experiments daily to bring efficiencies to the design process
+            through the use of AI — and how AI can help us as designers without throwing craft out
+            with the hype.
+          </p>
+          <div class="pt-2 space-y-2 text-sm tracking-wide text-muted">
+            <p>
+              <a class="text-accent transition-opacity hover:opacity-70" href={`mailto:${email}`}>
+                {email}
+              </a>
+            </p>
+            <p>
+              <a class="transition-colors hover:text-accent" href="/#work">Case studies</a>
+            </p>
+          </div>
+        </div>
+
+        <div class="flex justify-center lg:justify-end">
+          <GlitchPortrait />
+        </div>
+      </div>
+    </section>
+
+    <section
+      id="ideas"
+      class="about-layout mx-auto w-full max-w-[1920px] border-t border-text/10 px-6 pt-16 pb-20 md:px-10 lg:px-16"
+      aria-label="Ideas"
     >
       <aside class="about-rail about-rail--intro">
-        <p class="font-display text-sm font-bold tracking-wide text-text">James Reilly</p>
-        <h1
-          class="font-display mt-8 text-[clamp(2.25rem,4vw,3.25rem)] font-bold uppercase leading-[0.9] tracking-[-0.02em] text-text"
+        <p class="font-display text-xs font-bold uppercase tracking-[0.16em] text-muted">Ideas</p>
+        <h2
+          class="font-display mt-6 text-[clamp(2rem,4vw,3rem)] font-bold uppercase leading-[0.9] tracking-[-0.02em] text-text"
         >
-          AI Product<br />Designer
-        </h1>
-        <p
-          class="case-study-lede mt-8 max-w-sm text-base leading-relaxed text-text/80"
-        >
-          A place for experiments, notes, and the work that does not fit a client case study.
-          Scroll the feed, open anything that looks interesting.
+          Notes &amp;<br />experiments
+        </h2>
+        <p class="case-study-lede mt-6 max-w-sm text-base leading-relaxed text-text/80">
+          A place for experiments, notes, and work that does not fit a client case study. Scroll the
+          feed, open anything that looks interesting.
         </p>
-        <div class="mt-10 space-y-2 text-sm tracking-wide text-muted">
-          <p>
-            <a class="transition-colors hover:text-accent" href="mailto:hireme@jamesreilly.design"
-              >hireme@jamesreilly.design</a
-            >
-          </p>
-          <p>
-            <a class="transition-colors hover:text-accent" href="/#work">Case studies</a>
-          </p>
-        </div>
       </aside>
 
       <div class="about-feed min-w-0">
         <div class="mb-8 flex items-end justify-between gap-4 lg:mb-10">
           <h2 class="font-display text-xs font-bold uppercase tracking-[0.16em] text-muted">
-            Playground
+            Ideas
           </h2>
           <p class="text-xs tracking-wide text-muted">{items.length} entries</p>
         </div>
@@ -102,7 +158,6 @@ const thoughts = items.map((item) => ({
 </BaseLayout>
 
 <style is:global>
-  /* Single document scroll — sticky side columns were fighting the wheel. */
   .about-page {
     scroll-behavior: auto;
   }
