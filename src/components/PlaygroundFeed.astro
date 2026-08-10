@@ -1,6 +1,6 @@
 ---
 import type { CaseStudyMeta } from '../types/caseStudy';
-import { getCardTileColor, isLightCardColor } from '../lib/cardColor';
+import { getCardTileColor } from '../lib/cardColor';
 
 interface Props {
   items: CaseStudyMeta[];
@@ -9,13 +9,13 @@ interface Props {
 const { items } = Astro.props;
 ---
 
-<div data-case-feed class="playground-feed flex flex-col gap-10 md:gap-14">
+<div data-case-feed class="playground-feed flex flex-col gap-14 md:gap-20">
   {
-    items.map((item) => {
+    items.map((item, index) => {
       const tileColor = getCardTileColor(item);
       const hasImage = Boolean(item.cardImage || item.heroImage);
       const imageSrc = item.cardImage || item.heroImage;
-      const light = isLightCardColor(tileColor);
+      const number = String(index + 1).padStart(2, '0');
 
       return (
         <article class="playground-tile">
@@ -25,11 +25,14 @@ const { items } = Astro.props;
             class="case-card-trigger playground-tile__link group block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
             aria-label={`Open: ${item.client}`}
           >
+            <div class="playground-tile__header">
+              <span class="playground-tile__number font-display" aria-hidden="true">
+                {number}
+              </span>
+            </div>
+
             <div
-              class:list={[
-                'playground-tile__surface relative overflow-hidden',
-                light ? 'playground-tile__surface--light' : 'playground-tile__surface--dark',
-              ]}
+              class="playground-tile__media"
               style={{ backgroundColor: tileColor }}
             >
               {
@@ -37,25 +40,26 @@ const { items } = Astro.props;
                   <img
                     src={imageSrc}
                     alt=""
-                    class="playground-tile__img absolute inset-0 h-full w-full object-cover object-center"
+                    class="playground-tile__img"
                     loading="lazy"
                     decoding="async"
                   />
+                ) : (
+                  <div class="playground-tile__placeholder" aria-hidden="true" />
+                )
+              }
+            </div>
+
+            <div class="playground-tile__body">
+              <h2 class="playground-tile__title font-display">
+                {item.client}
+              </h2>
+              <p class="playground-tile__summary">{item.summary}</p>
+              {
+                item.year ? (
+                  <p class="playground-tile__meta">{item.year}</p>
                 ) : null
               }
-              <div class="playground-tile__scrim absolute inset-0" aria-hidden="true" />
-              <div class="playground-tile__body relative z-10 flex h-full min-h-[min(64vh,520px)] flex-col justify-end p-6 md:p-8 lg:p-10">
-                <p class="font-display text-xs font-bold uppercase tracking-[0.16em] opacity-80">
-                  {item.year}
-                  {item.tags?.[0] ? ` · ${item.tags[0]}` : ''}
-                </p>
-                <h2 class="font-display mt-3 text-[clamp(2rem,5vw,3.5rem)] font-bold uppercase leading-[0.92] tracking-[-0.03em]">
-                  {item.client}
-                </h2>
-                <p class="case-study-lede mt-4 max-w-md text-base leading-relaxed opacity-90 md:text-lg">
-                  {item.summary}
-                </p>
-              </div>
             </div>
           </a>
         </article>
@@ -65,48 +69,88 @@ const { items } = Astro.props;
 </div>
 
 <style>
-  .playground-tile__surface {
+  .playground-tile__header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 0.75rem;
+  }
+
+  .playground-tile__number {
+    font-size: clamp(0.8125rem, 0.75rem + 0.2vw, 0.9375rem);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: rgba(255, 255, 255, 0.55);
+    line-height: 1;
+  }
+
+  .playground-tile__link:hover .playground-tile__number,
+  .playground-tile__link:focus-visible .playground-tile__number {
+    color: var(--color-accent, #00d4ff);
+  }
+
+  .playground-tile__media {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    aspect-ratio: 16 / 10;
     border: 1px solid rgba(255, 255, 255, 0.06);
-  }
-
-  .playground-tile__surface--dark {
-    color: #fff;
-  }
-
-  .playground-tile__surface--light {
-    color: #0a0a0a;
-  }
-
-  /* Keep full colour; scrim only softens the lower third for type. */
-  .playground-tile__scrim {
-    background: linear-gradient(
-      to top,
-      rgba(0, 0, 0, 0.78) 0%,
-      rgba(0, 0, 0, 0.35) 38%,
-      rgba(0, 0, 0, 0.08) 68%,
-      transparent 100%
-    );
-    pointer-events: none;
-  }
-
-  .playground-tile__surface--light .playground-tile__scrim {
-    background: linear-gradient(
-      to top,
-      rgba(255, 255, 255, 0.92) 0%,
-      rgba(255, 255, 255, 0.55) 40%,
-      rgba(255, 255, 255, 0.12) 72%,
-      transparent 100%
-    );
+    background: var(--color-surface, #1a1a1a);
   }
 
   .playground-tile__img {
-    transform: scale(1.02);
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transform: scale(1.01);
     transition: transform 0.55s ease;
+  }
+
+  .playground-tile__placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%);
   }
 
   .playground-tile__link:hover .playground-tile__img,
   .playground-tile__link:focus-visible .playground-tile__img {
-    transform: scale(1.05);
+    transform: scale(1.04);
+  }
+
+  .playground-tile__body {
+    margin-top: 1.25rem;
+    max-width: 36rem;
+  }
+
+  .playground-tile__title {
+    margin: 0;
+    font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    text-transform: uppercase;
+    color: #fff;
+    transition: color 0.2s ease;
+  }
+
+  .playground-tile__link:hover .playground-tile__title,
+  .playground-tile__link:focus-visible .playground-tile__title {
+    color: var(--color-accent, #00d4ff);
+  }
+
+  .playground-tile__summary {
+    margin: 0.65rem 0 0;
+    font-size: clamp(0.9375rem, 0.875rem + 0.3vw, 1.0625rem);
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  .playground-tile__meta {
+    margin: 0.75rem 0 0;
+    font-size: 0.8125rem;
+    letter-spacing: 0.06em;
+    color: rgba(255, 255, 255, 0.45);
   }
 
   @media (prefers-reduced-motion: reduce) {

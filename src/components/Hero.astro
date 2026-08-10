@@ -348,9 +348,8 @@
     runHeroAnimation();
   }
 
-  initHero();
   document.addEventListener('astro:page-load', () => {
-    ensureHeroFonts().then(runHeroAnimation);
+    void initHero();
   });
   window.addEventListener('resize', schedulePositionHeroTypography, { passive: true });
 

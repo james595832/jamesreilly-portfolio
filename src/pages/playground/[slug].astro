@@ -15,7 +15,7 @@ const { slug } = Astro.params;
 const entry = slug ? await getPlaygroundBySlug(slug) : undefined;
 
 if (!entry) {
-  return Astro.redirect('/about');
+  return Astro.redirect('/ideas');
 }
 
 const items = await getPlaygroundMeta();
@@ -27,6 +27,6 @@ const items = await getPlaygroundMeta();
     caseStudies={items}
     initialSlug={slug}
     pathPrefix="/playground"
-    closePath="/about"
+    closePath="/ideas"
   />
 </BaseLayout>

@@ -39,6 +39,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    background-color: #000;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -54,6 +55,61 @@
     font-feature-settings: "kern" 1;
     -moz-font-feature-settings: "kern" 1;
     text-wrap: pretty;
+    background-color: #000;
+  }
+
+  /*
+   * Client-side route transitions — keep black under the swap so
+   * About ↔ Ideas ↔ Home never flash white or hard-reload.
+   */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 280ms;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  ::view-transition-old(root) {
+    animation-name: site-vt-fade-out;
+  }
+
+  ::view-transition-new(root) {
+    animation-name: site-vt-fade-in;
+  }
+
+  ::view-transition-group(site-nav) {
+    animation: none;
+    z-index: 100;
+  }
+
+  ::view-transition-old(site-nav),
+  ::view-transition-new(site-nav) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+
+  @keyframes site-vt-fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes site-vt-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation-duration: 0.01ms !important;
+    }
   }
 
   p,

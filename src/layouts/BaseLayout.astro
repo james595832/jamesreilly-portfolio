@@ -1,4 +1,6 @@
 ---
+import { ClientRouter, fade } from 'astro:transitions';
+
 interface Props {
   title?: string;
   description?: string;
@@ -11,7 +13,7 @@ const {
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" transition:animate={fade({ duration: '280ms' })}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -24,6 +26,7 @@ const {
       rel="stylesheet"
     />
     <title>{title}</title>
+    <ClientRouter />
   </head>
   <body class="min-h-screen bg-bg text-text">
     <a
@@ -33,6 +36,25 @@ const {
       Skip to main content
     </a>
     <slot />
+    <script>
+      function scrollToHashIfNeeded() {
+        const { hash } = window.location;
+        if (!hash || hash === '#') return;
+
+        const id = decodeURIComponent(hash.slice(1));
+        const target =
+          document.getElementById(id) ||
+          document.querySelector<HTMLElement>(`[name="${CSS.escape(id)}"]`);
+        if (!target) return;
+
+        // Wait one frame so swap layout is settled (especially after ClientRouter).
+        requestAnimationFrame(() => {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      }
+
+      document.addEventListener('astro:page-load', scrollToHashIfNeeded);
+    </script>
   </body>
 </html>
 

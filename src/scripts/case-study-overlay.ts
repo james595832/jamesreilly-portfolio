@@ -25,6 +25,14 @@ export interface CaseStudyOverlayConfig {
   showAuthorBand?: boolean;
 }
 
+type OverlayCleanup = () => void;
+
+declare global {
+  interface Window {
+    __caseStudyOverlayCleanup?: OverlayCleanup | null;
+  }
+}
+
 function lerp(current: number, target: number, factor: number): number {
   return current + (target - current) * factor;
 }
@@ -38,10 +46,19 @@ function isLightThemeColor(color: string): boolean {
   return 0.2126 * r + 0.7152 * g + 0.0722 * b > 0.65;
 }
 
+function disposeCaseStudyOverlay(): void {
+  window.__caseStudyOverlayCleanup?.();
+  window.__caseStudyOverlayCleanup = null;
+  unregisterCaseStudyOpenHandler();
+}
+
 export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
+  // View Transitions re-swap the overlay DOM — tear down prior listeners first.
+  disposeCaseStudyOverlay();
+
   const overlay = document.getElementById('case-study-overlay');
-  if (!overlay || overlay.dataset.overlayBound === 'true') return;
-  overlay.dataset.overlayBound = 'true';
+  if (!overlay) return;
+
   ensureCaseStudyCardClicks();
 
   const backdrop = overlay.querySelector<HTMLButtonElement>('[data-overlay-backdrop]');
@@ -57,6 +74,8 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
   if (!backdrop || !sheet || !motion || !scrollEl || !contentEl || !closeBtn || !headerSlot) {
     return;
   }
+
+  overlay.dataset.overlayBound = 'true';
 
   const caseStudies = config.caseStudies;
   const pathPrefix = (config.pathPrefix || '/work').replace(/\/$/, '');
@@ -505,7 +524,7 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
   scrollEl.addEventListener('scroll', handleScroll, { passive: true });
   document.addEventListener('keydown', handleKeyDown);
 
-  window.addEventListener('popstate', () => {
+  const handlePopState = () => {
     const match = window.location.pathname.match(pathPattern);
     if (match) {
       enterTimeline?.kill();
@@ -530,7 +549,9 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
     expandTarget = 0;
     scrollEl.scrollTop = 0;
     applyScrollTheme(0);
-  });
+  };
+
+  window.addEventListener('popstate', handlePopState);
 
   registerCaseStudyOpenHandler(openOverlay);
 
@@ -540,4 +561,19 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
   } else if (config.initialSlug) {
     openOverlay(config.initialSlug, null, true);
   }
+
+  window.__caseStudyOverlayCleanup = () => {
+    enterTimeline?.kill();
+    if (expandRaf !== null) {
+      cancelAnimationFrame(expandRaf);
+      expandRaf = null;
+    }
+    backdrop.removeEventListener('click', closeOverlay);
+    closeBtn.removeEventListener('click', closeOverlay);
+    scrollEl.removeEventListener('scroll', handleScroll);
+    document.removeEventListener('keydown', handleKeyDown);
+    window.removeEventListener('popstate', handlePopState);
+    unregisterCaseStudyOpenHandler();
+    delete overlay.dataset.overlayBound;
+  };
 }
