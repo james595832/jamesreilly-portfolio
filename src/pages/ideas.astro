@@ -20,63 +20,39 @@ const thoughts = items.map((item) => ({
 >
   <Nav />
   <main id="main" class="ideas-page">
-    <section
-      class="ideas-shell mx-auto w-full max-w-[1920px] px-6 pt-28 pb-20 md:px-10 lg:px-16 lg:pt-32"
-      aria-label="Ideas"
-    >
+    <section class="ideas-shell" aria-label="Ideas">
       <header class="ideas-intro">
-        <p class="font-display text-xs font-bold uppercase tracking-[0.16em] text-muted">Ideas</p>
-        <h1
-          id="ideas-heading"
-          class="font-display mt-6 text-[clamp(2.5rem,6vw,4.5rem)] font-bold uppercase leading-[0.9] tracking-[-0.03em] text-text"
-        >
-          Ideas
-        </h1>
-        <p class="case-study-lede ideas-intro__lede mt-5 text-base leading-relaxed text-text/80 md:text-lg">
+        <p class="ideas-intro__kicker font-display">Ideas</p>
+        <h1 id="ideas-heading" class="ideas-intro__title font-display">Ideas</h1>
+        <p class="case-study-lede ideas-intro__lede">
           Experiments, notes, and work that does not fit a client case study.
         </p>
       </header>
 
-      <div class="ideas-layout">
-        <div class="ideas-feed min-w-0">
-          <div class="mb-8 flex items-end justify-between gap-4 lg:mb-10">
-            <h2 class="font-display text-xs font-bold uppercase tracking-[0.16em] text-muted">
-              Feed
-            </h2>
-            <p class="text-xs tracking-wide text-muted">{items.length} entries</p>
-          </div>
-          {
-            items.length > 0 ? (
-              <PlaygroundFeed items={items} />
-            ) : (
-              <p class="text-muted font-serif">
-                Nothing here yet — add an MDX file under <code>src/content/playground/</code>.
-              </p>
-            )
-          }
-        </div>
+      <nav class="ideas-index" aria-label="Ideas index">
+        {
+          items.map((item) => (
+            <a
+              href={`/playground/${item.slug}`}
+              data-case-slug={item.slug}
+              class="case-card-trigger ideas-index__link"
+            >
+              {item.client}
+            </a>
+          ))
+        }
+      </nav>
 
-        <aside class="ideas-rail ideas-rail--index">
-          <p class="font-display text-xs font-bold uppercase tracking-[0.16em] text-muted">Index</p>
-          <ul class="mt-6 space-y-3">
-            {
-              items.map((item) => (
-                <li>
-                  <a
-                    href={`/playground/${item.slug}`}
-                    data-case-slug={item.slug}
-                    class="case-card-trigger group flex flex-col gap-0.5 text-left transition-colors hover:text-accent"
-                  >
-                    <span class="font-display text-sm font-bold tracking-wide text-text group-hover:text-accent">
-                      {item.client}
-                    </span>
-                    <span class="text-xs tracking-wide text-muted">{item.year}</span>
-                  </a>
-                </li>
-              ))
-            }
-          </ul>
-        </aside>
+      <div class="ideas-feed">
+        {
+          items.length > 0 ? (
+            <PlaygroundFeed items={items} />
+          ) : (
+            <p class="text-muted font-serif text-center">
+              Nothing here yet — add an MDX file under <code>src/content/playground/</code>.
+            </p>
+          )
+        }
       </div>
     </section>
 
@@ -94,34 +70,78 @@ const thoughts = items.map((item) => ({
 <style is:global>
   .ideas-page {
     scroll-behavior: auto;
+    background:
+      radial-gradient(ellipse 55% 40% at 50% 0%, rgba(0, 212, 255, 0.07), transparent 55%),
+      #000;
+  }
+
+  .ideas-shell {
+    width: 100%;
+    max-width: 44rem;
+    margin-inline: auto;
+    padding: clamp(6.5rem, 12vh, 8.5rem) clamp(1.25rem, 4vw, 2rem) clamp(3rem, 6vh, 5rem);
   }
 
   .ideas-intro {
-    margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+    text-align: center;
+    margin-bottom: clamp(2rem, 4vw, 2.75rem);
+  }
+
+  .ideas-intro__kicker {
+    margin: 0;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .ideas-intro__title {
+    margin: 1rem 0 0;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+    text-transform: uppercase;
+    color: var(--color-text);
   }
 
   .ideas-intro__lede {
-    max-width: none;
-    white-space: nowrap;
+    margin: 1.15rem auto 0;
+    max-width: 28rem;
+    font-size: 1.05rem;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.78);
+    white-space: normal;
   }
 
-  @media (max-width: 720px) {
-    .ideas-intro__lede {
-      white-space: normal;
-    }
+  .ideas-index {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem 1.25rem;
+    margin-bottom: clamp(2.75rem, 6vh, 4rem);
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
 
-  .ideas-layout {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 3rem;
+  .ideas-index__link {
+    font-family: var(--font-display);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.55);
+    text-decoration: none;
+    transition: color 0.2s ease;
   }
 
-  @media (min-width: 1024px) {
-    .ideas-layout {
-      grid-template-columns: minmax(0, 1fr) minmax(180px, 240px);
-      gap: 2.5rem;
-      align-items: start;
-    }
+  .ideas-index__link:hover,
+  .ideas-index__link:focus-visible {
+    color: var(--color-accent);
+  }
+
+  .ideas-feed {
+    width: 100%;
   }
 </style>

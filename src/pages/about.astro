@@ -20,6 +20,11 @@ const email = 'hello@jamesreilly.design';
   <Nav />
   <main id="main" class="about-page">
     <article class="about-page__shell">
+      {/* Mobbin-style show stack: portrait → name → short role → body in one centred measure */}
+      <figure class="about-page__portrait">
+        <GlitchPortrait loading="eager" fetchpriority="high" />
+      </figure>
+
       <header class="about-page__intro">
         <p class="about-page__kicker font-display">About</p>
         <h1 id="about-page-heading" class="about-page__name font-display">
@@ -30,42 +35,36 @@ const email = 'hello@jamesreilly.design';
         </p>
       </header>
 
-      <div class="about-page__layout">
-        <div class="about-page__body">
-          <p>
-            I am an AI product designer with 26 years of experience working in print, digital, and
-            now AI. I merge all three to cope with the pace 2026 has forced on product teams.
-          </p>
-          <p>
-            The process is not magic. Always start with the problem. Why are you delivering this
-            work? What value does it bring to the business and the user? Ask questions. Speak to
-            users. Build relationships with the people building it. Communication is still the
-            skill that decides whether a product ships or dies in a deck.
-          </p>
-          <p>
-            I&apos;ve run my own companies and built startups for others from 0 to 1. Fifteen years
-            freelancing across studios and banks. I now work as an IC at J.P. Morgan, embedded as an
-            internal consultant on product design for the senior leadership team — moving between
-            design, AI, and research.
-          </p>
-          <p>
-            At the bank I sit on the Claude Code forum as the only designer with a license, running
-            experiments daily on how AI changes the design process and where it actually creates
-            leverage rather than noise. Outside of that I&apos;m building
-            <a href="https://acedit.app" target="_blank" rel="noopener noreferrer">Aced-It</a>
-            — interview prep for designers who need to walk into high-stakes hiring fully prepared.
-          </p>
-
-          <p class="about-page__contact">
-            Work, briefs, or a conversation:
-            <a href={`mailto:${email}`}>{email}</a>
-          </p>
-        </div>
-
-        <figure class="about-page__portrait">
-          <GlitchPortrait loading="eager" fetchpriority="high" />
-        </figure>
+      <div class="about-page__body">
+        <p>
+          I am an AI product designer with 26 years of experience working in print, digital, and now
+          AI. I merge all three to cope with the pace 2026 has forced on product teams.
+        </p>
+        <p>
+          The process is not magic. Always start with the problem. Why are you delivering this work?
+          What value does it bring to the business and the user? Ask questions. Speak to users.
+          Build relationships with the people building it. Communication is still the skill that
+          decides whether a product ships or dies in a deck.
+        </p>
+        <p>
+          I&apos;ve run my own companies and built startups for others from 0 to 1. Fifteen years
+          freelancing across studios and banks. I now work as an IC at J.P. Morgan, embedded as an
+          internal consultant on product design for the senior leadership team — moving between
+          design, AI, and research.
+        </p>
+        <p>
+          At the bank I sit on the Claude Code forum as the only designer with a license, running
+          experiments daily on how AI changes the design process and where it actually creates
+          leverage rather than noise. Outside of that I&apos;m building
+          <a href="https://acedit.app" target="_blank" rel="noopener noreferrer">Aced-It</a>
+          — interview prep for designers who need to walk into high-stakes hiring fully prepared.
+        </p>
       </div>
+
+      <p class="about-page__contact">
+        Work, briefs, or a conversation:
+        <a href={`mailto:${email}`}>{email}</a>
+      </p>
     </article>
 
     <Footer thoughts={thoughts} />
@@ -76,25 +75,41 @@ const email = 'hello@jamesreilly.design';
   .about-page {
     color: var(--color-text);
     background:
-      radial-gradient(ellipse 70% 45% at 85% 0%, rgba(0, 212, 255, 0.08), transparent 55%),
-      radial-gradient(ellipse 50% 40% at 0% 40%, rgba(255, 255, 255, 0.03), transparent 50%),
+      radial-gradient(ellipse 60% 45% at 50% 8%, rgba(0, 212, 255, 0.09), transparent 58%),
+      radial-gradient(ellipse 40% 30% at 50% 100%, rgba(255, 255, 255, 0.03), transparent 50%),
       var(--color-bg);
   }
 
   .about-page__shell {
     width: 100%;
-    max-width: 1920px;
+    max-width: 40rem;
     margin-inline: auto;
-    padding: clamp(6rem, 12vh, 8rem) clamp(1.25rem, 4vw, 4rem) clamp(3rem, 6vh, 5rem);
+    padding: clamp(6.5rem, 12vh, 8.5rem) clamp(1.25rem, 4vw, 2rem) clamp(3rem, 6vh, 5rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .about-page__portrait {
+    margin: 0 0 clamp(1.75rem, 4vw, 2.5rem);
+    width: min(100%, 17.5rem);
+    display: flex;
+    justify-content: center;
+  }
+
+  .about-page__portrait :global(.glitch-portrait) {
+    width: 100%;
+    max-width: none;
   }
 
   .about-page__intro {
-    max-width: 48rem;
-    margin-bottom: clamp(2.5rem, 6vw, 4rem);
+    width: 100%;
+    margin-bottom: clamp(1.75rem, 4vw, 2.25rem);
   }
 
   .about-page__kicker {
-    margin: 0 0 1rem;
+    margin: 0 0 0.85rem;
     font-size: 0.6875rem;
     font-weight: 700;
     letter-spacing: 0.16em;
@@ -104,7 +119,7 @@ const email = 'hello@jamesreilly.design';
 
   .about-page__name {
     margin: 0;
-    font-size: clamp(2.75rem, 7vw, 5rem);
+    font-size: clamp(2.5rem, 6.5vw, 4rem);
     font-weight: 700;
     line-height: 0.95;
     letter-spacing: -0.035em;
@@ -112,38 +127,26 @@ const email = 'hello@jamesreilly.design';
   }
 
   .about-page__role {
-    margin: 1.25rem 0 0;
-    font-size: clamp(1.05rem, 2vw, 1.35rem);
+    margin: 1rem 0 0;
+    font-size: clamp(1.05rem, 1.8vw, 1.25rem);
     font-style: italic;
     line-height: 1.4;
     color: rgba(255, 255, 255, 0.72);
   }
 
-  .about-page__layout {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: clamp(2rem, 5vw, 4rem);
-    align-items: start;
-  }
-
-  @media (min-width: 960px) {
-    .about-page__layout {
-      grid-template-columns: minmax(0, 1.2fr) minmax(240px, 0.75fr);
-      gap: clamp(3rem, 6vw, 5rem);
-    }
-  }
-
   .about-page__body {
+    width: 100%;
+    max-width: 34rem;
     display: grid;
-    gap: 1.35rem;
-    max-width: 40rem;
+    gap: 1.2rem;
   }
 
   .about-page__body p {
     margin: 0;
-    font-size: clamp(1.05rem, 1.35vw, 1.2rem);
-    line-height: 1.65;
-    color: rgba(255, 255, 255, 0.86);
+    font-size: clamp(1rem, 1.2vw, 1.1rem);
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.84);
+    text-wrap: pretty;
   }
 
   .about-page__body a {
@@ -159,33 +162,24 @@ const email = 'hello@jamesreilly.design';
   }
 
   .about-page__contact {
-    margin-top: 0.5rem !important;
+    width: 100%;
+    max-width: 34rem;
+    margin: 2rem 0 0;
     padding-top: 1.5rem;
     border-top: 1px solid rgba(255, 255, 255, 0.12);
-    font-size: 1rem !important;
-    color: var(--color-muted) !important;
+    font-size: 0.975rem;
+    line-height: 1.5;
+    color: var(--color-muted);
   }
 
-  .about-page__portrait {
-    margin: 0;
-    width: 100%;
-    max-width: 24rem;
-    display: flex;
-    justify-content: center;
+  .about-page__contact a {
+    color: var(--color-accent);
+    text-decoration: none;
   }
 
-  @media (min-width: 960px) {
-    .about-page__portrait {
-      position: sticky;
-      top: 6.5rem;
-      justify-self: end;
-      justify-content: flex-end;
-    }
-  }
-
-  @media (max-width: 959px) {
-    .about-page__portrait {
-      order: -1;
-    }
+  .about-page__contact a:hover,
+  .about-page__contact a:focus-visible {
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
   }
 </style>

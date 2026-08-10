@@ -9,7 +9,7 @@ interface Props {
 const { items } = Astro.props;
 ---
 
-<div data-case-feed class="playground-feed flex flex-col gap-14 md:gap-20">
+<div data-case-feed class="playground-feed">
   {
     items.map((item, index) => {
       const tileColor = getCardTileColor(item);
@@ -22,14 +22,12 @@ const { items } = Astro.props;
           <a
             href={`/playground/${item.slug}`}
             data-case-slug={item.slug}
-            class="case-card-trigger playground-tile__link group block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+            class="case-card-trigger playground-tile__link group"
             aria-label={`Open: ${item.client}`}
           >
-            <div class="playground-tile__header">
-              <span class="playground-tile__number font-display" aria-hidden="true">
-                {number}
-              </span>
-            </div>
+            <span class="playground-tile__number font-display" aria-hidden="true">
+              {number}
+            </span>
 
             <div
               class="playground-tile__media"
@@ -51,15 +49,9 @@ const { items } = Astro.props;
             </div>
 
             <div class="playground-tile__body">
-              <h2 class="playground-tile__title font-display">
-                {item.client}
-              </h2>
+              <h2 class="playground-tile__title font-display">{item.client}</h2>
               <p class="playground-tile__summary">{item.summary}</p>
-              {
-                item.year ? (
-                  <p class="playground-tile__meta">{item.year}</p>
-                ) : null
-              }
+              {item.year ? <p class="playground-tile__meta">{item.year}</p> : null}
             </div>
           </a>
         </article>
@@ -69,17 +61,40 @@ const { items } = Astro.props;
 </div>
 
 <style>
-  .playground-tile__header {
+  .playground-feed {
     display: flex;
-    justify-content: flex-end;
-    margin-bottom: 0.75rem;
+    flex-direction: column;
+    gap: clamp(3.5rem, 8vh, 5.5rem);
+    align-items: center;
+  }
+
+  .playground-tile {
+    width: 100%;
+    max-width: 34rem;
+  }
+
+  .playground-tile__link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    outline: none;
+  }
+
+  .playground-tile__link:focus-visible {
+    outline: 2px solid var(--color-accent, #00d4ff);
+    outline-offset: 6px;
   }
 
   .playground-tile__number {
-    font-size: clamp(0.8125rem, 0.75rem + 0.2vw, 0.9375rem);
+    display: block;
+    margin-bottom: 0.85rem;
+    font-size: 0.75rem;
     font-weight: 700;
-    letter-spacing: 0.12em;
-    color: rgba(255, 255, 255, 0.55);
+    letter-spacing: 0.14em;
+    color: rgba(255, 255, 255, 0.45);
     line-height: 1;
   }
 
@@ -91,9 +106,10 @@ const { items } = Astro.props;
   .playground-tile__media {
     position: relative;
     overflow: hidden;
-    width: 100%;
-    aspect-ratio: 16 / 10;
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    width: min(100%, 22rem);
+    margin-inline: auto;
+    aspect-ratio: 1 / 1;
+    border: 1px solid rgba(255, 255, 255, 0.08);
     background: var(--color-surface, #1a1a1a);
   }
 
@@ -115,20 +131,23 @@ const { items } = Astro.props;
 
   .playground-tile__link:hover .playground-tile__img,
   .playground-tile__link:focus-visible .playground-tile__img {
-    transform: scale(1.04);
+    transform: scale(1.035);
   }
 
   .playground-tile__body {
-    margin-top: 1.25rem;
-    max-width: 36rem;
+    margin-top: 1.35rem;
+    max-width: 28rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .playground-tile__title {
     margin: 0;
-    font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem);
+    font-size: clamp(1.35rem, 1.1rem + 0.9vw, 1.85rem);
     font-weight: 700;
-    letter-spacing: -0.03em;
-    line-height: 1.1;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
     text-transform: uppercase;
     color: #fff;
     transition: color 0.2s ease;
@@ -141,16 +160,18 @@ const { items } = Astro.props;
 
   .playground-tile__summary {
     margin: 0.65rem 0 0;
-    font-size: clamp(0.9375rem, 0.875rem + 0.3vw, 1.0625rem);
+    font-size: 0.975rem;
     line-height: 1.55;
-    color: rgba(255, 255, 255, 0.72);
+    color: rgba(255, 255, 255, 0.68);
+    text-wrap: pretty;
   }
 
   .playground-tile__meta {
     margin: 0.75rem 0 0;
-    font-size: 0.8125rem;
-    letter-spacing: 0.06em;
-    color: rgba(255, 255, 255, 0.45);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
   }
 
   @media (prefers-reduced-motion: reduce) {
