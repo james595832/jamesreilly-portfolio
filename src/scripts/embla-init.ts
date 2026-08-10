@@ -252,8 +252,8 @@ function bindCaseStudyCardClicks() {
       if (carouselRoot) {
         if (carouselRoot.dataset.clickAllowed === 'false') return;
       } else if (!feedRoot) {
-        // Index links on /about sit outside the feed — still open via overlay.
-        if (!trigger.closest('.about-rail--index')) return;
+        // Index links on /ideas sit outside the feed — still open via overlay.
+        if (!trigger.closest('.ideas-rail--index, .about-rail--index')) return;
       }
 
       const slug = trigger.dataset.caseSlug;

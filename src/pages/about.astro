@@ -2,14 +2,10 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
-import PlaygroundFeed from '../components/PlaygroundFeed.astro';
 import GlitchPortrait from '../components/GlitchPortrait.astro';
-import CaseStudyPanels from '../components/CaseStudyPanels.astro';
-import CaseStudyOverlay from '../components/CaseStudyOverlay.astro';
 import { getPlaygroundMeta } from '../lib/playground';
 
-const items = await getPlaygroundMeta();
-const thoughts = items.map((item) => ({
+const thoughts = (await getPlaygroundMeta()).map((item) => ({
   label: item.client,
   href: `/playground/${item.slug}`,
 }));
@@ -18,161 +14,178 @@ const email = 'hello@jamesreilly.design';
 ---
 
 <BaseLayout
-  title="About & Ideas — James Reilly"
-  description="About James Reilly, and a feed of ideas, AI experiments, and work-in-progress."
+  title="About — James Reilly"
+  description="James Reilly is an AI product designer with 26 years across print, digital, and AI — currently IC at J.P. Morgan and founder of Aced-It."
 >
   <Nav />
   <main id="main" class="about-page">
-    <section
-      id="about"
-      class="about-intro mx-auto w-full max-w-[1920px] px-6 pt-28 pb-16 md:px-10 lg:px-16 lg:pt-32"
-      aria-labelledby="about-page-heading"
-    >
-      <p class="font-display text-xs font-bold uppercase tracking-[0.16em] text-muted">About</p>
-      <h1
-        id="about-page-heading"
-        class="font-display mt-6 text-[clamp(2.5rem,6vw,4.5rem)] font-bold uppercase leading-[0.9] tracking-[-0.03em] text-text"
-      >
-        James Reilly
-      </h1>
-      <p class="case-study-lede mt-4 max-w-2xl text-lg text-text/80 md:text-xl">
-        AI Product Designer
-      </p>
-
-      <div class="mt-12 grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,0.9fr)] lg:gap-16 lg:items-start">
-        <div class="space-y-6 text-base leading-relaxed text-text/85 md:text-lg md:leading-[1.75]">
-          <p>
-            I am an AI product designer with 26 years of experience, working in print, digital, and
-            now AI. I merge all three skill sets to cope with the rapid pace 2026 has brought upon
-            us. You are not hiring a specialist who only knows Figma interfaces or only knows model
-            prompting — you get someone who has shipped craft across decades of tools and still
-            treats the problem as the brief.
-          </p>
-          <p>
-            You get to work with one of the best designers in the business. You want to know my
-            process and all that bollocks? Well, here it is: always start with the problem. Why
-            are you delivering this work? What value does it bring to the business and the user?
-            Ask questions, as we always have done. Speak to users, build relationships with the
-            people building it, and you will go far with your product. It is not magic or
-            complicated. Communication is the key skill for successful product delivery.
-          </p>
-          <p>
-            I have done it all — from running my own companies, to building startups for others
-            0 to 1. I have freelanced for 15 years, working in studios and banks, producing work I
-            am proud of and collaborating with many wonderful people. I now work as an IC at
-            J.P. Morgan, embedded as an internal consultant on product design for the senior
-            leadership team, working between design, AI, and research.
-          </p>
-          <p>
-            Today, I sit in the Claude Code forum at the bank as the only designer who has a
-            license for it, running experiments daily to bring efficiencies to the design process
-            through the use of AI — and how AI can help us as designers without throwing craft out
-            with the hype.
-          </p>
-          <div class="pt-2 space-y-2 text-sm tracking-wide text-muted">
-            <p>
-              <a class="text-accent transition-opacity hover:opacity-70" href={`mailto:${email}`}>
-                {email}
-              </a>
-            </p>
-            <p>
-              <a class="transition-colors hover:text-accent" href="/#work">Case studies</a>
-            </p>
-          </div>
-        </div>
-
-        <div class="flex justify-center lg:justify-end">
-          <GlitchPortrait />
-        </div>
-      </div>
-    </section>
-
-    <section
-      id="ideas"
-      class="about-layout mx-auto w-full max-w-[1920px] border-t border-text/10 px-6 pt-16 pb-20 md:px-10 lg:px-16"
-      aria-label="Ideas"
-    >
-      <aside class="about-rail about-rail--intro">
-        <p class="font-display text-xs font-bold uppercase tracking-[0.16em] text-muted">Ideas</p>
-        <h2
-          class="font-display mt-6 text-[clamp(2rem,4vw,3rem)] font-bold uppercase leading-[0.9] tracking-[-0.02em] text-text"
-        >
-          Notes &amp;<br />experiments
-        </h2>
-        <p class="case-study-lede mt-6 max-w-sm text-base leading-relaxed text-text/80">
-          A place for experiments, notes, and work that does not fit a client case study. Scroll the
-          feed, open anything that looks interesting.
+    <article class="about-page__shell">
+      <header class="about-page__intro">
+        <p class="about-page__kicker font-display">About</p>
+        <h1 id="about-page-heading" class="about-page__name font-display">
+          James Reilly
+        </h1>
+        <p class="about-page__role font-serif">
+          AI product designer · J.P. Morgan IC · Founder, Aced-It
         </p>
-      </aside>
+      </header>
 
-      <div class="about-feed min-w-0">
-        <div class="mb-8 flex items-end justify-between gap-4 lg:mb-10">
-          <h2 class="font-display text-xs font-bold uppercase tracking-[0.16em] text-muted">
-            Ideas
-          </h2>
-          <p class="text-xs tracking-wide text-muted">{items.length} entries</p>
+      <div class="about-page__layout">
+        <div class="about-page__body">
+          <p>
+            I am an AI product designer with 26 years of experience working in print, digital, and
+            now AI. I merge all three to cope with the pace 2026 has forced on product teams.
+          </p>
+          <p>
+            The process is not magic. Always start with the problem. Why are you delivering this
+            work? What value does it bring to the business and the user? Ask questions. Speak to
+            users. Build relationships with the people building it. Communication is still the
+            skill that decides whether a product ships or dies in a deck.
+          </p>
+          <p>
+            I&apos;ve run my own companies and built startups for others from 0 to 1. Fifteen years
+            freelancing across studios and banks. I now work as an IC at J.P. Morgan, embedded as an
+            internal consultant on product design for the senior leadership team — moving between
+            design, AI, and research.
+          </p>
+          <p>
+            At the bank I sit on the Claude Code forum as the only designer with a license, running
+            experiments daily on how AI changes the design process and where it actually creates
+            leverage rather than noise. Outside of that I&apos;m building
+            <a href="https://acedit.app" target="_blank" rel="noopener noreferrer">Aced-It</a>
+            — interview prep for designers who need to walk into high-stakes hiring fully prepared.
+          </p>
+
+          <p class="about-page__contact">
+            Work, briefs, or a conversation:
+            <a href={`mailto:${email}`}>{email}</a>
+          </p>
         </div>
-        {
-          items.length > 0 ? (
-            <PlaygroundFeed items={items} />
-          ) : (
-            <p class="text-muted font-serif">
-              Nothing here yet — add an MDX file under <code>src/content/playground/</code>.
-            </p>
-          )
-        }
-      </div>
 
-      <aside class="about-rail about-rail--index">
-        <p class="font-display text-xs font-bold uppercase tracking-[0.16em] text-muted">Index</p>
-        <ul class="mt-6 space-y-3">
-          {
-            items.map((item) => (
-              <li>
-                <a
-                  href={`/playground/${item.slug}`}
-                  data-case-slug={item.slug}
-                  class="case-card-trigger group flex flex-col gap-0.5 text-left transition-colors hover:text-accent"
-                >
-                  <span class="font-display text-sm font-bold tracking-wide text-text group-hover:text-accent">
-                    {item.client}
-                  </span>
-                  <span class="text-xs tracking-wide text-muted">{item.year}</span>
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </aside>
-    </section>
+        <figure class="about-page__portrait">
+          <GlitchPortrait loading="eager" fetchpriority="high" />
+        </figure>
+      </div>
+    </article>
 
     <Footer thoughts={thoughts} />
   </main>
-
-  <CaseStudyPanels collection="playground" />
-  <CaseStudyOverlay
-    caseStudies={items}
-    pathPrefix="/playground"
-    closePath="/about"
-  />
 </BaseLayout>
 
-<style is:global>
+<style>
   .about-page {
-    scroll-behavior: auto;
+    color: var(--color-text);
+    background:
+      radial-gradient(ellipse 70% 45% at 85% 0%, rgba(0, 212, 255, 0.08), transparent 55%),
+      radial-gradient(ellipse 50% 40% at 0% 40%, rgba(255, 255, 255, 0.03), transparent 50%),
+      var(--color-bg);
   }
 
-  .about-layout {
+  .about-page__shell {
+    width: 100%;
+    max-width: 1920px;
+    margin-inline: auto;
+    padding: clamp(6rem, 12vh, 8rem) clamp(1.25rem, 4vw, 4rem) clamp(3rem, 6vh, 5rem);
+  }
+
+  .about-page__intro {
+    max-width: 48rem;
+    margin-bottom: clamp(2.5rem, 6vw, 4rem);
+  }
+
+  .about-page__kicker {
+    margin: 0 0 1rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .about-page__name {
+    margin: 0;
+    font-size: clamp(2.75rem, 7vw, 5rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    text-transform: uppercase;
+  }
+
+  .about-page__role {
+    margin: 1.25rem 0 0;
+    font-size: clamp(1.05rem, 2vw, 1.35rem);
+    font-style: italic;
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  .about-page__layout {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
   }
 
-  @media (min-width: 1024px) {
-    .about-layout {
-      grid-template-columns: minmax(220px, 280px) minmax(0, 1fr) minmax(180px, 240px);
-      gap: 2.5rem;
-      align-items: start;
+  @media (min-width: 960px) {
+    .about-page__layout {
+      grid-template-columns: minmax(0, 1.2fr) minmax(240px, 0.75fr);
+      gap: clamp(3rem, 6vw, 5rem);
+    }
+  }
+
+  .about-page__body {
+    display: grid;
+    gap: 1.35rem;
+    max-width: 40rem;
+  }
+
+  .about-page__body p {
+    margin: 0;
+    font-size: clamp(1.05rem, 1.35vw, 1.2rem);
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.86);
+  }
+
+  .about-page__body a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+    text-decoration-thickness: 1px;
+  }
+
+  .about-page__body a:hover,
+  .about-page__body a:focus-visible {
+    color: #fff;
+  }
+
+  .about-page__contact {
+    margin-top: 0.5rem !important;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    font-size: 1rem !important;
+    color: var(--color-muted) !important;
+  }
+
+  .about-page__portrait {
+    margin: 0;
+    width: 100%;
+    max-width: 24rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  @media (min-width: 960px) {
+    .about-page__portrait {
+      position: sticky;
+      top: 6.5rem;
+      justify-self: end;
+      justify-content: flex-end;
+    }
+  }
+
+  @media (max-width: 959px) {
+    .about-page__portrait {
+      order: -1;
     }
   }
 </style>

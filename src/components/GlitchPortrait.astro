@@ -2,22 +2,28 @@
 interface Props {
   src?: string;
   alt?: string;
+  class?: string;
+  loading?: 'lazy' | 'eager';
+  fetchpriority?: 'high' | 'low' | 'auto';
 }
 
 const {
   src = '/images/me.png',
   alt = 'Portrait of James Reilly, AI Product Designer',
+  class: className,
+  loading = 'lazy',
+  fetchpriority = 'auto',
 } = Astro.props;
 ---
 
-<div class="glitch-portrait">
+<div class:list={['glitch-portrait', className]}>
   <div class="glitch-portrait__stage">
     <img
       class="glitch-portrait__layer glitch-portrait__layer--cyan"
       src={src}
       alt=""
       aria-hidden="true"
-      loading="lazy"
+      loading={loading}
       decoding="async"
       width="480"
       height="480"
@@ -27,7 +33,7 @@ const {
       src={src}
       alt=""
       aria-hidden="true"
-      loading="lazy"
+      loading={loading}
       decoding="async"
       width="480"
       height="480"
@@ -37,7 +43,7 @@ const {
       src={src}
       alt=""
       aria-hidden="true"
-      loading="lazy"
+      loading={loading}
       decoding="async"
       width="480"
       height="480"
@@ -47,7 +53,7 @@ const {
       src={src}
       alt=""
       aria-hidden="true"
-      loading="lazy"
+      loading={loading}
       decoding="async"
       width="480"
       height="480"
@@ -57,7 +63,7 @@ const {
       src={src}
       alt=""
       aria-hidden="true"
-      loading="lazy"
+      loading={loading}
       decoding="async"
       width="480"
       height="480"
@@ -66,7 +72,8 @@ const {
       class="glitch-portrait__base"
       src={src}
       alt={alt}
-      loading="lazy"
+      loading={loading}
+      fetchpriority={fetchpriority}
       decoding="async"
       width="480"
       height="480"
@@ -123,31 +130,31 @@ const {
   .glitch-portrait__layer--cyan {
     z-index: 2;
     filter: contrast(1.05) saturate(1.5) hue-rotate(155deg) brightness(1.02);
-    animation: glitch-cyan 5s ease-in-out infinite;
+    animation: glitch-cyan 7.5s ease-in-out infinite;
   }
 
   .glitch-portrait__layer--magenta {
     z-index: 3;
     filter: contrast(1.05) saturate(1.6) hue-rotate(285deg) brightness(1.01);
-    animation: glitch-magenta 5.4s ease-in-out infinite;
+    animation: glitch-magenta 8s ease-in-out infinite;
   }
 
   .glitch-portrait__layer--yellow {
     z-index: 4;
     filter: contrast(1.03) saturate(1.45) hue-rotate(25deg) brightness(1.03);
-    animation: glitch-yellow 4.8s ease-in-out infinite;
+    animation: glitch-yellow 7.2s ease-in-out infinite;
   }
 
   .glitch-portrait__layer--red {
     z-index: 4;
     filter: contrast(1.06) saturate(1.65) hue-rotate(350deg) brightness(1);
-    animation: glitch-red 5.8s ease-in-out infinite;
+    animation: glitch-red 8.5s ease-in-out infinite;
   }
 
   .glitch-portrait__layer--green {
     z-index: 5;
     filter: contrast(1.04) saturate(1.5) hue-rotate(85deg) brightness(1.02);
-    animation: glitch-green 6.2s ease-in-out infinite;
+    animation: glitch-green 9s ease-in-out infinite;
   }
 
   @keyframes glitch-cyan {

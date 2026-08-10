@@ -2,6 +2,8 @@
   id="site-nav"
   class="site-nav fixed inset-x-0 top-0 z-50 bg-bg"
   aria-label="Main navigation"
+  transition:persist="site-nav"
+  transition:name="site-nav"
 >
   <div class="mx-auto flex w-full max-w-[1920px] items-center justify-between px-6 py-6 md:px-10 md:py-6 lg:px-16">
     <a href="/" class="nav-logo render-crisp text-white group" aria-label="James Reilly home">
@@ -46,7 +48,7 @@
         <a href="/about" class="transition-colors hover:text-accent">About</a>
       </li>
       <li>
-        <a href="/about#ideas" class="transition-colors hover:text-accent">Ideas</a>
+        <a href="/ideas" class="transition-colors hover:text-accent">Ideas</a>
       </li>
       <li>
         <a href="/#contact" data-carousel-end-align class="transition-colors hover:text-accent">Contact</a>

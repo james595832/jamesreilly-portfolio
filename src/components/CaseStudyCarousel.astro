@@ -70,8 +70,6 @@ const sorted = [...caseStudies].sort((a, b) => a.order - b.order);
       reinitEmblaCarousels();
     }
 
-    boot();
-    requestAnimationFrame(refresh);
     document.addEventListener('astro:page-load', () => {
       boot();
       requestAnimationFrame(refresh);
