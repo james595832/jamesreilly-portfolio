@@ -6,41 +6,236 @@ interface Props {
 }
 
 const { study } = Astro.props;
+
+/** Prefer explicit tags; fall back to role/year so empty frontmatter still reads. */
+const chips = (
+  study.tags?.length
+    ? study.tags
+    : [study.role, study.year].filter(Boolean)
+).slice(0, 6);
+
+const heroSrc = study.cardImage || study.heroImage;
+const heroAlt = `${study.client} — ${study.title}`;
+const principles = study.principles;
 ---
 
-<section class="case-study-landing-header mx-auto w-full max-w-[1400px] px-6 pt-4 md:px-10 md:pt-6 lg:px-16">
-  <div class="mx-auto flex max-w-3xl flex-col items-center text-center">
+<section class="case-study-landing-header">
+  <div class="case-study-landing-header__intro">
     {
       study.nda && (
-        <p class="case-study-nda mb-6 font-display text-[11px] font-bold uppercase tracking-[0.18em] text-muted md:mb-8">
-          Under NDA
-        </p>
+        <p class="case-study-landing-header__nda font-display">Under NDA</p>
       )
     }
-    <h1 class="text-text text-[clamp(2.75rem,8vw,5.5rem)] uppercase text-balance">
+
+    <h1 class="case-study-landing-header__title font-display">
       {study.client}
     </h1>
 
-    <p class="case-study-summary mt-8 max-w-xl text-pretty text-base leading-[1.7] md:mt-10 md:text-lg md:leading-[1.75]">
-      {study.summary}
-    </p>
+    {
+      study.summary && (
+        <p class="case-study-landing-header__summary">{study.summary}</p>
+      )
+    }
 
-    <p class="case-study-meta mt-5 text-sm tracking-wide text-muted">
-      {study.year} · {study.role}
-    </p>
+    {
+      chips.length > 0 && (
+        <ul class="case-study-landing-header__chips" aria-label="Topics">
+          {chips.map((chip) => (
+            <li class="case-study-landing-header__chip font-display">{chip}</li>
+          ))}
+        </ul>
+      )
+    }
+
+    <dl class="case-study-landing-header__principles">
+      <div>
+        <dt class="font-display">Problem</dt>
+        <dd>{principles.problem}</dd>
+      </div>
+      <div>
+        <dt class="font-display">Constraint</dt>
+        <dd>{principles.constraint}</dd>
+      </div>
+      <div>
+        <dt class="font-display">Decision</dt>
+        <dd>{principles.decision}</dd>
+      </div>
+      <div>
+        <dt class="font-display">Result</dt>
+        <dd>{principles.result}</dd>
+      </div>
+    </dl>
   </div>
 
-  <div class="mx-auto mt-12 h-px w-full max-w-3xl bg-text/10 md:mt-16" aria-hidden="true"></div>
+  {
+    heroSrc && (
+      <figure class="case-study-landing-header__hero">
+        <div
+          class="case-study-landing-header__hero-frame"
+          style={
+            study.cardColor
+              ? `background-color: ${study.cardColor}`
+              : undefined
+          }
+        >
+          <img
+            src={heroSrc}
+            alt={heroAlt}
+            class="case-study-landing-header__hero-img"
+            width="1600"
+            height="1000"
+            decoding="async"
+            fetchpriority="high"
+          />
+        </div>
+      </figure>
+    )
+  }
+
+  {
+    !heroSrc && (
+      <div class="case-study-landing-header__rule" aria-hidden="true" />
+    )
+  }
 </section>
 
 <style is:global>
+  .case-study-landing-header {
+    width: 100%;
+    max-width: 1400px;
+    margin-inline: auto;
+    padding: 0.75rem clamp(1.25rem, 4vw, 4rem) 0;
+  }
+
   .case-study-landing-header--expanded {
-    padding-top: 1.5rem;
+    padding-top: 0.75rem;
   }
 
   @media (min-width: 768px) {
     .case-study-landing-header--expanded {
-      padding-top: 2.5rem;
+      padding-top: 0.75rem;
     }
+  }
+
+  .case-study-landing-header__intro {
+    max-width: 42rem;
+    margin-inline: 0;
+    text-align: left;
+  }
+
+  .case-study-landing-header__nda {
+    margin: 0 0 1rem;
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .case-study-landing-header__title {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+    color: var(--color-heading);
+  }
+
+  .case-study-landing-header__summary {
+    margin: 1rem 0 0;
+    max-width: 40rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.55;
+    color: var(--color-text);
+    text-wrap: pretty;
+  }
+
+  .case-study-landing-header__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 1.35rem 0 0;
+    padding: 0;
+  }
+
+  .case-study-landing-header__chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.85rem;
+    padding: 0.3rem 0.8rem;
+    border: 1px solid color-mix(in srgb, var(--color-accent) 32%, transparent);
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    color: var(--color-accent);
+    background: color-mix(in srgb, var(--color-accent) 8%, transparent);
+  }
+
+  .case-study-landing-header__principles {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem 1.5rem;
+    margin: 1.75rem 0 0;
+    max-width: 42rem;
+  }
+
+  @media (min-width: 640px) {
+    .case-study-landing-header__principles {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .case-study-landing-header__principles dt {
+    margin: 0 0 0.3rem;
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .case-study-landing-header__principles dd {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--color-text);
+  }
+
+  .case-study-landing-header__hero {
+    margin: clamp(1.75rem, 4vh, 2.75rem) 0 0;
+    width: 100%;
+  }
+
+  .case-study-landing-header__hero-frame {
+    overflow: hidden;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    background: var(--color-surface, #eee8de);
+  }
+
+  .case-study-landing-header__hero-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .case-study-landing-header__rule {
+    width: 100%;
+    max-width: 40rem;
+    margin: clamp(1.75rem, 4vh, 2.5rem) 0 0;
+    height: 1px;
+    background: color-mix(in srgb, currentColor 12%, transparent);
+  }
+
+  .case-study-landing-header + * {
+    margin-top: clamp(1.5rem, 3.5vh, 2.25rem);
   }
 </style>

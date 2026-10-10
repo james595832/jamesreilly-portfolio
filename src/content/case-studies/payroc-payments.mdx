@@ -1,10 +1,15 @@
 ---
-title: "Payroc Payments"
-client: "Payroc Payments"
-role: "Design Manager"
-year: "2020"
-summary: "Building a design function and shipping enterprise products in one year"
-color: "#00D4FF"
+title: "Design function"
+client: "Payroc"
+role: "Design manager"
+year: "2020–22"
+summary: "Hired as the first designer. In a year: a team, a design system, the website, developer docs, a support hub, and Partner Engage."
+principles:
+  problem: "Several payments companies had merged. There was no design function, and the public site no longer matched the business."
+  constraint: "I started on my own, fully remote, with a year to show a company that could sit next to Stripe and Adyen."
+  decision: "Hire, put a system under the work, then ship the products that had to share it."
+  result: "Website, developer docs, support hub, Partner Engage, and a design system, in twelve months."
+color: "#4A5D4E"
 cardImage: "/images/case-studies/payroc/payroc_overview.png"
 cardColor: "#E4DBD6"
 themeBackground: "#E4DBD6"
@@ -16,56 +21,54 @@ order: 4
 import TextBlock from '../../components/blocks/TextBlock.astro';
 import ImageBlock from '../../components/blocks/ImageBlock.astro';
 
-<TextBlock>
-  Payroc was a fun time. It was 100% remote and felt like a start up. Multiple merged companies with no design capability and an appetite to grow. Payroc operate in the same space as J.P. Morgan, Stripe and Adyen. Payment processing, and making money off the back of that processing.
+<TextBlock title="What I was asked to do">
+  Payroc was fully remote and still felt like a startup. Several companies had merged. There was an appetite to grow, and no design capability. The business is card processing, in the same space as Stripe, Adyen, and J.P. Morgan.
 
-  I was hired as a design manager when there was just me. Inside a year my team delivered a new enterprise website, a developer documentation portal, a support hub, an internal selling platform, Partner Engage, and a design system to keep it all consistent.
+  I was hired as design manager when the design team was me. Polishing the marketing site and hiring later would have left every product with a different face. I hired, put a design system under the work, and then shipped the things that had to share it.
+</TextBlock>
+
+<TextBlock title="What I did">
+  The public site had to read as one company, on a laptop, a tablet, and a phone. The old site did a job, and it looked like a smaller firm next to the products we were about to build. A reskin would have been faster. It would also have kept an information architecture that could not take more products. The new site has a clearer product story and room to add to it, so sales could send the link without apologising for it.
+
+  Partner Engage was the largest product: partners and merchants managing a portfolio, with reporting and onboarding. The existing platform worked, and it felt like a merger. Dense navigation, and reporting you had to decode. I did not start in Figma. I ran discovery with sales, product, and leadership: what they were trying to do, where the current tool failed, and what we could measure. The redesign is that list. A partner can see the book of merchants and move through it. Navigation, reporting, and onboarding follow how they work, not how the old menus were filed.
+
+  Support was becoming a queue of how-to calls. I designed a support hub in the same direction as Partner Engage, so a customer does not feel they have left the company to find an answer. Integrators were a different audience. The marketing site was never going to serve them. The developer portal holds the APIs, onboarding, and reference.
+
+  Those four surfaces only stay related if the components, patterns, and brand rules are shared. The design system was not a file I made at the end. It is what let a new team ship a year of product without four visual languages.
 </TextBlock>
 
 <ImageBlock
   src="/images/case-studies/payroc/payroc_overview.png"
   alt="Payroc overview showing the redesigned website across laptop, tablet and mobile"
-  caption="Overview of the Payroc experience we shipped across web, tablet and mobile."
+  caption="The public site as one system, on laptop, tablet, and mobile."
   fullWidth
   bleed
   transparent
   themeTrigger
 />
 
-<TextBlock title="The existing website">
-  This is where we started. A marketing site that did the job, but felt dated next to the products we were building behind the scenes. It needed a proper enterprise presence to match the scale of the business.
-</TextBlock>
-
 <ImageBlock
   src="/images/case-studies/payroc/old_website.jpg"
   alt="The original Payroc marketing website before the redesign"
-  caption="The existing Payroc website, the baseline we redesigned from."
+  caption="The marketing site I replaced."
   fullWidth
   bleed
   transparent
 />
-
-<TextBlock title="The new website">
-  The new site gave Payroc a modern enterprise face. Clearer hierarchy, stronger product storytelling, and a structure that could grow as the portfolio expanded.
-</TextBlock>
 
 <ImageBlock
   src="/images/case-studies/payroc/new_website.jpg"
   alt="The redesigned Payroc marketing website"
-  caption="The new Payroc website, built to feel like a serious payments company at scale."
+  caption="The new site: a product story, and room to add more."
   fullWidth
   bleed
   transparent
 />
 
-<TextBlock title="Partner Engage">
-  Partner Engage was one of the biggest bets. A platform for partners and merchants to manage portfolios, reporting, and onboarding. We did not jump straight to pixels. We ran discovery workshops with sales, product, and leadership to understand what the platform needed to do and where the old experience was failing people.
-</TextBlock>
-
 <ImageBlock
   src="/images/case-studies/payroc/discovery.png"
   alt="Partner Engage discovery workshop board showing goals, gaps, and success measures"
-  caption="Discovery workshops mapping goals, gaps, adverse effects, and what we could measure."
+  caption="Partner Engage discovery: goals, gaps, and what we could measure."
   fullWidth
   bleed
   transparent
@@ -74,81 +77,63 @@ import ImageBlock from '../../components/blocks/ImageBlock.astro';
 <ImageBlock
   src="/images/case-studies/payroc/Frame 1.png"
   alt="Partner Engage research board capturing stakeholder goals and requirements"
-  caption="Stakeholder interviews and research sessions that shaped the Partner Engage brief."
+  caption="Stakeholder sessions, before any dashboard was drawn."
   fullWidth
   bleed
   transparent
 />
-
-<TextBlock title="The old Partner Engage">
-  The legacy platform worked, but it felt clunky. Reporting was hard to parse, navigation was dense, and it did not reflect the product Payroc was becoming.
-</TextBlock>
 
 <ImageBlock
   src="/images/case-studies/payroc/Payroc_Partner_Engage.png"
   alt="The original Payroc Partner Engage merchant dashboard"
-  caption="The original Partner Engage experience we replaced."
+  caption="The Partner Engage dashboard we were replacing."
   fullWidth
   bleed
   transparent
 />
-
-<TextBlock title="Partner Engage, redesigned">
-  The modern platform brought clarity to the dashboard, simplified navigation, and gave partners a view of their portfolio that actually matched how they work day to day.
-</TextBlock>
 
 <ImageBlock
   src="/images/case-studies/payroc/Payroc_Partner_engage_modern.png"
   alt="The redesigned Payroc Partner Engage platform"
-  caption="The redesigned Partner Engage platform, informed by discovery and research."
+  caption="Portfolio, reporting, and onboarding after discovery."
   fullWidth
   bleed
   transparent
 />
-
-<TextBlock title="Support Hub">
-  Alongside Partner Engage we shipped a support hub so customers could self-serve, find answers faster, and reduce the load on internal support teams.
-</TextBlock>
 
 <ImageBlock
   src="/images/case-studies/payroc/Payroc Support Hub.png"
   alt="Payroc Support Hub platform"
-  caption="The Payroc Support Hub, one of the modern platforms built under the same design direction."
+  caption="Support hub, in the same design direction as the rest of the suite."
   fullWidth
   bleed
   transparent
 />
-
-<TextBlock title="Developer portal">
-  Payroc is tech-focused. The developer portal gave partners and integrators the documentation, APIs, and onboarding they needed without hunting through scattered resources.
-</TextBlock>
 
 <ImageBlock
   src="/images/case-studies/payroc/Payroc developer portal.png"
   alt="Payroc developer documentation portal"
-  caption="The developer portal, built for the technical audience Payroc serves."
+  caption="Developer portal: APIs, onboarding, and reference."
   fullWidth
   bleed
   transparent
 />
-
-<TextBlock title="The design system">
-  None of this stays consistent without a system behind it. We built a Payroc design system so every product, from marketing to Partner Engage to internal tools, could share components, patterns, and brand logic. That is what made shipping this much product in one year possible.
-</TextBlock>
 
 <ImageBlock
   src="/images/case-studies/payroc/Payroc Design System.png"
   alt="Payroc design system components and documentation"
-  caption="The Payroc design system that kept every platform consistent and on brand."
+  caption="The design system shared by the site, the hub, the portal, and Partner Engage."
   fullWidth
   bleed
   transparent
 />
 
-<TextBlock title="How we worked">
-  It would go like this: attend a meeting with leadership, leadership list problems, I step forward with an idea to fix it, go back to the team to scope it, research it and prototype it, then back to the board with the idea, then get engineering to build it.
+<TextBlock title="How I worked">
+  Leadership would list the problems. I came back with a scoped proposal, researched and prototyped it, took it back, and then it went to engineering. The teams were small, so I could talk to the people who could say yes. At that table the useful sentence was about the operation, not about the craft. Fewer calls, a partner who can read their own book, an integrator who can find the API.
 
-  I guess we got so much done because we worked in small teams and I had direct access to decision makers. It was easy for me to go back: "Me and this decision will reduce customer calls by 60 percent." Always give detailed numbers to leadership. No one cares about the craft at that level. Harsh but true.
+  What you see is my direction, carried by very good designers. I left because I was not designing enough myself. I went back to doing the work.
+</TextBlock>
 
-  The work you see here is my direction but carried out by some incredibly talented designers. That was the reason I left. I was not on the tools as much. I left for an individual contributor role rather than a design leadership role.
+<TextBlock title="What came of it">
+  In twelve months: a design team, a design system, the enterprise website, developer documentation, a support hub, and Partner Engage.
 </TextBlock>

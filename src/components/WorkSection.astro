@@ -1,5 +1,4 @@
 ---
-import CaseStudyCarousel from './CaseStudyCarousel.astro';
 import type { CaseStudyMeta } from '../types/caseStudy';
 
 interface Props {
@@ -7,17 +6,190 @@ interface Props {
 }
 
 const { caseStudies } = Astro.props;
+
+const entries: Record<string, { title: string; detail: string }> = {
+  'jp-morgan': {
+    title: 'Lead product designer, Application Management at J.P. Morgan',
+    detail:
+      'I lead the design strategy, bringing several teams’ products into one. I created the brand, rolled it out to four development teams, and got them onto one codebase and one design system. 100,000+ users.',
+  },
+  'aced-it': {
+    title: 'Founder at Aced-It',
+    detail: 'Live product for design interviews. I own it, and it ships.',
+  },
+  'natwest-bank': {
+    title: 'Product design consultant at NatWest',
+    detail:
+      'Card-based online banking from branch research — what customers actually open the app for.',
+  },
+  'payroc-payments': {
+    title: 'Design manager at Payroc',
+    detail: 'Built a design function and shipped enterprise payments products in one year.',
+  },
+  'virgin-money': {
+    title: 'Product design consultant at Virgin Money',
+    detail:
+      'Online account opening, business banking, and a £35M Capability & Innovation Fund win.',
+  },
+};
+
+const interviewOrder = [
+  'jp-morgan',
+  'aced-it',
+  'payroc-payments',
+  'natwest-bank',
+  'virgin-money',
+];
+
+const bySlug = new Map(caseStudies.map((study) => [study.slug, study]));
+const ordered = interviewOrder
+  .map((slug) => bySlug.get(slug))
+  .filter((study): study is CaseStudyMeta => Boolean(study));
+
 ---
 
-<section id="work" class="mx-auto w-full max-w-[1920px] px-6 py-24 md:px-10 lg:px-16" aria-labelledby="work-heading">
-  <div class="w-full">
-    <h2
-      id="work-heading"
-      class="font-display mb-12 text-3xl font-bold tracking-tight md:text-4xl"
-    >
-      Case studies
-    </h2>
-  </div>
+<section id="work" class="work-index" aria-labelledby="work-heading">
+  <h2 id="work-heading" class="work-index__heading font-display">Selected work</h2>
 
-  <CaseStudyCarousel caseStudies={caseStudies} />
+  <ul class="work-index__list" data-work-index>
+    {
+      ordered.map((study) => {
+        const entry = entries[study.slug];
+        return (
+          <li class="work-index__row">
+            <a
+              href={`/work/${study.slug}`}
+              data-case-slug={study.slug}
+              class="case-card-trigger work-index__link"
+            >
+              <span class="work-index__year">{study.year}</span>
+              <div class="work-index__body">
+                <h3 class="work-index__name">{entry?.title ?? study.client}</h3>
+                <p class="work-index__detail">{entry?.detail ?? study.summary}</p>
+                <span class="work-index__more">
+                  Read case study
+                  {study.nda ? <span class="work-index__nda">NDA</span> : null}
+                </span>
+              </div>
+            </a>
+          </li>
+        );
+      })
+    }
+  </ul>
 </section>
+
+<style>
+  .work-index {
+    width: 100%;
+    max-width: none;
+    margin-inline: 0;
+    padding-inline: 0;
+    padding-bottom: 4.5rem;
+  }
+
+  .work-index__heading {
+    margin: 0 0 1.25rem;
+    font-size: 1.5rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+    line-height: 1.3;
+    color: var(--color-subhead);
+  }
+
+  .work-index__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .work-index__row + .work-index__row {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    background-image: repeating-linear-gradient(
+      to right,
+      color-mix(in srgb, var(--color-text) 28%, transparent) 0 3px,
+      transparent 3px 8px
+    );
+    background-size: 100% 1px;
+    background-repeat: no-repeat;
+    background-position: top left;
+  }
+
+  .work-index__link {
+    display: grid;
+    grid-template-columns: 7.25rem minmax(0, 1fr);
+    gap: 0.35rem 1.75rem;
+    align-items: start;
+    text-decoration: none;
+    color: inherit;
+    outline: none;
+  }
+
+  .work-index__link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 6px;
+  }
+
+  .work-index__year {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.4;
+    color: var(--color-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .work-index__name {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 1.4;
+    color: var(--color-text);
+  }
+
+  .work-index__detail {
+    margin: 0.35rem 0 0;
+    max-width: 38rem;
+    font-family: var(--font-body);
+    font-style: normal;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.45;
+    color: var(--color-muted);
+  }
+
+  .work-index__more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-top: 0.45rem;
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    color: var(--color-accent);
+  }
+
+  .work-index__nda {
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .work-index__link:hover .work-index__name,
+  .work-index__link:focus-visible .work-index__name {
+    color: var(--color-accent);
+  }
+
+  @media (max-width: 640px) {
+    .work-index__link {
+      grid-template-columns: 1fr;
+      gap: 0.2rem;
+    }
+
+  }
+</style>

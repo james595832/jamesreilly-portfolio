@@ -1,7 +1,7 @@
 import gsap from 'gsap';
 import { initWorkflowDiagrams } from './workflow-diagram-init';
 import { initClaudeProcessDiagrams } from './claude-process-init';
-import { initEmblaCarousels, reinitEmblaCarousels, ensureCaseStudyCardClicks } from './embla-init';
+import { ensureCaseStudyCardClicks } from './case-study-clicks';
 import {
   consumePendingCaseStudyOpen,
   registerCaseStudyOpenHandler,
@@ -13,9 +13,13 @@ const SHEET_TOP_GAP = 48;
 const SHEET_RADIUS = 24;
 const SHEET_INSET = 20;
 const EXPAND_SCROLL = 180;
-const SURFACE_COLOR = '#1a1a1a';
-const BACKDROP_OPACITY_SHEET = 0.72;
-const BACKDROP_OPACITY_FULL = 1;
+const SURFACE_COLOR = '#f4efe7';
+const INK_COLOR = '#1a1a1a';
+const INK_MUTED = '#6a6560';
+const BACKDROP_OPACITY_SHEET = 0.28;
+const BACKDROP_OPACITY_FULL = 0.45;
+/** Sheet + scroll-to-expand is a desktop flourish. Phones get a plain full-screen page. */
+const COMPACT_QUERY = '(max-width: 767px)';
 
 export interface CaseStudyOverlayConfig {
   caseStudies: CaseStudyMeta[];
@@ -68,7 +72,7 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
   const contentEl = overlay.querySelector<HTMLElement>('[data-overlay-content]');
   const closeBtn = overlay.querySelector<HTMLButtonElement>('[data-overlay-close]');
   const headerSlot = overlay.querySelector<HTMLElement>('[data-overlay-header-slot]');
-  const carouselRoot = overlay.querySelector<HTMLElement>('[data-overlay-carousel] [data-embla-root]');
+  const moreList = overlay.querySelector<HTMLElement>('[data-overlay-more]');
   const authorBand = overlay.querySelector<HTMLElement>('[data-overlay-author]');
 
   if (!backdrop || !sheet || !motion || !scrollEl || !contentEl || !closeBtn || !headerSlot) {
@@ -83,6 +87,8 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
   const showAuthorBand = Boolean(config.showAuthorBand);
   const studyBySlug = new Map(caseStudies.map((study) => [study.slug, study]));
   const pathPattern = new RegExp(`^${pathPrefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}/([^/]+)`);
+  const compactMq = window.matchMedia(COMPACT_QUERY);
+  const isCompact = () => compactMq.matches;
 
   const syncAuthorBand = () => {
     if (!authorBand) return;
@@ -118,7 +124,7 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
   const applyScrollTheme = (
     progress: number,
     themeColor?: string,
-    themeSurface: string = SURFACE_COLOR,
+    _themeSurface: string = SURFACE_COLOR,
   ) => {
     const headerEl = scrollEl.querySelector<HTMLElement>('.case-study-landing-header');
     const clamped = Math.max(0, Math.min(1, progress));
@@ -126,111 +132,71 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
     if (!themeColor) {
       scrollEl.style.removeProperty('--case-theme-p');
       scrollEl.style.removeProperty('--case-theme-color');
-      scrollEl.style.removeProperty('--case-ink-color');
-      scrollEl.style.removeProperty('--case-ink-muted');
+      scrollEl.style.setProperty('--case-ink-color', INK_COLOR);
+      scrollEl.style.setProperty('--case-ink-muted', INK_MUTED);
       scrollEl.style.removeProperty('color');
       scrollEl.removeAttribute('data-theme-scroll');
       scrollEl.removeAttribute('data-theme-ink');
-      scrollEl.removeAttribute('data-theme-light');
+      scrollEl.setAttribute('data-theme-light', 'true');
       clearCopyInk();
-      closeBtn.style.removeProperty('color');
+      closeBtn.style.color = INK_COLOR;
       sheet.style.removeProperty('--case-theme-p');
       sheet.style.removeProperty('--case-theme-color');
-      sheet.style.removeProperty('--case-ink-color');
-      sheet.style.removeProperty('--case-ink-muted');
-      sheet.style.removeProperty('background-color');
+      sheet.style.setProperty('--case-ink-color', INK_COLOR);
+      sheet.style.setProperty('--case-ink-muted', INK_MUTED);
+      sheet.style.backgroundColor = SURFACE_COLOR;
       sheet.removeAttribute('data-theme-scroll');
       sheet.removeAttribute('data-theme-ink');
-      sheet.removeAttribute('data-theme-light');
+      sheet.setAttribute('data-theme-light', 'true');
       return;
     }
 
     const destinationIsLight = isLightThemeColor(themeColor);
-
     /*
-     * Opening state for light destinations (cream/white): stay on the dark
-     * surface with white copy — same as every other case study — until the
-     * theme-trigger image actually scrolls into the transition band.
+     * Cream sheet, charcoal copy. Light studies may tint slightly.
+     * Dark brand washes stay off so type never leaves #1a1a1a / sage.
      */
-    if (destinationIsLight && clamped <= 0.001) {
-      clearCopyInk();
-      scrollEl.style.setProperty('--case-theme-p', '0');
-      scrollEl.style.setProperty('--case-theme-color', themeColor);
-      scrollEl.style.setProperty('--case-ink-color', 'rgba(255, 255, 255, 0.92)');
-      scrollEl.style.setProperty('--case-ink-muted', '#888888');
-      scrollEl.setAttribute('data-theme-scroll', 'true');
-      scrollEl.setAttribute('data-theme-ink', 'light');
-      scrollEl.setAttribute('data-theme-light', 'false');
-      sheet.style.setProperty('--case-theme-p', '0');
-      sheet.style.setProperty('--case-theme-color', themeColor);
-      sheet.style.setProperty('--case-ink-color', 'rgba(255, 255, 255, 0.92)');
-      sheet.style.setProperty('--case-ink-muted', '#888888');
-      sheet.setAttribute('data-theme-scroll', 'true');
-      sheet.setAttribute('data-theme-ink', 'light');
-      sheet.setAttribute('data-theme-light', 'false');
-      sheet.style.backgroundColor = themeSurface;
-      closeBtn.style.color = 'rgba(255, 255, 255, 0.92)';
-      return;
-    }
+    const wash = destinationIsLight ? clamped : 0;
+    const sheetColor =
+      wash <= 0.001
+        ? SURFACE_COLOR
+        : `color-mix(in srgb, ${SURFACE_COLOR} ${(1 - wash) * 100}%, ${themeColor} ${wash * 100}%)`;
 
-    const ink = destinationIsLight ? 'dark' : 'light';
-    const inkProgress = ink === 'dark' ? Math.min(1, clamped * 2.2) : clamped;
-
-    const inkColor =
-      ink === 'dark'
-        ? `color-mix(in srgb, rgba(255, 255, 255, 0.92) ${(1 - inkProgress) * 100}%, #000000 ${inkProgress * 100}%)`
-        : `color-mix(in srgb, rgba(255, 255, 255, 0.85) ${(1 - inkProgress) * 100}%, #ffffff ${inkProgress * 100}%)`;
-
-    const mutedInkColor =
-      ink === 'dark'
-        ? `color-mix(in srgb, #888888 ${(1 - inkProgress) * 100}%, #444444 ${inkProgress * 100}%)`
-        : `color-mix(in srgb, #888888 ${(1 - inkProgress) * 100}%, rgba(255, 255, 255, 0.72) ${inkProgress * 100}%)`;
-
-    scrollEl.style.setProperty('--case-theme-p', String(inkProgress));
+    scrollEl.style.setProperty('--case-theme-p', String(wash));
     scrollEl.style.setProperty('--case-theme-color', themeColor);
-    scrollEl.style.setProperty('--case-ink-color', inkColor);
-    scrollEl.style.setProperty('--case-ink-muted', mutedInkColor);
+    scrollEl.style.setProperty('--case-ink-color', INK_COLOR);
+    scrollEl.style.setProperty('--case-ink-muted', INK_MUTED);
     scrollEl.setAttribute('data-theme-scroll', 'true');
-    scrollEl.setAttribute('data-theme-ink', ink);
-    scrollEl.setAttribute('data-theme-light', ink === 'dark' ? 'true' : 'false');
+    scrollEl.setAttribute('data-theme-ink', 'dark');
+    scrollEl.setAttribute('data-theme-light', 'true');
 
-    sheet.style.setProperty('--case-theme-p', String(inkProgress));
+    sheet.style.setProperty('--case-theme-p', String(wash));
     sheet.style.setProperty('--case-theme-color', themeColor);
-    sheet.style.setProperty('--case-ink-color', inkColor);
-    sheet.style.setProperty('--case-ink-muted', mutedInkColor);
+    sheet.style.setProperty('--case-ink-color', INK_COLOR);
+    sheet.style.setProperty('--case-ink-muted', INK_MUTED);
     sheet.setAttribute('data-theme-scroll', 'true');
-    sheet.setAttribute('data-theme-ink', ink);
-    sheet.setAttribute('data-theme-light', ink === 'dark' ? 'true' : 'false');
-    sheet.style.backgroundColor =
-      clamped === 0
-        ? themeSurface
-        : `color-mix(in srgb, ${themeSurface} ${(1 - clamped) * 100}%, ${themeColor} ${clamped * 100}%)`;
+    sheet.setAttribute('data-theme-ink', 'dark');
+    sheet.setAttribute('data-theme-light', 'true');
+    sheet.style.backgroundColor = sheetColor;
+    closeBtn.style.color = INK_COLOR;
 
-    closeBtn.style.color = inkColor;
-
-    if (ink === 'dark') {
-      headerEl?.style.setProperty('--case-copy-ink', inkColor);
-      headerEl?.style.setProperty('--case-copy-muted', mutedInkColor);
-      contentEl.style.setProperty('--case-copy-ink', inkColor);
-      contentEl.style.setProperty('--case-copy-muted', mutedInkColor);
-
-      scrollEl
-        .querySelectorAll<HTMLElement>(
-          '.case-study-summary, .case-study-meta, .case-study-copy, .case-study-copy p, .case-study-body p, .case-study-body li, .case-study-body .prose-case',
-        )
-        .forEach((el) => {
-          const useMuted =
-            el.classList.contains('case-study-meta') || el.classList.contains('text-muted');
-          el.style.setProperty('color', useMuted ? mutedInkColor : inkColor, 'important');
-          el.dataset.caseCopyInk = 'true';
-        });
-    } else {
-      clearCopyInk();
-    }
+    headerEl?.style.setProperty('--case-copy-ink', INK_COLOR);
+    headerEl?.style.setProperty('--case-copy-muted', INK_MUTED);
+    contentEl.style.setProperty('--case-copy-ink', INK_COLOR);
+    contentEl.style.setProperty('--case-copy-muted', INK_MUTED);
   };
 
   const getThemeProgress = (): number => {
-    const trigger = contentEl.querySelector<HTMLElement>('[data-case-theme-trigger]');
+    /*
+     * Prefer theme triggers in the body (first MDX image with data-case-theme-trigger).
+     * Do not use the landing-header hero — it sits in view at open and would slam
+     * the ink theme to ~1 on the first paint, then thrash as geometry expands.
+     */
+    const trigger =
+      contentEl.querySelector<HTMLElement>('[data-case-theme-trigger]') ??
+      scrollEl.querySelector<HTMLElement>(
+        '.case-study-body [data-case-theme-trigger], [data-overlay-content] [data-case-theme-trigger]',
+      );
     if (!trigger) return 0;
 
     const viewport = scrollEl.getBoundingClientRect();
@@ -252,8 +218,33 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
   };
 
   const applySheetGeometry = (progress: number) => {
+    /*
+     * Phone: edge-to-edge page, no inset/scale/expand. Desktop: sheet that
+     * grows from a parked card into full viewport as you scroll.
+     */
+    if (isCompact()) {
+      expandProgress = 1;
+      expandTarget = 1;
+      sheet.style.top = '0px';
+      sheet.style.height = '100dvh';
+      sheet.style.left = '0px';
+      sheet.style.right = '0px';
+      sheet.style.borderTopLeftRadius = '0px';
+      sheet.style.borderTopRightRadius = '0px';
+      sheet.style.borderBottomLeftRadius = '0px';
+      sheet.style.borderBottomRightRadius = '0px';
+      sheet.style.clipPath = '';
+      sheet.style.boxShadow = 'none';
+      motion.style.transform = 'none';
+      backdrop.style.opacity = String(BACKDROP_OPACITY_FULL);
+      overlay.dataset.overlayMode = 'page';
+      setExpandedState(true);
+      return;
+    }
+
     const clamped = Math.max(0, Math.min(1, progress));
     expandProgress = clamped;
+    overlay.dataset.overlayMode = 'sheet';
 
     const top = SHEET_TOP_GAP * (1 - clamped);
     const radius = SHEET_RADIUS * (1 - clamped);
@@ -262,12 +253,18 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
     const backdropOpacity =
       BACKDROP_OPACITY_SHEET + (BACKDROP_OPACITY_FULL - BACKDROP_OPACITY_SHEET) * clamped;
 
+    /*
+     * Keep height at 100dvh so the inner scrollport never resizes mid-scroll
+     * (that was the jitter). Visual expand is top inset, radius, and scale.
+     */
     sheet.style.top = `${top}px`;
-    sheet.style.height = `calc(100dvh - ${top}px)`;
+    sheet.style.height = '100dvh';
     sheet.style.left = `${inset}px`;
     sheet.style.right = `${inset}px`;
     sheet.style.borderTopLeftRadius = `${radius}px`;
     sheet.style.borderTopRightRadius = `${radius}px`;
+    sheet.style.boxShadow = '';
+    sheet.style.clipPath = '';
 
     motion.style.transform = `scale(${scale})`;
     motion.style.transformOrigin = '50% 0%';
@@ -290,23 +287,33 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
   };
 
   const setExpandTarget = (target: number) => {
+    if (isCompact()) {
+      applySheetGeometry(1);
+      return;
+    }
     expandTarget = Math.max(0, Math.min(1, target));
     if (expandRaf === null) {
       expandRaf = requestAnimationFrame(tickExpand);
     }
   };
 
-  const updateCarouselFilter = (slug: string) => {
-    if (!carouselRoot) return;
+  const updateMoreFilter = (slug: string) => {
+    if (!moreList) return;
 
-    carouselRoot.querySelectorAll<HTMLElement>('[data-carousel-slug]').forEach((item) => {
-      const excluded = item.dataset.carouselSlug === slug;
-      item.classList.toggle('hidden', excluded);
+    moreList.querySelectorAll<HTMLElement>('[data-more-slug]').forEach((item) => {
+      const excluded = item.dataset.moreSlug === slug;
+      if (excluded) {
+        item.classList.remove('is-open');
+        item.querySelector<HTMLButtonElement>('[data-more-toggle]')?.setAttribute('aria-expanded', 'false');
+        const panel = item.querySelector<HTMLElement>('[data-more-panel]');
+        if (panel) {
+          panel.inert = true;
+          panel.setAttribute('aria-hidden', 'true');
+        }
+      }
+      item.hidden = excluded;
       item.setAttribute('aria-hidden', String(excluded));
     });
-
-    initEmblaCarousels(carouselRoot);
-    requestAnimationFrame(() => reinitEmblaCarousels(carouselRoot));
   };
 
   const mountHeader = (slug: string) => {
@@ -382,7 +389,16 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     enterTimeline?.kill();
 
-    if (reducedMotion) {
+    if (reducedMotion || isCompact()) {
+      if (isCompact() && !reducedMotion) {
+        isClosing = true;
+        animGeneration += 1;
+        gsap
+          .timeline({ onComplete: finishClose })
+          .to(motion, { opacity: 0, duration: 0.18, ease: 'power2.in' }, 0)
+          .to(backdrop, { opacity: 0, duration: 0.22, ease: 'power2.in' }, 0);
+        return;
+      }
       finishClose();
       return;
     }
@@ -402,7 +418,7 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
 
     mountHeader(activeSlug);
     mountContent(activeSlug);
-    updateCarouselFilter(activeSlug);
+    updateMoreFilter(activeSlug);
 
     const study = studyBySlug.get(activeSlug);
     const themeBackground = study?.themeBackground;
@@ -412,7 +428,27 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
 
     enterTimeline?.kill();
 
-    if (skipEnterAnimation || reducedMotion) {
+    if (isCompact()) {
+      applySheetGeometry(1);
+      gsap.set(sheet, { y: 0, clearProps: 'transform' });
+      if (skipEnterAnimation || reducedMotion) {
+        gsap.set(motion, { opacity: 1 });
+        gsap.set(backdrop, { opacity: BACKDROP_OPACITY_FULL });
+        closeBtn.focus();
+      } else {
+        gsap.set(backdrop, { opacity: 0 });
+        gsap.set(motion, { opacity: 0 });
+        enterTimeline = gsap.timeline({
+          onComplete: () => {
+            if (generation !== animGeneration) return;
+            closeBtn.focus();
+          },
+        });
+        enterTimeline
+          .to(backdrop, { opacity: BACKDROP_OPACITY_FULL, duration: 0.28, ease: 'power2.out' }, 0)
+          .to(motion, { opacity: 1, duration: 0.32, ease: 'power2.out' }, 0.04);
+      }
+    } else if (skipEnterAnimation || reducedMotion) {
       gsap.set(sheet, { y: 0, clearProps: 'transform' });
       gsap.set(motion, { opacity: 1 });
       gsap.set(backdrop, {
@@ -443,7 +479,9 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
 
     applyScrollTheme(0, themeBackground, themeSurface);
     requestAnimationFrame(() => {
-      setExpandTarget(Math.min(scrollEl.scrollTop / EXPAND_SCROLL, 1));
+      if (!isCompact()) {
+        setExpandTarget(Math.min(scrollEl.scrollTop / EXPAND_SCROLL, 1));
+      }
       if (themeBackground) {
         applyScrollTheme(getThemeProgress(), themeBackground, themeSurface);
       }
@@ -452,15 +490,16 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
 
   const openOverlay = (slug: string, trigger?: HTMLElement | null, instant = false) => {
     const switching = isVisible && activeSlug !== null && activeSlug !== slug;
+    const compact = isCompact();
 
     triggerEl = trigger ?? null;
     if (instant) skipEnterAnimation = true;
     else skipEnterAnimation = false;
 
     animGeneration += 1;
-    expandProgress = skipEnterAnimation ? 1 : 0;
+    expandProgress = compact || skipEnterAnimation ? 1 : 0;
     expandTarget = expandProgress;
-    isExpanded = skipEnterAnimation;
+    isExpanded = expandProgress >= 1;
 
     if (switching || !skipEnterAnimation) {
       scrollEl.scrollTop = 0;
@@ -468,12 +507,18 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
 
     // Match homepage tile open: when switching studies, park the sheet off-screen
     // first so remounting content doesn't snap the already-open sheet.
-    if (switching && !skipEnterAnimation) {
+    if (switching && !skipEnterAnimation && !compact) {
       enterTimeline?.kill();
       applyScrollTheme(0);
       applySheetGeometry(0);
       gsap.set(motion, { opacity: 0 });
       gsap.set(sheet, { y: '100%' });
+      gsap.set(backdrop, { opacity: 0 });
+    } else if (switching && compact) {
+      enterTimeline?.kill();
+      applyScrollTheme(0);
+      applySheetGeometry(1);
+      gsap.set(motion, { opacity: 0 });
       gsap.set(backdrop, { opacity: 0 });
     }
 
@@ -492,11 +537,18 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
 
   const handleScroll = () => {
     if (!activeSlug) return;
-    setExpandTarget(Math.min(scrollEl.scrollTop / EXPAND_SCROLL, 1));
+    if (!isCompact()) {
+      setExpandTarget(Math.min(scrollEl.scrollTop / EXPAND_SCROLL, 1));
+    }
     const study = studyBySlug.get(activeSlug);
     if (study?.themeBackground) {
       applyScrollTheme(getThemeProgress(), study.themeBackground, study.themeSurface ?? SURFACE_COLOR);
     }
+  };
+
+  const handleViewportChange = () => {
+    if (!isVisible) return;
+    applySheetGeometry(isCompact() ? 1 : expandProgress);
   };
 
   const handleKeyDown = (event: KeyboardEvent) => {
@@ -523,6 +575,7 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
   closeBtn.addEventListener('click', closeOverlay);
   scrollEl.addEventListener('scroll', handleScroll, { passive: true });
   document.addEventListener('keydown', handleKeyDown);
+  compactMq.addEventListener('change', handleViewportChange);
 
   const handlePopState = () => {
     const match = window.location.pathname.match(pathPattern);
@@ -573,7 +626,9 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
     scrollEl.removeEventListener('scroll', handleScroll);
     document.removeEventListener('keydown', handleKeyDown);
     window.removeEventListener('popstate', handlePopState);
+    compactMq.removeEventListener('change', handleViewportChange);
     unregisterCaseStudyOpenHandler();
     delete overlay.dataset.overlayBound;
+    delete overlay.dataset.overlayMode;
   };
 }

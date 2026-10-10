@@ -63,7 +63,7 @@ export function initWorkflowDiagram(root: HTMLElement): void {
   const setActive = (activeId: string | null) => {
     allLines.forEach((line) => {
       const highlighted = isLineHighlighted(line.dataset.from ?? '', line.dataset.to ?? '', activeId);
-      line.setAttribute('stroke', highlighted ? '#00d4ff' : '#00d4ff44');
+      line.setAttribute('stroke', highlighted ? '#4a5d4e' : '#4a5d4e44');
       line.setAttribute('stroke-width', highlighted ? '0.4' : '0.22');
     });
 

@@ -1,3 +1,10 @@
+export interface CaseStudyPrinciples {
+  problem: string;
+  constraint: string;
+  decision: string;
+  result: string;
+}
+
 export interface CaseStudyMeta {
   id: string;
   title: string;
@@ -6,6 +13,7 @@ export interface CaseStudyMeta {
   role: string;
   year: string;
   summary: string;
+  principles: CaseStudyPrinciples;
   heroImage?: string;
   cardImage?: string;
   cardColor?: string;

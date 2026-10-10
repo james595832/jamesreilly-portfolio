@@ -6,54 +6,57 @@ interface ThoughtLink {
 
 interface Props {
   thoughts?: ThoughtLink[];
+  /** Avoids a duplicate id when a second footer is on the page. */
+  headingId?: string;
 }
 
-const { thoughts = [] } = Astro.props;
+const { thoughts = [], headingId = 'contact-heading' } = Astro.props;
+const footerId = headingId === 'contact-heading' ? 'contact' : undefined;
 
-const caseStudyLinks = [
-  { label: 'Aced-IT', slug: 'aced-it' },
+const workLinks = [
   { label: 'J.P. Morgan', slug: 'jp-morgan' },
-  { label: 'Natwest Bank', slug: 'natwest-bank' },
+  { label: 'Aced-It', slug: 'aced-it' },
+  { label: 'Payroc', slug: 'payroc-payments' },
+  { label: 'NatWest', slug: 'natwest-bank' },
   { label: 'Virgin Money', slug: 'virgin-money' },
-  { label: 'Payroc Payments', slug: 'payroc-payments' },
-  { label: 'Expedia', slug: 'expedia' },
-  { label: 'OHNI', slug: 'ohni' },
 ];
 ---
 
-<footer
-  id="contact"
-  class="w-full bg-surface"
-  aria-labelledby="contact-heading"
->
-  <div class="mx-auto w-full max-w-[1920px] px-6 py-16 md:px-10 lg:px-16">
-  <div class="grid w-full grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-10">
+<footer id={footerId} class="site-footer" aria-labelledby={headingId}>
+  <svg class="site-footer__ridges" viewBox="0 0 1440 320" preserveAspectRatio="none" aria-hidden="true">
+    <path
+      class="site-footer__ridge site-footer__ridge--1"
+      d="M0 86 L48 91 L96 84 L144 80 L192 75 L240 83 L288 73 L336 71 L384 62 L432 78 L480 83 L528 92 L576 81 L624 80 L672 79 L720 82 L768 75 L816 65 L864 68 L912 74 L960 90 L1008 84 L1056 85 L1104 76 L1152 86 L1200 79 L1248 76 L1296 62 L1344 69 L1392 78 L1440 86 L1440 320 L0 320 Z"
+    />
+    <path
+      class="site-footer__ridge site-footer__ridge--2"
+      d="M0 121 L56 102 L112 110 L168 104 L224 105 L280 90 L336 107 L392 118 L448 123 L504 111 L560 105 L616 113 L672 101 L728 97 L784 92 L840 118 L896 118 L952 118 L1008 106 L1064 113 L1120 109 L1176 95 L1232 94 L1288 103 L1344 123 L1400 113 L1440 108 L1440 320 L0 320 Z"
+    />
+    <path
+      class="site-footer__ridge site-footer__ridge--3"
+      d="M0 140 L64 135 L128 138 L192 129 L256 136 L320 165 L384 152 L448 137 L512 145 L576 135 L640 129 L704 133 L768 150 L832 163 L896 140 L960 141 L1024 147 L1088 124 L1152 129 L1216 146 L1280 155 L1344 153 L1408 139 L1440 136 L1440 320 L0 320 Z"
+    />
+    <path
+      class="site-footer__ridge site-footer__ridge--4"
+      d="M0 181 L72 166 L144 168 L216 202 L288 193 L360 165 L432 175 L504 176 L576 159 L648 183 L720 204 L792 179 L864 169 L936 181 L1008 165 L1080 163 L1152 196 L1224 195 L1296 172 L1368 178 L1440 175 L1440 320 L0 320 Z"
+    />
+    <path
+      class="site-footer__ridge site-footer__ridge--5"
+      d="M0 209 L80 228 L160 229 L240 202 L320 208 L400 214 L480 206 L560 223 L640 225 L720 210 L800 215 L880 204 L960 200 L1040 229 L1120 229 L1200 210 L1280 209 L1360 200 L1440 209 L1440 320 L0 320 Z"
+    />
+    <path
+      class="site-footer__ridge site-footer__ridge--6"
+      d="M0 258 L90 250 L180 246 L270 238 L360 259 L450 259 L540 253 L630 255 L720 242 L810 256 L900 259 L990 248 L1080 252 L1170 240 L1260 253 L1350 266 L1440 255 L1440 320 L0 320 Z"
+    />
+  </svg>
+  <div class="site-footer__panel">
+  <div class="cv-measure py-14">
+  <div class="grid w-full grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
     <div>
-      <h2 id="contact-heading" class="font-display mb-6 text-lg font-bold tracking-tight">
-        Contact
-      </h2>
-      <ul class="space-y-3 text-sm text-text/80">
-        <li>
-          <a href="tel:+447552062953" class="transition-colors hover:text-accent">
-            +44 07552062953
-          </a>
-        </li>
-        <li>
-          <a
-            href="mailto:hello@jamesreilly.design"
-            class="text-accent transition-opacity hover:opacity-70"
-          >
-            hello@jamesreilly.design
-          </a>
-        </li>
-      </ul>
-    </div>
-
-    <div>
-      <h2 class="font-display mb-6 text-lg font-bold tracking-tight">Case Studies</h2>
-      <ul class="space-y-3 text-sm text-text/80">
+      <h2 class="font-display mb-5">Work</h2>
+      <ul class="space-y-2.5 text-muted">
         {
-          caseStudyLinks.map(({ label, slug }) => (
+          workLinks.map(({ label, slug }) => (
             <li>
               <a href={`/work/${slug}`} class="transition-colors hover:text-accent">
                 {label}
@@ -65,8 +68,8 @@ const caseStudyLinks = [
     </div>
 
     <div>
-      <h2 class="font-display mb-6 text-lg font-bold tracking-tight">Social</h2>
-      <ul class="space-y-3 text-sm text-text/80">
+      <h2 class="font-display mb-5">Social</h2>
+      <ul class="space-y-2.5 text-muted">
         <li>
           <a
             href="https://www.linkedin.com/in/jamesreillywork/"
@@ -91,10 +94,10 @@ const caseStudyLinks = [
     </div>
 
     <div>
-      <h2 class="font-display mb-6 text-lg font-bold tracking-tight">More from Ideas</h2>
+      <h2 class="font-display mb-5">Ideas</h2>
       {
         thoughts.length > 0 ? (
-          <ul class="space-y-3 text-sm text-text/80">
+          <ul class="space-y-2.5 text-muted">
             {thoughts.map(({ label, href }) => (
               <li>
                 <a href={href} class="transition-colors hover:text-accent">
@@ -104,16 +107,127 @@ const caseStudyLinks = [
             ))}
           </ul>
         ) : (
-          <p class="text-sm text-muted">
+          <p class="text-muted">
             <a href="/ideas" class="transition-colors hover:text-accent">Browse Ideas</a>
           </p>
         )
       }
     </div>
+
+    <div>
+      <h2 id={headingId} class="font-display mb-5">
+        Contact
+      </h2>
+      <ul class="space-y-2.5 text-muted">
+        <li>
+          <a href="tel:+447552062953">+44 07552062953</a>
+        </li>
+        <li>
+          <a href="mailto:hello@jamesreilly.design">hello@<wbr />jamesreilly.design</a>
+        </li>
+      </ul>
+    </div>
   </div>
 
-  <p class="mt-16 text-right text-xs text-muted">
+  <p class="legal mt-14 text-right text-muted">
     &copy; {new Date().getFullYear()} James Reilly. All rights reserved.
   </p>
   </div>
+  </div>
 </footer>
+
+<style>
+  .site-footer {
+    --footer-ink: #4a4a4a;
+    --footer-heading: #f4efe7;
+    --footer-copy: #d9d3c8;
+    --footer-legal: #cfc8bc;
+    position: relative;
+    margin-top: -2.5rem;
+    background: transparent;
+    color: var(--footer-copy);
+  }
+
+  .site-footer__ridges {
+    display: block;
+    width: 100%;
+    height: clamp(8.5rem, 18vw, 14rem);
+    pointer-events: none;
+  }
+
+  .site-footer__ridge--1 {
+    fill: color-mix(in srgb, var(--color-bg) 86%, var(--footer-ink));
+  }
+
+  .site-footer__ridge--2 {
+    fill: color-mix(in srgb, var(--color-bg) 68%, var(--footer-ink));
+  }
+
+  .site-footer__ridge--3 {
+    fill: color-mix(in srgb, var(--color-bg) 50%, var(--footer-ink));
+  }
+
+  .site-footer__ridge--4 {
+    fill: color-mix(in srgb, var(--color-bg) 32%, var(--footer-ink));
+  }
+
+  .site-footer__ridge--5 {
+    fill: color-mix(in srgb, var(--color-bg) 16%, var(--footer-ink));
+  }
+
+  .site-footer__ridge--6 {
+    fill: var(--footer-ink);
+  }
+
+  .site-footer__panel {
+    background: var(--footer-ink);
+    color: var(--footer-copy);
+  }
+
+  .site-footer :is(a, p, li) {
+    color: var(--footer-copy);
+  }
+
+  .site-footer .text-muted {
+    color: var(--footer-copy);
+  }
+
+  .site-footer h2 {
+    color: var(--footer-heading);
+    font-size: 1.125rem;
+    line-height: 1.3;
+  }
+
+  .site-footer a {
+    overflow-wrap: normal;
+    font-size: 0.875rem;
+    line-height: 1.45;
+  }
+
+  .site-footer .legal {
+    color: var(--footer-legal);
+  }
+
+  .site-footer a:hover,
+  .site-footer a:focus-visible {
+    color: var(--footer-heading);
+  }
+
+  :global(.case-study-scroll-panel[data-theme-light='true']) .site-footer h2 {
+    color: var(--footer-heading) !important;
+  }
+
+  :global(.case-study-scroll-panel[data-theme-light='true']) .site-footer :is(a, p, li),
+  :global(.case-study-scroll-panel[data-theme-light='true']) .site-footer .text-muted {
+    color: var(--footer-copy) !important;
+  }
+
+  :global(.case-study-scroll-panel[data-theme-light='true']) .site-footer .legal {
+    color: var(--footer-legal) !important;
+  }
+
+  :global(.case-study-scroll-panel[data-theme-light='true']) .site-footer a:hover,
+  :global(.case-study-scroll-panel[data-theme-light='true']) .site-footer a:focus-visible {
+    color: var(--footer-heading) !important;
+  }
+</style>

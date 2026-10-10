@@ -2,7 +2,6 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
-import GlitchPortrait from '../components/GlitchPortrait.astro';
 import { getPlaygroundMeta } from '../lib/playground';
 
 const thoughts = (await getPlaygroundMeta()).map((item) => ({
@@ -15,56 +14,61 @@ const email = 'hello@jamesreilly.design';
 
 <BaseLayout
   title="About — James Reilly"
-  description="James Reilly is an AI product designer with 26 years across print, digital, and AI — currently IC at J.P. Morgan and founder of Aced-It."
+  description="James Reilly is a product designer. Founder of Aced-It."
 >
   <Nav />
   <main id="main" class="about-page">
     <article class="about-page__shell">
-      {/* Mobbin-style show stack: portrait → name → short role → body in one centred measure */}
-      <figure class="about-page__portrait">
-        <GlitchPortrait loading="eager" fetchpriority="high" />
-      </figure>
+      <div class="about-page__copy">
+        <header class="about-page__intro">
+          <h1 id="about-page-heading" class="about-page__name font-display">
+            James Reilly
+          </h1>
+          <p class="about-page__place font-display">London</p>
+          <h2 class="about-page__role font-display">
+            Product designer. Founder, Aced-It.
+          </h2>
+        </header>
 
-      <header class="about-page__intro">
-        <p class="about-page__kicker font-display">About</p>
-        <h1 id="about-page-heading" class="about-page__name font-display">
-          James Reilly
-        </h1>
-        <p class="about-page__role font-serif">
-          AI product designer · J.P. Morgan IC · Founder, Aced-It
-        </p>
-      </header>
-
-      <div class="about-page__body">
-        <p>
-          I am an AI product designer with 26 years of experience working in print, digital, and now
-          AI. I merge all three to cope with the pace 2026 has forced on product teams.
-        </p>
-        <p>
-          The process is not magic. Always start with the problem. Why are you delivering this work?
-          What value does it bring to the business and the user? Ask questions. Speak to users.
-          Build relationships with the people building it. Communication is still the skill that
-          decides whether a product ships or dies in a deck.
-        </p>
-        <p>
-          I&apos;ve run my own companies and built startups for others from 0 to 1. Fifteen years
-          freelancing across studios and banks. I now work as an IC at J.P. Morgan, embedded as an
-          internal consultant on product design for the senior leadership team — moving between
-          design, AI, and research.
-        </p>
-        <p>
-          At the bank I sit on the Claude Code forum as the only designer with a license, running
-          experiments daily on how AI changes the design process and where it actually creates
-          leverage rather than noise. Outside of that I&apos;m building
-          <a href="https://acedit.app" target="_blank" rel="noopener noreferrer">Aced-It</a>
-          — interview prep for designers who need to walk into high-stakes hiring fully prepared.
-        </p>
+        <div class="about-page__body">
+          <p class="about-page__hook">Still curious...</p>
+          <p>
+            What excites me most about any project is the questions, the what ifs, the exploration
+            of ideas with people to arrive at the destination that is both functional and
+            aesthetically pleasing to the end user.
+          </p>
+          <p>
+            With AI now everywhere I don&apos;t believe this has changed the approach. Sure it can
+            code superbly, design well and get us there faster. But only with proper design
+            conversations first. Basically the GIGO (Garbage In, Garbage Out) computing principle
+            rings true now for me more than ever.
+          </p>
+          <p>
+            Design and UX got too bloated, and an academia cloud came over the industry, where
+            people would focus more on the process than the work itself. If you work in tech you
+            know what I mean. This devalued the effect of design on companies by selling process
+            over outcomes.
+          </p>
+          <p>
+            I want to be in teams that communicate, work together and build interesting products.
+          </p>
+          <p>
+            <a href={`mailto:${email}`}>{email}</a>
+          </p>
+        </div>
       </div>
 
-      <p class="about-page__contact">
-        Work, briefs, or a conversation:
-        <a href={`mailto:${email}`}>{email}</a>
-      </p>
+      <figure class="about-page__portrait">
+        <img
+          src="/images/james-portrait.jpg"
+          alt="Portrait of James Reilly"
+          width="929"
+          height="1024"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </figure>
     </article>
 
     <Footer thoughts={thoughts} />
@@ -74,79 +78,84 @@ const email = 'hello@jamesreilly.design';
 <style>
   .about-page {
     color: var(--color-text);
-    background:
-      radial-gradient(ellipse 60% 45% at 50% 8%, rgba(0, 212, 255, 0.09), transparent 58%),
-      radial-gradient(ellipse 40% 30% at 50% 100%, rgba(255, 255, 255, 0.03), transparent 50%),
-      var(--color-bg);
+    background: var(--color-bg);
   }
 
   .about-page__shell {
     width: 100%;
-    max-width: 40rem;
+    max-width: 62rem;
     margin-inline: auto;
-    padding: clamp(6.5rem, 12vh, 8.5rem) clamp(1.25rem, 4vw, 2rem) clamp(3rem, 6vh, 5rem);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+    padding: clamp(6.5rem, 12vh, 8.5rem) clamp(1.25rem, 4vw, 1.5rem) clamp(3rem, 6vh, 5rem);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 5vw, 3rem);
+    align-items: start;
   }
 
-  .about-page__portrait {
-    margin: 0 0 clamp(1.75rem, 4vw, 2.5rem);
-    width: min(100%, 17.5rem);
-    display: flex;
-    justify-content: center;
+  @media (min-width: 860px) {
+    .about-page__shell {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 3fr);
+      gap: clamp(2rem, 4vw, 3.5rem);
+    }
   }
 
-  .about-page__portrait :global(.glitch-portrait) {
-    width: 100%;
-    max-width: none;
+  .about-page__copy {
+    min-width: 0;
   }
 
   .about-page__intro {
-    width: 100%;
-    margin-bottom: clamp(1.75rem, 4vw, 2.25rem);
-  }
-
-  .about-page__kicker {
-    margin: 0 0 0.85rem;
-    font-size: 0.6875rem;
-    font-weight: 700;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--color-muted);
+    margin-bottom: 1.75rem;
   }
 
   .about-page__name {
     margin: 0;
-    font-size: clamp(2.5rem, 6.5vw, 4rem);
-    font-weight: 700;
-    line-height: 0.95;
-    letter-spacing: -0.035em;
-    text-transform: uppercase;
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--color-heading);
+  }
+
+  .about-page__place {
+    margin: 0.35rem 0 0;
+    font-size: 1.5rem;
+    font-weight: 400;
+    line-height: 1.3;
+    letter-spacing: 0;
+    color: var(--color-subhead);
   }
 
   .about-page__role {
-    margin: 1rem 0 0;
-    font-size: clamp(1.05rem, 1.8vw, 1.25rem);
-    font-style: italic;
-    line-height: 1.4;
-    color: rgba(255, 255, 255, 0.72);
+    margin: 0.85rem 0 0;
+    font-size: 1.5rem;
+    font-weight: 400;
+    line-height: 1.3;
+    letter-spacing: 0;
+    color: var(--color-subhead);
   }
 
   .about-page__body {
-    width: 100%;
-    max-width: 34rem;
     display: grid;
-    gap: 1.2rem;
+    gap: 1rem;
   }
 
   .about-page__body p {
     margin: 0;
-    font-size: clamp(1rem, 1.2vw, 1.1rem);
-    line-height: 1.7;
-    color: rgba(255, 255, 255, 0.84);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.65;
+    color: var(--color-text);
     text-wrap: pretty;
+  }
+
+  .about-page__hook {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.65;
+    color: var(--color-text);
   }
 
   .about-page__body a {
@@ -158,28 +167,30 @@ const email = 'hello@jamesreilly.design';
 
   .about-page__body a:hover,
   .about-page__body a:focus-visible {
-    color: #fff;
+    opacity: 0.75;
   }
 
-  .about-page__contact {
+  .about-page__portrait {
+    margin: 0;
+    width: min(100%, 16rem);
+    justify-self: start;
+  }
+
+  .about-page__portrait img {
+    display: block;
     width: 100%;
-    max-width: 34rem;
-    margin: 2rem 0 0;
-    padding-top: 1.5rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
-    font-size: 0.975rem;
-    line-height: 1.5;
-    color: var(--color-muted);
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    object-position: center 18%;
   }
 
-  .about-page__contact a {
-    color: var(--color-accent);
-    text-decoration: none;
-  }
-
-  .about-page__contact a:hover,
-  .about-page__contact a:focus-visible {
-    text-decoration: underline;
-    text-underline-offset: 0.15em;
+  @media (min-width: 860px) {
+    .about-page__portrait {
+      width: 100%;
+      justify-self: end;
+      position: sticky;
+      top: 6.25rem;
+    }
   }
 </style>

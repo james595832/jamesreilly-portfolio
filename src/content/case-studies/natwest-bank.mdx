@@ -1,9 +1,14 @@
 ---
-title: "Redesigning Online Banking"
+title: "Online banking"
 client: "NatWest"
-role: "Product Design Consultant"
-year: "2023"
-summary: "A card-based online banking experience shaped by discovery, in-branch research, and what customers actually want when they open the app"
+role: "Freelance designer"
+year: "2019–20"
+summary: "A redesign of NatWest online banking. Check the balance, then do the task, without being sent into a branch."
+principles:
+  problem: "People came to check a balance, then do something. The account table was fine. Pay someone, and a lost card, were hard to find."
+  constraint: "Leadership changed more than once, and the technology team stopped mid-project to change the stack."
+  decision: "Cards for a few consumer accounts, not a table. Pay on the page. A £1 check before the first large payment."
+  result: "The card interface, quick payments, and adding further products went live, plus a watch code to get cash without the card."
 color: "#481560"
 themeBackground: "#481560"
 cardImage: "/images/case-studies/natwest/overview.png"
@@ -16,115 +21,85 @@ import ImageBlock from '../../components/blocks/ImageBlock.astro';
 import GalleryBlock from '../../components/blocks/GalleryBlock.astro';
 
 <TextBlock>
-  I came back to NatWest as a freelancer on the strength of a previous engagement. The brief was to build a new online banking experience. What that actually meant took a trip to London and a series of discovery sessions to figure out properly.
-
-  We sat with people across the business and asked the obvious question first. What does a customer actually want when they open their banking app? They want to know where they stand. How much have I got, what went out recently and can I pay someone quickly. Everything else is noise. That insight shaped everything.
+  I was brought in as a freelance designer to redesign NatWest online banking. People come on to check a balance, then do a task. The account table on the old interface was all right. The rest was not clear. Pay someone, or say you had lost a card, was not easy to find.
 </TextBlock>
 
 <ImageBlock
   src="/images/case-studies/natwest/existing-dashboard.png"
-  alt="The legacy NatWest online banking account summary with sidebar navigation, promotional banners, and a dense account table"
-  caption="The existing experience I was brought in to upgrade. Promotions, cross-sells, and product links competed with the thing customers actually came for."
+  alt="The old NatWest online banking account summary, with an account table and a lot of other links around it"
+  caption="The table was readable. Finding the task was not."
   fullWidth
   bleed
 />
 
-<TextBlock title="Where we started">
-  The existing interface pushed promotions at customers the moment they opened the app. My Rewards banners, savings goal prompts, product upsells in the sidebar. Research confirmed what we suspected. Nobody decides on a whim to take out a loan because a banner caught their eye. It frustrated people and buried the thing they came for.
+<TextBlock title="Why are they in the branch?">
+  A branch visit is usually a pain. You spend twenty minutes getting through to the right person, and ten minutes later you are told to come in. I wanted to hear why they had to come in, and then ask the bank why we could not offer it online.
 
-  We stripped it back. One card per account. Current, savings, credit card, ISA, whatever you have sits there clearly with its balance and the last few transactions visible without a single extra tap. Cards made sense over a flat list because of orientation. You might have three or four accounts at NatWest. A list gives you everything jumbled together. Cards give you a clear picture of each one at a glance.
+  Paying in a cheque, and a change of address, were two of those. I designed them so they could be done with the camera on your device. Before you update your personal address, you use your online banking credentials. That was the extra security.
+</TextBlock>
+
+<TextBlock title="Cards, not a table">
+  A table makes more sense in business banking, where someone might have a hundred accounts. In consumer banking the average is about three. Cards let you look at each balance on its own, instead of scanning a table from top to bottom and then left to right.
+
+  I also thought we could put extra information on the card, such as the last five transactions. Testing said no. Customers were happy to click through once and see all of the transactions, rather than only five.
+
+  We did that in sessions, one card at a time, until we had enough feedback to move on and build up the interface.
 </TextBlock>
 
 <ImageBlock
   src="/images/case-studies/natwest/overview.png"
-  alt="NatWest online banking overview showing the redesigned card-based account layout on desktop"
-  caption="The redesigned overview. A cleaner structure built around what customers actually need when they log in."
+  alt="NatWest online banking on a laptop and a phone, with separate cards for each account"
+  caption="Each account on its own, on desktop and on the phone."
   fullWidth
   bleed
   transparent
   themeTrigger
 />
 
-<TextBlock title="Using downtime well">
-  The project had turbulence. Leadership changed more than once and the technology shifted with it. Working as a consultant meant I could step back from the politics and keep building. During quieter periods we used the time well.
-
-  Alongside customer facing features I was building and maintaining the design system. Sense checking patterns. Is our colour consistent? Does filtering a transaction list use the same logic as filtering anything else? Are spacing and components speaking the same language? We spent more time with customers in stores, tightened the product, and drove consistency before the next push.
-</TextBlock>
-
-<GalleryBlock
-  bleed
-  images={[
-    {
-      src: '/images/case-studies/natwest/design-audit-1.jpg',
-      alt: 'Design audit documenting inconsistent UI patterns across the NatWest online banking interface',
-      caption: 'Auditing inconsistencies across the existing interface.',
-    },
-    {
-      src: '/images/case-studies/natwest/design-audit-2.jpg',
-      alt: 'Design audit showing component and spacing standardisation work across NatWest banking screens',
-      caption: 'Standardising components, spacing, and interaction patterns.',
-    },
-  ]}
-/>
-
-<TextBlock title="The dashboard">
-  The dashboard puts accounts front and centre. Each card shows its balance and recent activity at a glance. Your rewards account sits alongside your current and savings accounts without getting in the way. Quick payments are always one tap away, not buried three screens deep.
-
-  At the time this was new territory for banking apps. A lot of what you see in the market now borrows from this approach.
-</TextBlock>
-
 <ImageBlock
   src="/images/case-studies/natwest/dashboard.jpg"
-  alt="NatWest dashboard showing account cards with balances, a rewards account, recent transactions, and a quick payment panel"
-  caption="Accounts displayed cleanly, with rewards visible and quick payments always within reach."
+  alt="NatWest dashboard with account cards and a quick payment panel"
+  caption="The dashboard. The balance, and pay, on the same page."
   fullWidth
   bleed
 />
 
 <TextBlock title="Transactions">
-  People scan their statement looking for one of two things. Something specific they remember or something they don't recognise. The design had to support both without getting in the way.
-
-  Selecting an account opens a transaction view with the high level detail upfront. A full list of transactions loads on scroll to keep the page fast. You can make a payment directly from here without navigating away.
-
-  We ran prototypes out to real customers on iPads in branches. Researchers on the team would sit with people and watch how they used it. We could make changes, retest and validate quickly. It also gave us something concrete when pushing back on product managers. We had been to customers. We had evidence.
+  If the page kept two screens, one is this dashboard. It is the context of the banking journey. The other is transactions. I spent a lot of time with customers on the filtering, so you can refine the list and print a statement for a mortgage without a fight. You would be surprised how difficult banks had made that.
 </TextBlock>
 
 <ImageBlock
   src="/images/case-studies/natwest/transactions-closed.jpg"
-  alt="NatWest transaction view showing account summary, balance, and a scrollable list of recent transactions"
-  caption="Selecting an account reveals high level detail, a full transaction list that loads on scroll, and the ability to make a payment."
+  alt="NatWest transaction view with the account balance and a list of transactions"
+  caption="Open the account and see the transactions, rather than a short list on the card."
   fullWidth
   bleed
 />
 
 <ImageBlock
   src="/images/case-studies/natwest/transactions-filters-open.jpg"
-  alt="NatWest transaction view with the filter panel open showing date, amount, and category filtering options"
-  caption="Transaction filters I worked on, making it easy for users to find what they are looking for."
+  alt="NatWest transaction view with filters open"
+  caption="Filters, so a statement for a mortgage is something you can actually get to."
   fullWidth
   bleed
 />
 
-<TextBlock title="Payments and payees">
-  Making a payment is one of the most common things people do yet it was more complicated than it needed to be. We gave it its own card on the dashboard so it was always one tap away.
+<TextBlock title="The £1 check">
+  Pay on the dashboard was part of making the task easy to find. The £1 check was my idea. I transferred my rent to an old landlord and never got it back. From that day I have always sent £1 first, to be sure the details are right.
 
-  Direct debits and standing orders needed the same clarity. Payees, standing orders, and direct debits are easy to scan at a glance. Expand any row and you get more detail on the transaction, including where it was made.
-
-  Behind the simple experience of adding a payee sat real work done with the fraud and compliance teams. When you add someone new the system checks that the account details match the name you have been given. For large payments I worked with the fraud team on a small but meaningful idea. Before sending a significant sum you get the option to send £1 first to confirm the account is correct before the rest follows.
+  I took it to fraud and compliance. It needed to be written clearly, so people understood why. Customers were positive about it. On the first payment you send £1. If they confirm it is correct, and they are a confirmed payee, you are free to send more.
 </TextBlock>
 
 <ImageBlock
   src="/images/case-studies/natwest/direct-debits-standing-orders.jpg"
-  alt="NatWest direct debits and standing orders view showing payees with expandable rows for transaction detail"
-  caption="Payees, standing orders, and direct debits at a glance. Expand any row for more detail on where a payment was made."
+  alt="NatWest view of payees, direct debits, and standing orders"
+  caption="Payees, direct debits, and standing orders, in one list."
   fullWidth
   bleed
 />
 
-<TextBlock title="Scaling to other platforms">
-  The design system and patterns we established scaled beyond desktop. On Apple Watch, customers could get a code to withdraw cash even if they forgot their card, check their balance, and browse recent transactions. Same thinking, adapted to a completely different context.
-
-  Getting anything shipped on a project like this is an achievement. A lot did ship and the thinking behind it has had a longer life than the features themselves.
+<TextBlock title="The watch">
+  The other feature that went with this was the Apple Watch. If you lose the card, or forget it, a code is sent to the watch and you can take money out at a cash machine.
 </TextBlock>
 
 <GalleryBlock
@@ -132,13 +107,21 @@ import GalleryBlock from '../../components/blocks/GalleryBlock.astro';
   images={[
     {
       src: '/images/case-studies/natwest/comp-1.png',
-      alt: 'NatWest Apple Watch app showing balance and recent transactions on a wrist',
-      caption: 'Balance and transactions on Apple Watch.',
+      alt: 'NatWest Apple Watch app showing a balance and recent transactions',
+      caption: 'Balance and recent transactions on the watch.',
     },
     {
       src: '/images/case-studies/natwest/comp-2.png',
-      alt: 'NatWest Apple Watch app showing a get cash code feature for cardless ATM withdrawal',
-      caption: 'Get cash without your card, even from your wrist.',
+      alt: 'NatWest Apple Watch app showing a code to withdraw cash',
+      caption: 'A code for the cash machine, if the card is not with you.',
     },
   ]}
 />
+
+<TextBlock title="What went live">
+  The project was beset by internal problems. Leadership changed more than once. The technology team downed tools mid-project to change the stack. The designers kept going.
+
+  In the end the account interface went live with the cards, quick payments, and the ability to add further products. I think the clearer interface worked. It was easier to follow and understand, especially for older customers, who felt it was more inclusive.
+
+  When you signed up, we kept that information on file, so you did not have to keep applying. If nothing in your circumstances had changed, and we do ask, you could get to other products without starting the paperwork again. That was a real friction. Why all the paper?
+</TextBlock>

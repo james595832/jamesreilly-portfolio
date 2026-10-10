@@ -1,9 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
-import Hero from '../components/Hero.astro';
 import WorkSection from '../components/WorkSection.astro';
-import About from '../components/About.astro';
 import Footer from '../components/Footer.astro';
 import CaseStudyPanels from '../components/CaseStudyPanels.astro';
 import CaseStudyOverlay from '../components/CaseStudyOverlay.astro';
@@ -19,12 +17,107 @@ const thoughts = (await getPlaygroundMeta()).map((item) => ({
 
 <BaseLayout>
   <Nav />
-  <main id="main">
-    <Hero />
-    <WorkSection caseStudies={caseStudies} />
-    <About />
+  <main id="main" class="home-cv">
+    <div class="home-cv__measure">
+      <header class="home-scan">
+        <h1 class="home-scan__name font-display">James Reilly</h1>
+        <h2 class="home-scan__role font-display">Product designer.</h2>
+        <div class="home-scan__lede">
+          <p>
+            I ship products to improve revenue and reputation, from Virgin Money to J.P. Morgan.
+          </p>
+        </div>
+      </header>
+
+      <WorkSection caseStudies={caseStudies} />
+    </div>
     <Footer thoughts={thoughts} />
   </main>
   <CaseStudyPanels />
   <CaseStudyOverlay caseStudies={caseStudies} />
 </BaseLayout>
+
+<style is:global>
+  .home-cv {
+    background: var(--color-bg);
+    color: var(--color-text);
+  }
+
+  /*
+   * Single 800px column. Side gutter lives only here so intro and work
+   * share the same text edge — no extra padding on home-scan.
+   */
+  .home-cv__measure {
+    width: 100%;
+    max-width: 50rem;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+    box-sizing: border-box;
+  }
+
+  .home-cv__measure > .home-scan,
+  .home-cv__measure > .work-index {
+    width: 100%;
+    max-width: none;
+    margin-inline: 0;
+    padding-inline: 0;
+  }
+
+  .home-scan {
+    padding-top: clamp(6.5rem, 14vh, 8.75rem);
+    padding-bottom: 3.25rem;
+  }
+
+  .home-scan__name {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: var(--color-heading);
+  }
+
+  .home-scan__role {
+    margin: 0.75rem 0 0;
+    font-size: 1.5rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.3;
+    color: var(--color-subhead);
+  }
+
+  .home-scan__lede {
+    display: grid;
+    gap: 0.95rem;
+    margin-top: 2rem;
+  }
+
+  .home-scan__hook {
+    font-family: var(--font-display);
+    font-size: clamp(1.35rem, 2.2vw, 1.65rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+  }
+
+  .home-scan__lede p {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--color-text);
+  }
+
+  .home-scan__lede a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 0.16em;
+    text-decoration-thickness: 1px;
+  }
+
+  .home-scan__lede a:hover,
+  .home-scan__lede a:focus-visible {
+    opacity: 0.75;
+  }
+</style>

@@ -1,9 +1,14 @@
 ---
-title: "Virgin Money"
+title: "Business banking"
 client: "Virgin Money"
-role: "Product Design Consultant"
-year: "2018"
-summary: "Online account opening, business banking, and a £35M Capability & Innovation Fund win"
+role: "Lead designer"
+year: "2016–18"
+summary: "Business accounts took six weeks and a branch visit. The new app opened them in minutes. Part of a £35 million Capability and Innovation Fund win."
+principles:
+  problem: "Opening a business account took six weeks and a trip to a branch. Payments were authorised on a physical device."
+  constraint: "Who can be added to an account, for how long, and how much they can pay, had to follow the bank's rules."
+  decision: "Accounts, staff access, and payment limits after login. An analytics view for money in, money out, and tax."
+  result: "Open in minutes, pay online, manage company cards, and read a proper statement. The app supported a £35 million fund win."
 color: "#F60000"
 cardColor: "#F5F6F8"
 themeBackground: "#F60000"
@@ -17,108 +22,90 @@ import TextBlock from '../../components/blocks/TextBlock.astro';
 import ImageBlock from '../../components/blocks/ImageBlock.astro';
 
 <TextBlock>
-  I achieved a lot in my time consulting with Virgin, originally Clydesdale Bank. When I joined the bank didn't even have a way to apply online.
+  Virgin Money was moving onto digital, and a lot of business banking was still manual. You visited a branch. Opening a business account took six weeks. Payments were authorised on a physical device. The service barely functioned, and it did not serve customers well.
 
-  My first project was creating an experience that could be replicated for the suite of products: Current Accounts, Savings, Credit Cards, ISAs. Weeks sitting with architects going back and forth between tech decisions and UX decisions, trying to reach a compromise on what was right for the user but secure for the bank.
-
-  After delivering account opening, I got asked to look at business banking. Virgin Money acquired the bank and everything changed. Business banking was a sleeping giant. Data showed on average it took six weeks plus for a potential customer to go through a business account opening process. Once approved, the app was not mobile optimised. You couldn't make payments without going to a branch. You couldn't add staff to manage day to day finances.
-
-  Me and another designer, Michael Mearns, worked tirelessly with stakeholders to fix these issues. We won a portion of the Capability and Innovation Fund. £35 million.
+  I was the lead designer on the business banking journey.
 </TextBlock>
 
-<TextBlock title="Dashboard">
-  The dashboard addresses the information architecture and surfaces the key details for each account, what a business owner needs to see the moment they log in.
+<TextBlock title="After login">
+  In the first minute, a business owner needs to see the accounts. They also need access for the people who run the company: employees and accountants. And they need payment limits. A payroll officer should be able to pay up to £20,000 without the MD having to authorise it. They need an easier way to see what is coming in and what is going out.
 </TextBlock>
 
 <ImageBlock
   src="/images/case-studies/virgin/dash-01.png"
-  alt="Virgin Money business banking dashboard showing account overview and information architecture"
-  caption="Business dashboard with account structure and the details that matter at a glance."
+  alt="Virgin Money business banking dashboard showing the accounts"
+  caption="The accounts after login, and what has moved."
   fullWidth
   bleed
   themeTrigger
 />
 
-<TextBlock title="Statements">
-  Drilling into the current account gives a full view of activity: balances, recent transactions, and the detail needed to understand where the business stands.
+<TextBlock title="Adding people">
+  Managing users was the tricky problem. The rules decide who can be added, how long they get access, and how you remove them when they leave. They also decide the payment limit, and how you send an account-opening journey to a team member so they can register to use the account.
+
+  I would not drop that. A business cannot run the account if only one person can get in, and it cannot be safe if anyone can pay anything.
 </TextBlock>
 
-<ImageBlock
-  src="/images/case-studies/virgin/statements-02.png"
-  alt="Virgin Money current account statement view with transaction drill-down"
-  caption="Current account drill-down, from overview to full statement detail."
-  fullWidth
-  bleed
-/>
-
-<TextBlock title="Payees">
-  Making and managing payments is central to how businesses operate day to day. Payees are easy to find, review, and pay from one place.
+<TextBlock title="Payments and statements">
+  You could not pay properly without the branch, or without that physical device. The app had to change that. Payments online, company cards you can manage, and statements with enough depth to see where the business stands.
 </TextBlock>
 
 <ImageBlock
   src="/images/case-studies/virgin/payments-03.png"
-  alt="Virgin Money payees list for business banking payments"
-  caption="Payees, the people and businesses you pay, ready when you need them."
+  alt="Virgin Money business banking payments"
+  caption="Payments in the app, instead of a device in the branch."
   fullWidth
   bleed
 />
-
-<TextBlock title="Adding a payee">
-  Adding someone new had to be straightforward without cutting corners on security. A clear flow from search to confirmation.
-</TextBlock>
 
 <ImageBlock
   src="/images/case-studies/virgin/add-payee-04.png"
-  alt="Virgin Money add payee flow for business banking"
-  caption="Adding a payee with simple steps with the checks the bank requires."
+  alt="Virgin Money screen for adding someone to business banking payments"
+  caption="Adding someone, with the bank's checks still in the path."
   fullWidth
   bleed
 />
-
-<TextBlock title="Additional products">
-  Businesses need more than a current account. The experience makes it easy to explore and apply for additional products like overdrafts and credit lines without leaving the app.
-</TextBlock>
 
 <ImageBlock
-  src="/images/case-studies/virgin/new-services-05.png"
-  alt="Virgin Money business banking screen for applying for overdrafts and credit lines"
-  caption="Overdrafts and credit lines, additional products surfaced when the business is ready."
+  src="/images/case-studies/virgin/statements-02.png"
+  alt="Virgin Money business account statement"
+  caption="A statement you can actually read."
   fullWidth
   bleed
 />
-
-<TextBlock title="Company cards">
-  Physical and digital company cards in use, giving staff controlled access to business funds while keeping the owner in charge.
-</TextBlock>
 
 <ImageBlock
   src="/images/case-studies/virgin/cards-06.png"
-  alt="Virgin Money company cards for business banking customers"
-  caption="Company cards in the hands of the people who need them."
+  alt="Virgin Money company cards for business banking"
+  caption="Company cards, managed in the same place."
   fullWidth
   bleed
 />
 
-<TextBlock title="Business metrics">
-  These views were decided by user input into what matters most to small businesses. Track incoming and outgoing cash, monitor VAT payments, and see the biggest expenses without digging through spreadsheets.
+<TextBlock title="The analytics screen">
+  This is the screen I will stand behind. You can see what is coming in and what is going out. There is a VAT and tax estimate, so the business can see that it is earning money and still needs to keep some of it aside.
+
+  It was not straightforward. The tax bands are different across the UK and Ireland, and the estimate still had to be accurate enough to be useful.
 </TextBlock>
 
 <ImageBlock
   src="/images/case-studies/virgin/metrics-07.png"
-  alt="Virgin Money business metrics showing cash flow, VAT tracking, and expense breakdown"
-  caption="Metrics built around what small business owners told us they actually need."
+  alt="Virgin Money business banking view of money in, money out, and tax"
+  caption="Money in, money out, and the tax to set aside."
   fullWidth
   bleed
 />
 
-<TextBlock title="Alerts">
-  Businesses can keep track of changes in their accounts and trace if employees make payments. Alerts give owners visibility without micromanaging every transaction.
+<TextBlock title="What shipped">
+  You could open an account in minutes, with the fraud checks in place. You could pay online, get to banking services quickly if you needed them, manage the company cards, and read a proper statement. The six weeks, the branch, and the lack of staff access were the things the app changed.
+
+  The Capability and Innovation Fund was there to bring money and a lot of business customers into the bank. This app is what made that possible. It was part of a £35 million win.
 </TextBlock>
 
 <ImageBlock
-  src="/images/case-studies/virgin/alerts-08.png"
-  alt="Virgin Money business banking alerts for account changes and employee payments"
-  caption="Alerts to stay on top of account activity and who is paying what."
+  src="/images/case-studies/virgin/new-services-05.png"
+  alt="Virgin Money screen for further business banking services"
+  caption="Other banking services, without starting again in a branch."
   fullWidth
   bleed
 />

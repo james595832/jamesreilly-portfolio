@@ -7,8 +7,8 @@ interface Props {
 }
 
 const {
-  title = "James Reilly, AI Product Designer",
-  description = "Portfolio of James Reilly, AI Product Designer. Case studies across finance, travel, and healthcare.",
+  title = "James Reilly — Product designer",
+  description = "Product designer. Founder of Aced-It.",
 } = Astro.props;
 ---
 
@@ -19,12 +19,6 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;1,400&display=swap"
-      rel="stylesheet"
-    />
     <title>{title}</title>
     <ClientRouter />
   </head>

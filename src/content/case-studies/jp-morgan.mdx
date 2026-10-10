@@ -1,133 +1,71 @@
 ---
-title: "Designing Executive Intelligence for Project Glasswing"
+title: "Matrix"
 client: "J.P. Morgan"
-role: "AI Product Designer"
-year: "2026"
-summary: "Weekend dashboard for Mythos vulnerability intel — then a living executive product shaped by weekly leadership feedback"
+role: "Design lead"
+year: "2022–now"
+summary: "The system of record for technology assets. Search, create, Insights, and AI in one place, instead of SEAL."
+principles:
+  problem: "SEAL was about twenty years old. You could look up an application or create one, and that was the limit."
+  constraint: "The MD and the architect had already set a lot of the plan. The integrations that would remove manual entry are still not all there."
+  decision: "Keep a side navigation for the 16 sections, and bring the application, Insights, and AI into one product."
+  result: "Live in the bank, with up to 20,000 unique visits a day. You can search and create any asset, not only applications."
 color: "#E9E6DA"
-cardImage: "/images/case-studies/jpmorgan/glasswing.png"
 themeBackground: "#F5EFE6"
 themeSurface: "#1a1a1a"
-nda: true
-tags: ["AI", "Dashboard", "Security", "Executive"]
+tags: ["System of record", "Insights", "AI"]
 order: 1
 ---
 
 import TextBlock from '../../components/blocks/TextBlock.astro';
-import ImageBlock from '../../components/blocks/ImageBlock.astro';
 
-<TextBlock title="Monday morning">
-  The COO walks into a meeting. Mythos is live. The bank has access to frontier AI that finds vulnerabilities at scale. It's already running. It's already finding things.
-
-  But here's the problem: nobody can see what it found. There's no dashboard. No metrics. No way to report it to leadership. People are pulling data into messy Excel sheets and trying to make sense of it.
-
-  The COO looks at the team and says: "I need to see this information for Monday."
-
-  That was Friday evening.
-
-  I got called in to design it.
+<TextBlock>
+  Matrix is the system of record for technology assets in the firm. Setting up an application, a database, assigning people, software, that sort of thing. It also has Insights, and an AI assistant, so you can get ahead of a problem before it happens. Anyone in technology can use it. That is over 100,000 people: engineers, leaders, auditors, and the teams that run reports.
 </TextBlock>
 
-<ImageBlock
-  src="/images/case-studies/jpmorgan/glasswing.png"
-  alt="Project Glasswing shown on a desktop monitor"
-  caption="Project Glasswing — executive visibility for Mythos vulnerability intelligence."
-  fullWidth
-  bleed
-  transparent
-  themeTrigger
-/>
-
-<TextBlock title="The real constraint">
-  This wasn't about making a nice dashboard. It was about building visibility for something the bank suddenly had access to but couldn't measure or understand.
-
-  Mythos finds vulnerabilities. A lot of them. Fast. But "50 vulnerabilities found in system X" doesn't tell a CIO anything actionable. It raises questions instead of answering them. What do you do with that number? Who owns it? How bad is it? How long to fix? Is it blocking something else?
-
-  The first version had to ship in a weekend. So I kept it simple. Card-based layout. Pull in what the data team could give me. Count it. Show severity. Create something that leadership could actually look at Monday morning.
-
-  But simple doesn't mean empty. Every number on that dashboard had to answer a question somebody would ask.
+<TextBlock title="What it replaced">
+  Before Matrix there was SEAL. It started life about twenty years ago, and it had been given sticky plaster treatment ever since. You could look up an application or create one. Nothing else. The scope never moved. Every two weeks the line-of-business admins who actually use the tool would go through what was wrong with it. There was a lot.
 </TextBlock>
 
-<TextBlock title="What actually happened">
-  I designed the initial dashboard in a day. Simple cards. Counts. Severity breakdown. Time series. The kind of thing where a CIO glances at it and can answer: are we ahead of this or behind it?
+<TextBlock title="My role">
+  I was the design lead. Any design went through me. I worked with a lead engineer for Matrix, one for AI, one for Insights, the architect, and the managing director.
 
-  The data engineering team built what I designed. We shipped it that weekend.
-
-  Monday morning the COO presented it to the CIO, who'd actually been asking for years for exactly this kind of interface. From there it got wider. Senior stakeholders wanted access. They wanted different views.
-
-  That's when the real work started.
+  A lot of the plan was already done by the MD and the architect. We then had to make those ideas work. I would ask the MD, who was the person who could actually decide: what is this for, what does it fix, and who should I speak to. I would design the feature and bring it back. The engineers would usually find the gaps, and we would work out how to solve them. Not much of this was written down. Engineering was already using AI, and I used it to test ideas. The Figma file stayed the source of truth.
 </TextBlock>
 
-<TextBlock title="The feedback loop">
-  I started weekly meetings with leadership. Not stakeholder interviews in a conference room. Real weekly calls with the COO, the CIO, senior security leadership. Their calendars are insane, so weekly was the only way to get consistent feedback.
+<TextBlock title="One product, not three">
+  My view was that these tools had to become one experience. When I started, the teams were in silos. Insights on its own, the application journey on its own, AI on its own. Nobody had said they would need to come together in one platform, or a person would not actually use it, and it would not make sense.
 
-  Every call went the same way: "You know what would be really great to see here?" Then we'd talk through it.
-
-  Is this metric at the top because it's important or because it's easy to calculate? Should this be a static number or a frequency? Can we combine these into a graph? What decisions does this number actually enable?
-
-  Each conversation shifted what I was building. Not radical rewrites. Targeted iterations. What information should sit where? What's the hierarchy of attention?
-
-  I'd design it in Figma that week. Create a block UI (basically a wireframe where I label every component from the design system). Share it with the data team to make sure we could actually calculate it. Then use Claude Code to build the prototype.
+  You are looking at an application. You want to know if it is resilient. You should be able to open Insights and see that application in real time. If that raises a question, you should be able to ask the AI to go further, without leaving.
 </TextBlock>
 
-<TextBlock title="The breakthrough: AI Chat">
-  A few weeks in, a question came up in a meeting: "When I see a vulnerability, I want more context. What's wrong with it? Who owns that system? How long has it been a problem? What's downstream of it?"
+<TextBlock title="Tiles, or a list">
+  The MD and the architect had imagined viewing your applications in a modern way, as tiles. I was against it. There are 16 sections in an asset flow. The top task is viewing the application, and tiles would have people clicking around in different places for different information. I proposed we keep the side navigation from SEAL, with the sections listed. That is the quickest way to see the information, in order. People use this a lot. A pattern they already know might help.
 
-  The answer was obvious. You can't cram all that into a card. But you can give users a way to ask.
+  Teams can talk and get nowhere until there is something to look at. So I designed both. I ran a few tests. People said it is easier to find what they need when the sections are in front of them. The tiles meant scrolling, and they looked a bit messy and disorganised.
 
-  I designed an AI chat drawer that opens on any vulnerability row. Users can ask permission-aware questions. The AI answers based on what they're allowed to see. It's not showing secrets; it's filtering by role.
-
-  If a junior engineer asks "what vulnerabilities does the trading system have?" the AI doesn't refuse. It says: "You can't view that, but here's what you can see about your assigned systems." Then it shows them what they actually have access to.
-
-  More important than answering questions: I added pre-made action buttons. Users can email the owner directly. The AI drafts the message. I even added positive ones, like "great news, John's team fixed 40 problems" so people can send congratulations.
-
-  That feature got loved immediately. Users didn't need to escalate to get answers. They didn't need to wait for someone to explain what a vulnerability meant. They got context and took action in the same tool.
+  The original idea also planned a lot of integrations, so manual entry would become obsolete. That has been a slow burner. Not all the services are integrated yet, which backed my version up. People still have to go through the asset themselves. The MD was hesitant. The results, and the way the work actually happens, were a strong argument. He made the call to keep the side navigation.
 </TextBlock>
 
-<TextBlock title="How Claude Code made the speed real">
-  Here's where the timeline actually compresses.
+<TextBlock title="The sketch">
+  Nobody had thought about how these pieces come together. I sketched an interface with a top navigation for the different areas, and search. The primary task is looking an asset up, so I treated search the way you would treat it in Google. I proposed the sketch at a stakeholder meeting, to get people aligned, because the product was not clearly defined. That sketch did it. Then we had a product.
 
-  When leadership says "wouldn't it be great if we could do X?" on a Thursday call, I can ship it by Tuesday.
-
-  I design the drawer in Figma with the copy and the interaction. I create a block UI showing which components go where. I give Claude Code the design plus the block layout and tell it: use this component from our design system, build it to look like this, and handle this interaction.
-
-  It gives me a prototype. Usually pretty close. Then I iterate. Three or four rounds typically. The iterations aren't about design. They're about the details. What should these quick buttons say exactly? What's the right copy for loading states? What should this animation feel like?
-
-  Because I'm using Claude Code, I can have those conversations at speed. I can iterate on copy or interaction without waiting for engineering. By the time leadership sees it, it's actually polished.
-
-  That's the only reason "Thursday request becomes Tuesday shipped" is real.
+  I designed the logo, the colours, and a design system we could use. Six months later it functions. You can view and create applications, check Insights on them, and ask the AI about them. Those were my ideas. Everyone else was thinking in technical language, and in back-end tasks. My job was to look at the problems people have today, fix them in the new product, and give them a better experience than SEAL.
 </TextBlock>
 
-<TextBlock title="The guardrails">
-  Everything on this dashboard is classified. Everything is sensitive. So when I designed the AI chat, I had to bake in principle of least privilege from the start.
-
-  Not every user can see every vulnerability. Not every user should be able to search for vulnerabilities in every system. The AI doesn't have the authority to show secrets. It has the authority to show what you're allowed to see.
-
-  It's careful by design, not careful by accident.
+<TextBlock title="Insights">
+  People come to Insights the way a CIO does. They look at a line of business and ask what is on fire, what is not resilient, how much we are spending on compute, and what vulnerabilities are showing up in software that has not been upgraded to the latest patch. The filtering is extensive. You can look at your own estate, or at one of your teams.
 </TextBlock>
 
-<TextBlock title="What's actually live">
-  The dashboard shipped. It's still in use. It's been in use for months. Every single week we're iterating on it based on feedback from the people using it to make actual decisions.
+<TextBlock title="The assistant">
+  There is an ask, everywhere, to bake AI into a product. I started from what it is actually for here. Insights leads to questions. The usual path is to export the data to Excel and send it to someone else to interpret. I wanted you to look the information up in Matrix, see the data, and ask. Can I trust it. Is it accurate. It says this is resilient, but where in the world is it running, and what is it costing.
 
-  The engineering teams are about to start using it differently (they'll have their own view, focused on fixing rather than reporting). That's a whole different design problem.
+  You click AI assist and a drawer opens. The chat already knows what you are looking at, so you can start asking straight away. If you find a vulnerability, you can send it from the chat to someone else to action. It tracks the fix and tells you when it is done.
 
-  The ideas on the roadmap: automatically fixing vulnerabilities and telling us what was fixed. Scheduled reports. AI-powered monitoring that patches things on its own. Those are all waiting.
-
-  But the core system works. Leadership can see what Mythos found. They can understand the scope. They can make decisions in hours instead of days. They can act instead of just report.
+  We hit a problem for a few weeks. To use AI in the firm you need security clearance first. There was a serious amount of red tape before we could put it live, and we had to add a modal when you land on the page, telling you about the AI. Not ideal. It is one of those trade-offs you make to get it live.
 </TextBlock>
 
-<TextBlock title="Why this matters">
-  This project taught me something that I still apply every single day.
+<TextBlock title="What is live">
+  The product is live in the bank, with up to 20,000 unique visits a day. It is a more complete product than SEAL ever was. You can search and create any asset, not just applications. You can see your estate in Insights, and query it with AI, in one platform. A lot of what used to be a manual back-end step in SEAL now happens in the product.
 
-  High-stakes work isn't about being clever. It's about discipline. Every person using your design is making a real decision that affects real infrastructure. You can't be sloppy. You can't guess.
-
-  That's why I approach Claude Code the way I do. It's powerful. It's fast. But fast doesn't mean good when it matters.
-
-  You need human gates. You need to understand what the data actually means before you visualize it. You need real user testing, not synthetic scenarios. You need to iterate based on how people actually use it, not how you think they will.
-
-  The <a href="/playground/creating-an-ai-workflow" class="case-inline-link">Claude Code workflow</a> I use now borrows everything I learned from Glasswing. Design in Figma. Create clear structure. Let AI build the prototype. Iterate on what matters. Validate with real users. Then hand off.
-
-  Each step filters something different. By the end, the work is solid.
-
-  That's not how most people use AI tools. But it's how you use it when it matters.
+  The integrations are not all complete. When they are, they will fill fields from other services, so people type less in by hand, and less bad data gets entered.
 </TextBlock>

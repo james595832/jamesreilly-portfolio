@@ -1,0 +1,428 @@
+---
+import type { CaseStudyMeta } from '../types/caseStudy';
+
+interface Shot {
+  src: string;
+  alt: string;
+  caption: string;
+}
+
+interface Props {
+  items: CaseStudyMeta[];
+}
+
+const { items } = Astro.props;
+
+const galleries: Record<string, Shot[]> = {
+  'creating-an-ai-workflow': [
+    {
+      src: '/images/playground/ai_process.png',
+      alt: 'Diagram of the AI workflow',
+      caption: 'The loop',
+    },
+    {
+      src: '/images/playground/process-flow-with-ai.png',
+      alt: 'Figma to Claude Code to present',
+      caption: 'Figma, Claude Code, present',
+    },
+  ],
+  'finding-hope': [
+    {
+      src: '/images/playground/thumbnail_globe.png',
+      alt: 'Finding Hope globe',
+      caption: 'The globe',
+    },
+    {
+      src: '/images/playground/finding_hope.png',
+      alt: 'Finding Hope country panel',
+      caption: 'A country, opened',
+    },
+    {
+      src: '/images/playground/finding-hope-poster-afd.png',
+      alt: 'Finding Hope word poster',
+      caption: 'Word poster',
+    },
+  ],
+  first: [
+    {
+      src: '/images/playground/First.jpg',
+      alt: 'First. cover',
+      caption: 'First.',
+    },
+    {
+      src: '/images/playground/first-app.png',
+      alt: 'First. product screen',
+      caption: 'Brief, system, then build',
+    },
+  ],
+  expedia: [
+    {
+      src: '/images/case-studies/expedia/tile_image.png',
+      alt: 'Expedia city breaks app',
+      caption: 'City breaks',
+    },
+    {
+      src: '/images/case-studies/expedia/dashboard_view.png',
+      alt: 'Expedia app home screen with recommended city breaks',
+      caption: 'Recommended breaks',
+    },
+  ],
+  ohni: [
+    {
+      src: '/images/case-studies/ohni/ohni_overview.png',
+      alt: 'OHNI site on desktop and mobile',
+      caption: 'The site',
+    },
+    {
+      src: '/images/case-studies/ohni/booking.jpg',
+      alt: 'OHNI online booking',
+      caption: 'Booking',
+    },
+  ],
+};
+---
+
+<section class="ideas-dir" aria-labelledby="ideas-heading">
+  <div class="ideas-dir__intro">
+    <h1 id="ideas-heading" class="ideas-dir__title font-display">
+      Experiments, notes, and work that does not fit a client case study.
+    </h1>
+  </div>
+
+  {
+    items.length === 0 ? (
+      <p class="ideas-dir__empty">Nothing here yet.</p>
+    ) : (
+      <div class="ideas-dir__table">
+        <div class="ideas-dir__head font-display" aria-hidden="true">
+          <span>Name</span>
+          <span class="ideas-dir__head-year">Year</span>
+          <span />
+        </div>
+
+        <ul class="ideas-dir__list">
+          {items.map((item) => {
+            const shots = galleries[item.slug] ?? [];
+            const panelId = `idea-panel-${item.slug}`;
+            return (
+              <li class="ideas-row" data-ideas-row>
+                <button
+                  type="button"
+                  class="ideas-row__bar"
+                  data-ideas-toggle
+                  aria-expanded="false"
+                  aria-controls={panelId}
+                >
+                  <span class="ideas-row__name font-display">{item.title}</span>
+                  <span class="ideas-row__year">{item.year}</span>
+                  <span class="ideas-row__mark" aria-hidden="true" />
+                </button>
+
+                <div class="ideas-row__panel" id={panelId} data-ideas-panel hidden>
+                  <div class="ideas-row__clip">
+                  <div class="ideas-row__panel-inner">
+                    {
+                      shots.length > 0 && (
+                        <ul class="ideas-row__shots">
+                          {shots.map((shot) => (
+                            <li>
+                              <figure class="ideas-shot">
+                                <img src={shot.src} alt={shot.alt} loading="lazy" decoding="async" />
+                                <figcaption>{shot.caption}</figcaption>
+                              </figure>
+                            </li>
+                          ))}
+                        </ul>
+                      )
+                    }
+                    <div class="ideas-row__copy">
+                      <p>{item.summary}</p>
+                      <a
+                        class="ideas-read case-card-trigger font-display"
+                        href={`/playground/${item.slug}`}
+                        data-case-slug={item.slug}
+                      >
+                        <span>Read</span>
+                        <span aria-hidden="true">→</span>
+                      </a>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    )
+  }
+</section>
+
+<script>
+  function panelOf(row: HTMLElement) {
+    return row.querySelector<HTMLElement>('[data-ideas-panel]');
+  }
+
+  function releasePanel(panel: HTMLElement) {
+    const wasHidden = panel.hidden;
+    panel.hidden = false;
+    if (wasHidden) panel.getBoundingClientRect();
+  }
+
+  function setRowOpen(row: HTMLElement, open: boolean) {
+    const toggle = row.querySelector<HTMLButtonElement>('[data-ideas-toggle]');
+    const panel = panelOf(row);
+    if (open && panel) releasePanel(panel);
+    row.classList.toggle('is-open', open);
+    toggle?.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (!panel) return;
+    panel.inert = !open;
+    panel.setAttribute('aria-hidden', open ? 'false' : 'true');
+  }
+
+  function bootIdeasDirectory() {
+    document.querySelectorAll<HTMLElement>('[data-ideas-row]').forEach((row) => {
+      const toggle = row.querySelector<HTMLButtonElement>('[data-ideas-toggle]');
+      const panel = panelOf(row);
+      if (panel && !row.classList.contains('is-open')) {
+        releasePanel(panel);
+        panel.inert = true;
+        panel.setAttribute('aria-hidden', 'true');
+      }
+      if (!toggle || toggle.dataset.bound === 'true') return;
+      toggle.dataset.bound = 'true';
+
+      toggle.addEventListener('click', () => {
+        const willOpen = !row.classList.contains('is-open');
+        document.querySelectorAll<HTMLElement>('[data-ideas-row].is-open').forEach((openRow) => {
+          if (openRow !== row) setRowOpen(openRow, false);
+        });
+        setRowOpen(row, willOpen);
+      });
+    });
+  }
+
+  bootIdeasDirectory();
+  document.addEventListener('astro:page-load', bootIdeasDirectory);
+</script>
+
+<style>
+  .ideas-dir {
+    width: 100%;
+    padding-top: clamp(6.5rem, 12vh, 8.5rem);
+    padding-bottom: 3.5rem;
+  }
+
+  .ideas-dir__intro,
+  .ideas-dir__head,
+  .ideas-row__bar,
+  .ideas-row__panel-inner,
+  .ideas-dir__empty {
+    padding-inline: clamp(1.25rem, 4vw, 2.75rem);
+  }
+
+  .ideas-dir__intro {
+    max-width: 36rem;
+    padding-bottom: clamp(2.5rem, 6vh, 4rem);
+  }
+
+  .ideas-dir__title {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: var(--color-heading);
+  }
+
+  .ideas-dir__empty {
+    color: var(--color-muted);
+  }
+
+  .ideas-dir__head,
+  .ideas-row__bar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 4.5rem 1.25rem;
+    column-gap: 1.5rem;
+    align-items: baseline;
+  }
+
+  .ideas-dir__head {
+    padding-bottom: 0.45rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-text) 18%, transparent);
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--color-muted);
+  }
+
+  .ideas-dir__head-year,
+  .ideas-row__year {
+    text-align: right;
+  }
+
+  .ideas-dir__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .ideas-row {
+    border-bottom: 1px solid color-mix(in srgb, var(--color-text) 18%, transparent);
+  }
+
+  .ideas-row__bar {
+    width: 100%;
+    margin: 0;
+    padding-block: 0.85rem;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.16s ease, color 0.16s ease;
+  }
+
+  .ideas-row__name {
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.4;
+  }
+
+  .ideas-row__year {
+    font-size: 1rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-muted);
+  }
+
+  .ideas-row__mark {
+    justify-self: end;
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    line-height: 1;
+  }
+
+  .ideas-row__mark::before {
+    content: '+';
+  }
+
+  .ideas-row:hover .ideas-row__bar,
+  .ideas-row:focus-within .ideas-row__bar,
+  .ideas-row.is-open .ideas-row__bar {
+    background: var(--color-text);
+    color: var(--color-bg);
+  }
+
+  .ideas-row:hover .ideas-row__year,
+  .ideas-row:focus-within .ideas-row__year,
+  .ideas-row.is-open .ideas-row__year {
+    color: color-mix(in srgb, var(--color-bg) 72%, transparent);
+  }
+
+  .ideas-row.is-open .ideas-row__mark::before {
+    content: '×';
+  }
+
+  .ideas-row__bar:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: -2px;
+  }
+
+  .ideas-row__panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    background: var(--color-text);
+    color: var(--color-bg);
+    transition: grid-template-rows 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .ideas-row.is-open .ideas-row__panel {
+    grid-template-rows: 1fr;
+  }
+
+  .ideas-row__clip {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .ideas-row__panel-inner {
+    display: grid;
+    gap: 1.75rem;
+    padding-block: 1.5rem 2rem;
+  }
+
+  @media (min-width: 860px) {
+    .ideas-row__panel-inner {
+      grid-template-columns: minmax(0, 1fr) minmax(14rem, 18rem);
+      align-items: start;
+      gap: 2.5rem;
+    }
+  }
+
+  .ideas-row__shots {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    gap: 1rem 1.25rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  .ideas-shot {
+    margin: 0;
+  }
+
+  .ideas-shot img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    object-position: center;
+    background: #111;
+  }
+
+  .ideas-shot figcaption {
+    margin-top: 0.45rem;
+    font-size: 0.75rem;
+    line-height: 1.35;
+    color: color-mix(in srgb, var(--color-bg) 72%, transparent);
+  }
+
+  .ideas-row__copy p {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.45;
+    letter-spacing: -0.01em;
+  }
+
+  .ideas-read {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1.25rem;
+    padding: 0.7rem 0.8rem;
+    border: 1px solid color-mix(in srgb, var(--color-bg) 35%, transparent);
+    color: var(--color-bg);
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+    text-decoration: none;
+  }
+
+  .ideas-read:hover,
+  .ideas-read:focus-visible {
+    background: var(--color-bg);
+    color: var(--color-text);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ideas-row__bar,
+    .ideas-row__panel {
+      transition: none;
+    }
+  }
+</style>

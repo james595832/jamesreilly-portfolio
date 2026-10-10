@@ -29,18 +29,15 @@ const { title, class: className = '' } = Astro.props;
     color: inherit;
     font-weight: 700;
   }
-  .prose-case :global(a.case-inline-link),
-  .prose-case :global(.case-inline-link) {
-    color: var(--color-accent, #00d4ff);
+  .prose-case :global(a) {
+    color: var(--color-accent);
     font-weight: 700;
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 0.18em;
     transition: color 0.2s ease, text-decoration-color 0.2s ease;
   }
-  .prose-case :global(a.case-inline-link:hover),
-  .prose-case :global(.case-inline-link:hover) {
-    color: inherit;
-    text-decoration-color: currentColor;
+  .prose-case :global(a:hover) {
+    opacity: 0.75;
   }
 </style>

@@ -263,9 +263,9 @@
 
 .case-study-carousel .case-card-title {
   margin: 0;
-  font-family: var(--font-display);
-  font-size: clamp(1.25rem, 2vw, 1.75rem);
-  font-weight: 700;
+  font-family: var(--font-body);
+  font-size: 1.5rem;
+  font-weight: 400;
   line-height: 1.15;
   letter-spacing: -0.02em;
   color: #1d1d1f;
@@ -278,7 +278,7 @@
 .case-study-carousel .case-card-summary {
   margin: 6px 0 0;
   font-family: var(--font-body);
-  font-size: clamp(0.875rem, 1.4vw, 1.0625rem);
+  font-size: 1rem;
   line-height: 1.35;
   font-weight: 400;
   color: #6e6e73;

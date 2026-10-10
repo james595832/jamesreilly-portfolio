@@ -1,12 +1,16 @@
 ---
-title: "Aced-IT"
-client: "Aced-IT"
+title: "Aced-It"
+client: "Aced-It"
 role: "Founder"
 year: "2026"
-summary: "Interview preparation built exclusively for the design community"
+summary: "Practice for design interviews. Phase 1 is live: your CV, the job, and the company, turned into questions you say out loud."
+principles:
+  problem: "Designers were prepping for interviews with tools built for developers, and trying to turn their experience into an answer."
+  constraint: "I am building it on my own, so it ships one part at a time."
+  decision: "Start with questions you speak, graded against an answer bank, written from your CV, the job description, and the company site."
+  result: "A soft launch with designer friends. The landing page, subscription, and job upload are live. Nobody is paying yet."
 color: "#FFFFFF"
 cardColor: "#FFFFFF"
-cardImage: "/images/case-studies/aced-it/mock-1-card.png"
 themeBackground: "#FFFFFF"
 themeSurface: "#000000"
 tags: ["Product", "AI", "Interview prep"]
@@ -14,63 +18,37 @@ order: 0
 ---
 
 import TextBlock from '../../components/blocks/TextBlock.astro';
-import ImageBlock from '../../components/blocks/ImageBlock.astro';
 
-<TextBlock title="Overview">
-  Aced-It is a dedicated interview-preparation platform built exclusively for the design community. In a tech landscape where most interview tools cater heavily to engineering workflows, designers are frequently left behind. Aced-It bridges this gap by offering tailored, interactive preparation that addresses the unique realities of design hiring—from behavioral walk-throughs to the dreaded whiteboard challenge.
-
-  Live at <a href="https://acedit.app" class="case-inline-link" target="_blank" rel="noopener noreferrer">acedit.app</a>.
+<TextBlock>
+  Aced-It helps designers get organised for interviews. Practise the questions, do whiteboard challenges, and keep the answers you would give. I built it for myself first. I wanted to speak an answer out loud and stick to the points, instead of waffling.
 </TextBlock>
 
-<ImageBlock
-  src="/images/case-studies/aced-it/mock-1.png"
-  alt="Aced-It marketing site on a laptop — Ace your design interview"
-  caption="Aced-It — practice real questions out loud, sketch on a timed whiteboard, get a score that shows what to fix."
-  fullWidth
-  bleed
-  transparent
-  themeTrigger
-/>
+<TextBlock title="Why I built it">
+  I spoke to designer friends. What everyone hates is trying to organise their experience into an answer, and the prep around that. The companies I looked at serve developers. Designers were missing the chance to practise the questions they actually get.
 
-<TextBlock title="The Problem & Motivation">
-  In the wake of post-pandemic mass layoffs, the design job market has become exceptionally competitive. Job seekers face fragmented application processes, opaque expectations, and little to no tailored practice resources.
-
-  Drawing from years of senior-level hiring and interview experience, the core objective of Aced-It is to give designers a centralized space to gather their materials, sharpen their presentation skills, master interview workflows, and walk into high-stakes interviews fully prepared.
+  My role is everything. The design, the code, the architecture, and the logic.
 </TextBlock>
 
-<ImageBlock
-  src="/images/case-studies/aced-it/features.png"
-  alt="Aced-It how it works — four feature tiles for CV questions, voice practice, scoring, and whiteboard challenges"
-  caption="How it works — practice like it’s the real thing."
-  fullWidth
-  bleed
-  transparent
-/>
+<TextBlock title="What I started with">
+  I started with questions, the ability to speak your answer, and a grade from the AI. The grade uses an answer bank. It looks for whether you hit the points it is looking for, and it scores you against that.
 
-<TextBlock title="Key Features & Solution">
-  Aced-It is engineered to simulate real-world design evaluation phases:
+  The research changed the plan. A design interview is not one conversation. It is a screen, then a meeting with product, an engineer, and a designer, then a whiteboard, then the CEO. I changed the roadmap so the product follows that, instead of a developer test with the word design swapped in.
 
-  **Tailored Practice:** Users can upload their CV and target job descriptions to generate customized interview practice loops.
-
-  **Voice-Powered Simulation:** Candidates practice by actually speaking aloud, receiving automated grading and constructive feedback to rapidly iterate and improve.
-
-  **Whiteboard Challenge Prep:** To conquer the hardest part of the design loop, the platform features 5 distinct whiteboard challenges. Users can ask clarifying questions to set context—and these diagnostic questions are evaluated alongside their final output.
+  I had also planned a portfolio review. Scanning a portfolio site is difficult to get right, so that is not the route. What is coming is a template. You fill in your answers, they stay on file, and later the questions can use them.
 </TextBlock>
 
-<TextBlock title="Validation & Testing">
-  The product concept was rigorously vetted and iterated through early-stage concept testing with designer peers, combined with structured user-testing sessions to refine the interactive flows and grading utility.
+<TextBlock title="Phase 1">
+  I had grand ideas of shipping three or four of those features together. Then I realised I was building it on my own. I needed to go feature by feature. Phase 1 is the questions and the grade. You upload your CV, the job description, and the company URL, and the platform writes questions you would actually face.
+
+  The one I will stand behind is “why do you want to work here?”. The URL is used to read the company site, and then you are tested on whether you have done that research. That is a realistic interview, not a generic bank of questions.
 </TextBlock>
 
-<TextBlock title="Technical Architecture & Stack">
-  To move rapidly from concept to a production-ready application, Aced-It was built using a modern, efficient stack:
+<TextBlock title="The whiteboard">
+  I had a working version of the whiteboard. You can ask questions, the way you would in the room, and get some direction. There is a timer, and the outcome is graded.
 
-  **Design & Prototyping:** Figma
+  It is not released. Drawing on a MacBook or a phone is tricky, and that is where it needs the work. The challenge should be easy to do. You should not be held back by a clunky build.
+</TextBlock>
 
-  **Development Environment:** Cursor
-
-  **Version Control & Deployment:** GitHub & Cloudflare
-
-  **Database & Backend:** Supabase
-
-  **Payments & Subscriptions:** Stripe
+<TextBlock title="Where it is">
+  What is live in phase 1 is the landing page, the subscription, and the job upload. It has had a soft launch with designer friends, to iron out bugs. Nobody is paying yet. I am preparing the marketing launch before the end of the year. It is at <a href="https://acedit.app" class="case-inline-link" target="_blank" rel="noopener noreferrer">acedit.app</a>.
 </TextBlock>
