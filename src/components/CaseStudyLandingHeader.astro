@@ -20,7 +20,7 @@ const principles = study.principles;
 ---
 
 <section class="case-study-landing-header">
-  <div class="case-study-landing-header__intro">
+  <div class="case-study-landing-header__frame">
     {
       study.nda && (
         <p class="case-study-landing-header__nda font-display">Under NDA</p>
@@ -31,21 +31,23 @@ const principles = study.principles;
       {study.client}
     </h1>
 
-    {
-      study.summary && (
-        <p class="case-study-landing-header__summary">{study.summary}</p>
-      )
-    }
+    <div class="case-study-landing-header__intro">
+      {
+        study.summary && (
+          <p class="case-study-landing-header__summary">{study.summary}</p>
+        )
+      }
 
-    {
-      chips.length > 0 && (
-        <ul class="case-study-landing-header__chips" aria-label="Topics">
-          {chips.map((chip) => (
-            <li class="case-study-landing-header__chip font-display">{chip}</li>
-          ))}
-        </ul>
-      )
-    }
+      {
+        chips.length > 0 && (
+          <ul class="case-study-landing-header__chips" aria-label="Topics">
+            {chips.map((chip) => (
+              <li class="case-study-landing-header__chip font-display">{chip}</li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
 
     <dl class="case-study-landing-header__principles">
       <div>
@@ -65,7 +67,6 @@ const principles = study.principles;
         <dd>{principles.result}</dd>
       </div>
     </dl>
-  </div>
 
   {
     heroSrc && (
@@ -97,24 +98,22 @@ const principles = study.principles;
       <div class="case-study-landing-header__rule" aria-hidden="true" />
     )
   }
+  </div>
 </section>
 
 <style is:global>
   .case-study-landing-header {
     width: 100%;
-    max-width: 1400px;
-    margin-inline: auto;
-    padding: 0.75rem clamp(1.25rem, 4vw, 4rem) 0;
+    margin: 0;
+    padding: 0;
   }
 
-  .case-study-landing-header--expanded {
-    padding-top: 0.75rem;
-  }
-
-  @media (min-width: 768px) {
-    .case-study-landing-header--expanded {
-      padding-top: 0.75rem;
-    }
+  .case-study-landing-header__frame {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: none;
+    margin-inline: 0;
+    padding: clamp(5.5rem, 12vh, 7.5rem) clamp(1.25rem, 4vw, 4rem) 0;
   }
 
   .case-study-landing-header__intro {
@@ -134,16 +133,17 @@ const principles = study.principles;
 
   .case-study-landing-header__title {
     margin: 0;
-    font-size: 2rem;
+    max-width: none;
+    font-size: clamp(3rem, 5vw, 4.25rem);
     font-weight: 500;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
     text-wrap: balance;
     color: var(--color-heading);
   }
 
   .case-study-landing-header__summary {
-    margin: 1rem 0 0;
+    margin: 1.35rem 0 0;
     max-width: 40rem;
     font-size: 1rem;
     font-weight: 400;
@@ -179,14 +179,21 @@ const principles = study.principles;
   .case-study-landing-header__principles {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1rem 1.5rem;
+    gap: 1.25rem 2rem;
+    width: 100%;
+    max-width: none;
     margin: 1.75rem 0 0;
-    max-width: 42rem;
   }
 
-  @media (min-width: 640px) {
+  @media (min-width: 700px) {
     .case-study-landing-header__principles {
       grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .case-study-landing-header__principles {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
   }
 

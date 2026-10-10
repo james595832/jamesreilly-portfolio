@@ -18,8 +18,14 @@ const {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
     <title>{title}</title>
+    <script is:inline>
+      if (location.hash === '#work') {
+        history.replaceState(null, '', location.pathname + location.search);
+      }
+    </script>
     <ClientRouter />
   </head>
   <body class="min-h-screen bg-bg text-text">
@@ -32,7 +38,14 @@ const {
     <slot />
     <script>
       function scrollToHashIfNeeded() {
-        const { hash } = window.location;
+        const { hash, pathname } = window.location;
+        // /#work used to be the Work link. It opened the homepage already
+        // scrolled past the intro. Land at the top and drop the hash.
+        if (hash === '#work') {
+          history.replaceState(null, '', pathname || '/');
+          window.scrollTo({ top: 0, behavior: 'auto' });
+          return;
+        }
         if (!hash || hash === '#') return;
 
         const id = decodeURIComponent(hash.slice(1));
@@ -41,9 +54,9 @@ const {
           document.querySelector<HTMLElement>(`[name="${CSS.escape(id)}"]`);
         if (!target) return;
 
-        // Wait one frame so swap layout is settled (especially after ClientRouter).
+        // Instant on load. A smooth scroll from the top reads as the page opening halfway down.
         requestAnimationFrame(() => {
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          target.scrollIntoView({ behavior: 'auto', block: 'start' });
         });
       }
 

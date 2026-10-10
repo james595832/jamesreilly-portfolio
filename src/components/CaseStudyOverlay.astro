@@ -63,28 +63,26 @@ const BACKDROP_OPACITY_SHEET = 0.28;
       top: `${SHEET_TOP_GAP}px`,
       left: `${SHEET_INSET}px`,
       right: `${SHEET_INSET}px`,
-      height: `calc(100dvh - ${SHEET_TOP_GAP}px)`,
+      height: '100dvh',
       borderTopLeftRadius: `${SHEET_RADIUS}px`,
       borderTopRightRadius: `${SHEET_RADIUS}px`,
     }}
   >
-    <div data-overlay-motion class="flex min-h-0 flex-1 flex-col will-change-[transform,opacity]">
-      <div class="flex shrink-0 items-center justify-end px-5 pt-5 pb-2 md:px-8 md:pt-6">
-        <button
-          type="button"
-          data-overlay-close
-          class="case-study-close-btn flex h-10 w-10 items-center justify-center rounded-full transition-colors"
-          aria-label="Close case study"
-        >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path d="M18 6L6 18M6 6l12 12"></path>
-          </svg>
-        </button>
-      </div>
+    <button
+      type="button"
+      data-overlay-close
+      class="case-study-close-btn"
+      aria-label="Close case study"
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <path d="M18 6L6 18M6 6l12 12"></path>
+      </svg>
+    </button>
 
+    <div data-overlay-motion class="flex min-h-0 flex-1 flex-col will-change-[transform,opacity]">
       <div
         data-overlay-scroll
-        class="case-study-scroll-panel relative min-h-0 flex-1 overflow-y-auto overscroll-contain"
+        class="case-study-scroll-panel relative w-full"
       >
         <div data-overlay-header-slot></div>
 
@@ -107,7 +105,7 @@ const BACKDROP_OPACITY_SHEET = 0.28;
               <p class="case-study-footer-label font-display">{moreLabel}</p>
               <div class="case-more">
                 <div class="case-more__head font-display" aria-hidden="true">
-                  <span>Name</span>
+                  <span>Project</span>
                   <span class="case-more__head-year">Year</span>
                   <span />
                 </div>
@@ -278,8 +276,28 @@ const BACKDROP_OPACITY_SHEET = 0.28;
     }
   }
 
+  /*
+   * The case study scrolls the window. The sheet only clips the card,
+   * so the scrollbar stays on the browser edge, outside the inset.
+   */
+  html.case-study-open {
+    overflow-y: scroll;
+  }
+
+  #case-study-scroll-spacer {
+    width: 100%;
+    height: 0;
+    pointer-events: none;
+  }
+
+  #case-study-overlay [data-overlay-scroll] {
+    overflow: visible;
+    flex: none;
+    height: auto;
+    min-height: 100%;
+  }
+
   .case-study-footer {
-    border-top: 1px solid color-mix(in srgb, var(--color-text) 18%, transparent);
     padding-top: 2.5rem;
     padding-bottom: 3rem;
   }
@@ -304,7 +322,7 @@ const BACKDROP_OPACITY_SHEET = 0.28;
   .case-more__head,
   .case-more__bar {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 4.5rem 1.25rem;
+    grid-template-columns: minmax(0, 1fr) 7.5rem 1.25rem;
     column-gap: 1.5rem;
     align-items: baseline;
   }
@@ -356,6 +374,7 @@ const BACKDROP_OPACITY_SHEET = 0.28;
     font-size: 1rem;
     font-variant-numeric: tabular-nums;
     color: var(--color-muted);
+    white-space: nowrap;
   }
 
   .case-more__mark {

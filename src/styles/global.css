@@ -454,10 +454,31 @@
   ) !important;
 }
 
-/* Close button: track sheet ink so it stays visible on every theme transition */
+/* Close control sits in the card, on the title line: 24px from the card top and right. */
 .case-study-close-btn {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: calc(2rem * 1.2);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
   color: var(--case-ink-color, var(--color-text));
+  cursor: pointer;
   transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.case-study-close-btn::before {
+  content: "";
+  position: absolute;
+  inset: -10px;
 }
 
 .case-study-close-btn:hover,

@@ -199,7 +199,7 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
       );
     if (!trigger) return 0;
 
-    const viewport = scrollEl.getBoundingClientRect();
+    const viewport = sheet.getBoundingClientRect();
     const triggerRect = trigger.getBoundingClientRect();
     const start = viewport.top + viewport.height * 0.72;
     const end = viewport.top + viewport.height * 0.28;
@@ -219,8 +219,9 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
 
   const applySheetGeometry = (progress: number) => {
     /*
-     * Phone: edge-to-edge page, no inset/scale/expand. Desktop: sheet that
-     * grows from a parked card into full viewport as you scroll.
+     * Phone: edge-to-edge page. Desktop: a parked card, inset from the window,
+     * that grows to the edges as the page scrolls. The scrollbar is the
+     * window's, so the inset never moves it.
      */
     if (isCompact()) {
       expandProgress = 1;
@@ -249,13 +250,12 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
     const top = SHEET_TOP_GAP * (1 - clamped);
     const radius = SHEET_RADIUS * (1 - clamped);
     const inset = SHEET_INSET * (1 - clamped);
-    const scale = 0.94 + clamped * 0.06;
     const backdropOpacity =
       BACKDROP_OPACITY_SHEET + (BACKDROP_OPACITY_FULL - BACKDROP_OPACITY_SHEET) * clamped;
 
     /*
-     * Keep height at 100dvh so the inner scrollport never resizes mid-scroll
-     * (that was the jitter). Visual expand is top inset, radius, and scale.
+     * Height stays 100dvh so the card never resizes the scroll distance.
+     * Top, side inset, and radius are the expand.
      */
     sheet.style.top = `${top}px`;
     sheet.style.height = '100dvh';
@@ -266,8 +266,7 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
     sheet.style.boxShadow = '';
     sheet.style.clipPath = '';
 
-    motion.style.transform = `scale(${scale})`;
-    motion.style.transformOrigin = '50% 0%';
+    motion.style.transform = 'none';
     backdrop.style.opacity = String(backdropOpacity);
 
     setExpandedState(clamped >= 0.995);
@@ -349,14 +348,73 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
     initClaudeProcessDiagrams(contentEl);
   };
 
+  const spacer = document.createElement('div');
+  spacer.id = 'case-study-scroll-spacer';
+  spacer.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(spacer);
+
+  const syncSpacer = () => {
+    if (!isVisible) {
+      spacer.style.height = '0px';
+      return;
+    }
+    const extra = Math.max(0, scrollEl.offsetHeight - motion.clientHeight);
+    spacer.style.height = `${window.innerHeight + extra}px`;
+  };
+
+  const setWindowScroll = (top: number) => {
+    const root = document.documentElement;
+    const previous = root.style.scrollBehavior;
+    root.style.scrollBehavior = 'auto';
+    root.scrollTop = top;
+    root.style.scrollBehavior = previous;
+  };
+
+  const pinPage = () => {
+    const main = document.getElementById('main');
+    if (!main || main.dataset.pinnedScroll) return;
+    const y = window.scrollY;
+    main.dataset.pinnedScroll = String(y);
+    main.style.position = 'fixed';
+    main.style.top = `-${y}px`;
+    main.style.left = '0';
+    main.style.right = '0';
+    main.style.width = '100%';
+    setWindowScroll(0);
+  };
+
+  const unpinPage = () => {
+    const main = document.getElementById('main');
+    if (!main?.dataset.pinnedScroll) return;
+    const y = Number(main.dataset.pinnedScroll);
+    main.style.position = '';
+    main.style.top = '';
+    main.style.left = '';
+    main.style.right = '';
+    main.style.width = '';
+    delete main.dataset.pinnedScroll;
+    setWindowScroll(y);
+  };
+
+  const resetCaseScroll = () => {
+    setWindowScroll(0);
+    scrollEl.style.transform = 'none';
+  };
+
   const setOverlayVisible = (visible: boolean) => {
     isVisible = visible;
     if (visible) {
       overlay.removeAttribute('hidden');
+      document.documentElement.classList.add('case-study-open');
+      pinPage();
     } else {
       overlay.setAttribute('hidden', '');
+      document.documentElement.classList.remove('case-study-open');
+      spacer.style.height = '0px';
+      scrollEl.style.transform = 'none';
+      unpinPage();
     }
-    document.body.style.overflow = visible ? 'hidden' : '';
+    document.body.style.overflow = '';
   };
 
   const finishClose = () => {
@@ -367,7 +425,8 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
     expandProgress = 0;
     expandTarget = 0;
     skipEnterAnimation = false;
-    scrollEl.scrollTop = 0;
+    resetCaseScroll();
+    updateHeaderShadow();
     applyScrollTheme(0);
 
     if (pathPattern.test(window.location.pathname)) {
@@ -451,10 +510,8 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
     } else if (skipEnterAnimation || reducedMotion) {
       gsap.set(sheet, { y: 0, clearProps: 'transform' });
       gsap.set(motion, { opacity: 1 });
-      gsap.set(backdrop, {
-        opacity: skipEnterAnimation ? BACKDROP_OPACITY_FULL : BACKDROP_OPACITY_SHEET,
-      });
-      applySheetGeometry(skipEnterAnimation ? 1 : 0);
+      gsap.set(backdrop, { opacity: BACKDROP_OPACITY_SHEET });
+      applySheetGeometry(0);
       closeBtn.focus();
     } else {
       applySheetGeometry(0);
@@ -479,9 +536,8 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
 
     applyScrollTheme(0, themeBackground, themeSurface);
     requestAnimationFrame(() => {
-      if (!isCompact()) {
-        setExpandTarget(Math.min(scrollEl.scrollTop / EXPAND_SCROLL, 1));
-      }
+      syncSpacer();
+      applyWindowScroll();
       if (themeBackground) {
         applyScrollTheme(getThemeProgress(), themeBackground, themeSurface);
       }
@@ -497,12 +553,13 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
     else skipEnterAnimation = false;
 
     animGeneration += 1;
-    expandProgress = compact || skipEnterAnimation ? 1 : 0;
+    expandProgress = compact ? 1 : 0;
     expandTarget = expandProgress;
     isExpanded = expandProgress >= 1;
 
     if (switching || !skipEnterAnimation) {
-      scrollEl.scrollTop = 0;
+      resetCaseScroll();
+      updateHeaderShadow();
     }
 
     // Match homepage tile open: when switching studies, park the sheet off-screen
@@ -535,10 +592,18 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
     runOpenEffects();
   };
 
-  const handleScroll = () => {
+  const updateHeaderShadow = () => {
+    sheet.toggleAttribute('data-header-shadow', window.scrollY > 8);
+  };
+
+  const applyWindowScroll = () => {
+    if (!isVisible || isClosing) return;
+    const y = window.scrollY;
+    scrollEl.style.transform = `translate3d(0, ${-y}px, 0)`;
+    updateHeaderShadow();
     if (!activeSlug) return;
     if (!isCompact()) {
-      setExpandTarget(Math.min(scrollEl.scrollTop / EXPAND_SCROLL, 1));
+      setExpandTarget(Math.min(y / EXPAND_SCROLL, 1));
     }
     const study = studyBySlug.get(activeSlug);
     if (study?.themeBackground) {
@@ -546,13 +611,67 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
     }
   };
 
+  const handleScroll = () => {
+    applyWindowScroll();
+  };
+
+  /*
+   * The sheet clips with overflow hidden, so a wheel or swipe over the card
+   * never reaches the window. Forward it, and the browser scrollbar moves.
+   */
+  const handleWheel = (event: WheelEvent) => {
+    if (!isVisible || isClosing) return;
+    event.preventDefault();
+    const line = 16;
+    const page = window.innerHeight;
+    const delta =
+      event.deltaMode === 1 ? event.deltaY * line : event.deltaMode === 2 ? event.deltaY * page : event.deltaY;
+    setWindowScroll(window.scrollY + delta);
+  };
+
+  let touchLastY = 0;
+
+  const handleTouchStart = (event: TouchEvent) => {
+    touchLastY = event.touches[0]?.clientY ?? 0;
+  };
+
+  const handleTouchMove = (event: TouchEvent) => {
+    if (!isVisible || isClosing) return;
+    const y = event.touches[0]?.clientY;
+    if (y === undefined) return;
+    event.preventDefault();
+    setWindowScroll(window.scrollY + (touchLastY - y));
+    touchLastY = y;
+  };
+
   const handleViewportChange = () => {
     if (!isVisible) return;
     applySheetGeometry(isCompact() ? 1 : expandProgress);
+    syncSpacer();
   };
 
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.key === 'Escape') closeOverlay();
+
+    if (isVisible && !isClosing) {
+      const page = window.innerHeight * 0.9;
+      const keyDelta: Record<string, number> = {
+        ArrowDown: 80,
+        ArrowUp: -80,
+        PageDown: page,
+        PageUp: -page,
+        Home: -window.scrollY,
+        End: document.documentElement.scrollHeight,
+      };
+      if (event.key in keyDelta && event.target instanceof HTMLElement) {
+        const tag = event.target.tagName;
+        if (tag !== 'INPUT' && tag !== 'TEXTAREA' && tag !== 'SELECT') {
+          event.preventDefault();
+          const next = event.key === 'End' ? document.documentElement.scrollHeight : window.scrollY + keyDelta[event.key];
+          setWindowScroll(next);
+        }
+      }
+    }
 
     if (event.key === 'Tab') {
       const focusable = overlay.querySelectorAll<HTMLElement>(
@@ -571,9 +690,18 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
     }
   };
 
+  const resizeObserver = new ResizeObserver(() => {
+    if (!isVisible) return;
+    syncSpacer();
+  });
+  resizeObserver.observe(scrollEl);
+
   backdrop.addEventListener('click', closeOverlay);
   closeBtn.addEventListener('click', closeOverlay);
-  scrollEl.addEventListener('scroll', handleScroll, { passive: true });
+  overlay.addEventListener('wheel', handleWheel, { passive: false });
+  overlay.addEventListener('touchstart', handleTouchStart, { passive: true });
+  overlay.addEventListener('touchmove', handleTouchMove, { passive: false });
+  window.addEventListener('scroll', handleScroll, { passive: true });
   document.addEventListener('keydown', handleKeyDown);
   compactMq.addEventListener('change', handleViewportChange);
 
@@ -583,9 +711,9 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
       enterTimeline?.kill();
       skipEnterAnimation = true;
       animGeneration += 1;
-      expandProgress = 1;
-      expandTarget = 1;
-      isExpanded = true;
+      expandProgress = isCompact() ? 1 : 0;
+      expandTarget = expandProgress;
+      isExpanded = expandProgress >= 1;
       activeSlug = match[1];
       setOverlayVisible(true);
       runOpenEffects();
@@ -600,7 +728,8 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
     isExpanded = false;
     expandProgress = 0;
     expandTarget = 0;
-    scrollEl.scrollTop = 0;
+    resetCaseScroll();
+    updateHeaderShadow();
     applyScrollTheme(0);
   };
 
@@ -621,12 +750,20 @@ export function initCaseStudyOverlay(config: CaseStudyOverlayConfig): void {
       cancelAnimationFrame(expandRaf);
       expandRaf = null;
     }
+    resizeObserver.disconnect();
     backdrop.removeEventListener('click', closeOverlay);
     closeBtn.removeEventListener('click', closeOverlay);
-    scrollEl.removeEventListener('scroll', handleScroll);
+    overlay.removeEventListener('wheel', handleWheel);
+    overlay.removeEventListener('touchstart', handleTouchStart);
+    overlay.removeEventListener('touchmove', handleTouchMove);
+    window.removeEventListener('scroll', handleScroll);
     document.removeEventListener('keydown', handleKeyDown);
     window.removeEventListener('popstate', handlePopState);
     compactMq.removeEventListener('change', handleViewportChange);
+    document.documentElement.classList.remove('case-study-open');
+    spacer.remove();
+    scrollEl.style.transform = 'none';
+    unpinPage();
     unregisterCaseStudyOpenHandler();
     delete overlay.dataset.overlayBound;
     delete overlay.dataset.overlayMode;
